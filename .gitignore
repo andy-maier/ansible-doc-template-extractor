@@ -1,0 +1,26 @@
+# Make targets
+/done/*.done
+
+# Make build
+/build/
+/dist/
+/src/ansible-doc-template-extractor/_version_scm.py
+/src/*.egg-info/
+/MANIFEST
+/MANIFEST.in
+
+# Make test
+__pycache__/
+/.pytest_cache/
+/htmlcov/
+/.coverage
+
+# Make build_doc
+/build_docs/
+
+# Other
+*.swp
+.DS_Store
+/try/
+*.log
+*.tmp

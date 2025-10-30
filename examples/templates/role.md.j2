@@ -1,0 +1,95 @@
+{#
+ # Template for Ansible roles that have meta/argument_spec.yml for use with ansible-doc-template-extractor.
+ # This template produces an .md file.
+ # For the input variables that are set, run: ansible-doc-template-extractor --help-template.
+ #}
+{% macro para_generation(paras, level) %}
+{# Macro that generates a list of paragraphs #}
+{% if paras is string %}
+{{ "  " * level }}{{ paras }}
+
+{% elif paras is iterable %}
+{%   for para in paras %}
+{{ "  " * level }}{{ para }}
+
+{%   endfor %}
+{% else %}
+{{ "  " * level }}{{ para }}
+{% endif %}
+{% endmacro %}
+{% macro option_generation(opts, level) %}
+{# Macro that generates a list of options, recursively #}
+{%   set sorted = false %}{# Flag to sort options by name #}
+{%   for name, spec in (opts | dictsort if sorted else opts.items()) if not name.startswith('_') %}
+{%     if spec.required | default(False) == True %}
+{%       set required_txt = "Required" %}
+{%     elif spec.default is defined %}
+{%       set required_txt = "Optional, default: {}".format(spec.default) %}
+{%     else %}
+{%       set required_txt = "Optional" %}
+{%     endif %}
+{%     if spec.type == 'list' %}
+{%       set type_txt = "list of {}".format(spec.elements) %}
+{%     else %}
+{%       set type_txt = spec.type %}
+{%     endif %}
+{%     if spec.choices is defined %}
+{%       set choices_txt = "Choices: {}.".format(spec.choices) %}
+{%     else %}
+{%       set choices_txt = "" %}
+{%     endif %}
+{{ "  " * level }}**{{ name }}** ({{ type_txt }}):
+
+{{ para_generation(spec.description, level + 1) }}
+  {{ "  " * level }}{{ required_txt }}.
+{%     if spec.choices is defined %}
+
+  {{ "  " * level }}{{ choices_txt }}
+{%     endif %}
+{%     if spec.options is defined %}
+{{ option_generation(spec.options, level + 1) }}
+{%     endif %}
+
+{%   endfor %}
+{% endmacro %}
+{% for role_name, role_dict in spec_file_dict.argument_specs.items() %}
+{%   if role_name == 'main' %}
+{%     set title = "Role {}".format(name) %}
+{%   else %}
+{%     set title = "Subrole {}.{}".format(name, role_name) %}
+{%   endif %}
+# {{ title }}
+
+## Synopsis
+
+{{ para_generation(role_dict.short_description, 0) }}
+## Description
+
+{{ para_generation(role_dict.description, 0) }}
+{%   if role_dict.version_added is defined %}
+## Version added
+
+{{ role_dict.version_added }}
+{%   endif %}
+{%   set has_inout_params = role_dict.options.in_params is defined and role_dict.options.in_params.type | default(None) == 'dict' or role_dict.options.out_params is defined and role_dict.options.out_params.type | default(None) == 'dict'%}
+{%   if has_inout_params %}
+## Input Parameters
+
+{{ para_generation(role_dict.options.in_params.description, 0) }}
+{{ option_generation(role_dict.options.in_params.options, 0) }}
+## Output Parameters
+
+{{ para_generation(role_dict.options.out_params.description, 0) }}
+{{ option_generation(role_dict.options.out_params.options, 0) }}
+{%   else %}
+## Parameters
+
+{{ option_generation(role_dict.options, 0) }}
+{%   endif %}
+## Authors
+
+{%   for author in role_dict.author %}
+* {{ author }}
+
+{%   endfor %}
+{% endfor %}
