@@ -195,7 +195,7 @@ def create_output_file(
 
     if name is None:
         # We assume the role directory structure:
-        # .../<role>/meta/ansible_specs.yml
+        # .../<role>/meta/argument_specs.yml
         spec_file_abs = os.path.abspath(spec_file)
         role_dir = os.path.dirname(spec_file_abs)
         role_dir = os.path.dirname(role_dir)
