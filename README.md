@@ -1,13 +1,14 @@
 # ansible-doc-template-extractor
 
 **ansible-doc-template-extractor** is a documentation extractor that supports
-the format Ansible roles use in their `meta/argument-spec.yml` files as input,
+the format Ansible roles use in their `meta/argument_specs.yml` files as input,
 and arbitrary Jinja2 template files to control what is generated as output.
 
-It can also be used for Ansible playbooks, as long as a spec file with a compatible
-format to the Ansible roles spec files is provided.
+It can also be used for Ansible playbooks, as long as a YAML argument spec file
+is provided. The format can differ from the argument spec files for roles,
+but of course the template file needs to match the format.
 
-The format of the ansible spec files for roles is described here:
+The format of the argument spec files for Ansible roles is described here:
 https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_reuse_roles.html#specification-format
 
 Disclaimer: There have been discussions in Ansible forums to add support for
