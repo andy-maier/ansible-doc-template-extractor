@@ -1,5 +1,5 @@
 {#
- # Template for Ansible roles with meta/argument_specs.yml file, for use with ansible-doc-template-extractor.
+ # Template for Ansible roles that have meta/argument_spec.yml for use with ansible-doc-template-extractor.
  # This template produces an .md file.
  # For the input variables that are set, run: ansible-doc-template-extractor --help-template.
  #}
@@ -71,16 +71,21 @@
 
 {{ role_dict.version_added }}
 {%   endif %}
-{%   set has_inout_params = role_dict.options.in_params is defined and role_dict.options.in_params.type | default(None) == 'dict' or role_dict.options.out_params is defined and role_dict.options.out_params.type | default(None) == 'dict'%}
-{%   if has_inout_params %}
+{%   set has_in_params = role_dict.options.in_params is defined and role_dict.options.in_params.type | default(None) == 'dict' %}
+{%   set has_out_params = role_dict.options.out_params is defined and role_dict.options.out_params.type | default(None) == 'dict' %}
+{%   if has_in_params or has_out_params %}
+{%     if has_in_params %}
 ## Input Parameters
 
 {{ para_generation(role_dict.options.in_params.description, 0) }}
 {{ option_generation(role_dict.options.in_params.options, 0) }}
+{%     endif %}
+{%     if has_out_params %}
 ## Output Parameters
 
 {{ para_generation(role_dict.options.out_params.description, 0) }}
 {{ option_generation(role_dict.options.out_params.options, 0) }}
+{%     endif %}
 {%   else %}
 ## Parameters
 
