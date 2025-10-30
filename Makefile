@@ -271,7 +271,9 @@ release_branch:
 	@bash -c 'if [ -z "$$(git branch -l release_$(VERSION))" ]; then echo "Creating release branch release_$(VERSION)"; git checkout -b release_$(VERSION); fi'
 	git checkout release_$(VERSION)
 	make authors
-	git commit --allow-empty -asm "Release $(VERSION)"
+	echo "Dummy change for releasing version $(VERSION)" >done/.dummy
+	git add done/.dummy
+	git commit -asm "Release $(VERSION)"
 	git push --set-upstream origin release_$(VERSION)
 	rm -f branch.tmp
 	@echo "Done: Pushed the release branch to GitHub - now go there and create a PR."
@@ -313,7 +315,9 @@ start_branch:
 	bash -c 'git checkout $$(cat branch.tmp)'
 	git pull
 	git checkout -b start_$(VERSION)
-	git commit --allow-empty -asm "Start $(VERSION)"
+	echo "Dummy change for starting version $(VERSION)" >done/.dummy
+	git add done/.dummy
+	git commit -asm "Start $(VERSION)"
 	git push --set-upstream origin start_$(VERSION)
 	rm -f branch.tmp
 	@echo "Done: Pushed the start branch to GitHub - now go there and create a PR."
