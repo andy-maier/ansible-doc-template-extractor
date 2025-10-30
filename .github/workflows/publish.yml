@@ -170,7 +170,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         INPUT_TAG_NAME: ${{ steps.set-tag.outputs.result }}
         INPUT_NAME: "Release ${{ steps.set-tag.outputs.result }}"
-        INPUT_BODY: "Pypi: https://pypi.org/project/ansible-doc-template-extractor/"
+        INPUT_BODY: "For a change log, see the commits"
 
     #-------- Creation of stable branch
     # Note: This does not seem to depend on the disablement of the "Restrict pushes
