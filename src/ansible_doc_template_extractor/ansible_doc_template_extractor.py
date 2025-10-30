@@ -189,10 +189,6 @@ def create_output_file(
     Create the output file for one spec file.
     """
 
-    spec_base, _ = os.path.splitext(os.path.basename(spec_file))
-    out_ext = out_ext.strip(".")
-    out_file = os.path.join(out_dir, f"{spec_base}.{out_ext}")
-
     if name is None:
         # We assume the role directory structure:
         # .../<role>/meta/argument_specs.yml
@@ -201,6 +197,9 @@ def create_output_file(
         role_dir = os.path.dirname(role_dir)
         name = os.path.basename(role_dir)
     print(f"Ansible name: {name}")
+
+    out_ext = out_ext.strip(".")
+    out_file = os.path.join(out_dir, f"{name}.{out_ext}")
 
     print(f"Loading spec file: {spec_file}")
     try:
