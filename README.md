@@ -19,11 +19,22 @@ until there is more official documentation extraction support provided.
 
 # Installation
 
-With no virtual Python environment active:
+If you want to install it into a virtual Python environment:
 
 ```
-$ pipx install ansible-doc-template-extractor
+$ pip install ansible-doc-template-extractor
 ```
+
+Otherwise, you can also install it without having a virtual Python environment:
+
+- If not yet available, install the "pipx" command as described in
+  https://pipx.pypa.io/stable/installation/.
+
+- Then, install the package using "pipx":
+
+  ```
+  $ pipx install ansible-doc-template-extractor
+  ```
 
 # Example use
 
