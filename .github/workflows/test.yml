@@ -197,3 +197,11 @@ jobs:
         RUN_TYPE: ${{ steps.set-run-type.outputs.result }}
       run: |
         make bandit
+
+  test_finish:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+    - name: Dummy step to define required tests in GitHub
+      run: |
+        echo Dummy step to define required tests in GitHub
