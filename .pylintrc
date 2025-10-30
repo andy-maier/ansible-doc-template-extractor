@@ -182,7 +182,7 @@ disable=I0011, unrecognized-option,
         super-with-arguments, duplicate-string-formatting-argument,
         consider-using-generator, bad-option-value, redundant-u-string-prefix,
         use-implicit-booleaness-not-comparison, use-dict-literal,
-        too-many-positional-arguments
+        too-many-positional-arguments, too-few-public-methods
 
 # Enable the message, report, category or checker with the given id(s). You can
 # either give multiple identifier separated by comma (,) or put this option
