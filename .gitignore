@@ -4,7 +4,7 @@
 # Make build
 /build/
 /dist/
-/src/ansible-doc-template-extractor/_version_scm.py
+/src/ansible_doc_template_extractor/_version_scm.py
 /src/*.egg-info/
 /MANIFEST
 /MANIFEST.in
