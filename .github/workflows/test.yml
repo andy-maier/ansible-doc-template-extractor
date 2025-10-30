@@ -5,16 +5,16 @@ name: test
 
 on:
   schedule:
-    # The schedule event always (and only) runs on the master branch.
+    # The schedule event always (and only) runs on the main branch.
     - # cron (in UTC): minute hour day_of_month month day_of_week
       cron: '00 22 * * SAT'
   pull_request:  # When creating a PR targeting these branches
     branches:
-    - master
+    - main
     - stable_*
   push:  # When merging a PR targeting these branches (direct push is disabled)
     branches:
-    - master
+    - main
     - stable_*
 
 jobs:
@@ -36,29 +36,16 @@ jobs:
           echo "matrix={ \
             \"os\": [ \"ubuntu-latest\", \"macos-latest\", \"windows-latest\" ], \
             \"python-version\": [ \"3.8\", \"3.9\", \"3.10\", \"3.11\", \"3.12\", \"3.13\", \"3.14\" ], \
-            \"package_level\": [ \"minimum\", \"latest\" ], \
             \"exclude\": [ \
               { \
                 \"os\": \"ubuntu-latest\", \
                 \"python-version\": \"3.8\", \
-                \"package_level\": \"minimum\" \
-              }, \
-              { \
-                \"os\": \"ubuntu-latest\", \
-                \"python-version\": \"3.8\", \
-                \"package_level\": \"latest\" \
               } \
             ], \
             \"include\": [ \
               { \
                 \"os\": \"ubuntu-22.04\", \
                 \"python-version\": \"3.8\", \
-                \"package_level\": \"minimum\" \
-              }, \
-              { \
-                \"os\": \"ubuntu-22.04\", \
-                \"python-version\": \"3.8\", \
-                \"package_level\": \"latest\" \
               } \
             ] \
           }" >> $GITHUB_OUTPUT; \
@@ -66,47 +53,30 @@ jobs:
           echo "matrix={ \
             \"os\": [ \"ubuntu-latest\" ], \
             \"python-version\": [ \"3.14\" ], \
-            \"package_level\": [ \"minimum\", \"latest\" ], \
             \"include\": [ \
               { \
                 \"os\": \"ubuntu-22.04\", \
                 \"python-version\": \"3.8\", \
-                \"package_level\": \"minimum\" \
               }, \
               { \
                 \"os\": \"ubuntu-latest\", \
                 \"python-version\": \"3.9\", \
-                \"package_level\": \"latest\" \
-              }, \
-              { \
-                \"os\": \"ubuntu-latest\", \
-                \"python-version\": \"3.12\", \
-                \"package_level\": \"latest\" \
               }, \
               { \
                 \"os\": \"macos-latest\", \
                 \"python-version\": \"3.8\", \
-                \"package_level\": \"latest\" \
-              }, \
-              { \
-                \"os\": \"macos-latest\", \
-                \"python-version\": \"3.11\", \
-                \"package_level\": \"latest\" \
               }, \
               { \
                 \"os\": \"macos-latest\", \
                 \"python-version\": \"3.14\", \
-                \"package_level\": \"minimum\" \
               }, \
               { \
                 \"os\": \"windows-latest\", \
                 \"python-version\": \"3.8\", \
-                \"package_level\": \"minimum\" \
               }, \
               { \
                 \"os\": \"windows-latest\", \
                 \"python-version\": \"3.14\", \
-                \"package_level\": \"latest\" \
               } \
             ] \
           }" >> $GITHUB_OUTPUT; \
@@ -172,7 +142,6 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Display environment
       env:
-        PACKAGE_LEVEL: ${{ matrix.package_level }}
         RUN_TYPE: ${{ steps.set-run-type.outputs.result }}
       run: |
         make env
@@ -182,13 +151,11 @@ jobs:
         pip list
     - name: Display platform
       env:
-        PACKAGE_LEVEL: ${{ matrix.package_level }}
         RUN_TYPE: ${{ steps.set-run-type.outputs.result }}
       run: |
         make platform
     - name: Install the package and its dependents
       env:
-        PACKAGE_LEVEL: ${{ matrix.package_level }}
         RUN_TYPE: ${{ steps.set-run-type.outputs.result }}
       run: |
         make install
@@ -198,7 +165,6 @@ jobs:
         pip list
     - name: Development setup
       env:
-        PACKAGE_LEVEL: ${{ matrix.package_level }}
         RUN_TYPE: ${{ steps.set-run-type.outputs.result }}
       run: |
         make develop
@@ -206,37 +172,28 @@ jobs:
       run: |
         echo "Installed Python packages:"
         pip list
-    - name: Show package dependency tree
-      run: |
-        echo "Package dependency tree of installed Python packages:"
-        python -m pipdeptree --all
     - name: Run build
       env:
-        PACKAGE_LEVEL: ${{ matrix.package_level }}
         RUN_TYPE: ${{ steps.set-run-type.outputs.result }}
       run: |
         make build
     - name: Run check
       env:
-        PACKAGE_LEVEL: ${{ matrix.package_level }}
         RUN_TYPE: ${{ steps.set-run-type.outputs.result }}
       run: |
         make check
     - name: Run ruff
       env:
-        PACKAGE_LEVEL: ${{ matrix.package_level }}
         RUN_TYPE: ${{ steps.set-run-type.outputs.result }}
       run: |
         make ruff
     - name: Run pylint
       env:
-        PACKAGE_LEVEL: ${{ matrix.package_level }}
         RUN_TYPE: ${{ steps.set-run-type.outputs.result }}
       run: |
         make pylint
     - name: Run bandit
       env:
-        PACKAGE_LEVEL: ${{ matrix.package_level }}
         RUN_TYPE: ${{ steps.set-run-type.outputs.result }}
       run: |
         make bandit
