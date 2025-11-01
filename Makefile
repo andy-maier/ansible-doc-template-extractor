@@ -138,6 +138,11 @@ dist_dependent_files := \
     requirements.txt \
     $(package_py_files_no_version) \
 
+# Example files
+example_role_dirs := $(wildcard examples/roles/*)
+example_role_md_files := $(patsubst examples/roles/%,examples/output/%.md,$(example_role_dirs))
+example_role_rst_files := $(patsubst examples/roles/%,examples/output/%.rst,$(example_role_dirs))
+
 # Directory for .done files
 done_dir := done
 
@@ -169,6 +174,7 @@ help:
 	@echo "  bandit     - Run bandit checker"
 	@echo "  build      - Build the distribution files in $(dist_dir)"
 	@echo "  authors    - Generate AUTHORS.md file from git log"
+	@echo "  examples   - Generate the examples"
 	@echo "  all        - Do all of the above"
 	@echo "  release_branch - Create a release branch when releasing a version (requires VERSION and optionally BRANCH to be set)"
 	@echo "  release_publish - Publish to PyPI when releasing a version (requires VERSION and optionally BRANCH to be set)"
@@ -253,6 +259,16 @@ build: _check_version $(bdist_file) $(sdist_file)
 .PHONY: all
 all: install develop check ruff pylint bandit build authors
 	@echo "Makefile: $@ done."
+
+.PHONY: examples
+examples: $(example_role_md_files) $(example_role_rst_files)
+	@echo "Makefile: $@ done."
+
+examples/output/%.md: examples/roles/%/meta/argument_specs.yml examples/templates/role.md.j2 $(done_dir)/install_$(pymn).done
+	ansible-doc-template-extractor --template examples/templates/role.md.j2 examples/output $<
+
+examples/output/%.rst: examples/roles/%/meta/argument_specs.yml examples/templates/role.rst.j2 $(done_dir)/install_$(pymn).done
+	ansible-doc-template-extractor --ext rst --template examples/templates/role.rst.j2 examples/output $<
 
 .PHONY: release_branch
 release_branch:
@@ -389,7 +405,7 @@ $(done_dir)/install_$(pymn).done: $(done_dir)/base_$(pymn).done requirements.txt
 	@echo "Makefile: Done installing package and its prerequisites"
 	echo "done" >$@
 
-$(done_dir)/develop_$(pymn).done: $(done_dir)/base_$(pymn).done requirements-develop.txt
+$(done_dir)/develop_$(pymn).done: $(done_dir)/install_$(pymn).done requirements-develop.txt
 	@echo "Makefile: Installing prerequisites for development"
 	-$(call RM_FUNC,$@)
 	$(PYTHON_CMD) -m pip install $(pip_level_opts) -r requirements-develop.txt

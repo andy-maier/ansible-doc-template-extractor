@@ -22,6 +22,9 @@ import sys
 import jinja2
 import yaml
 import jinja2_ansible_filters
+from antsibull_docs_parser.parser import parse, Context
+from antsibull_docs_parser.rst import to_rst_plain
+from antsibull_docs_parser.md import to_md
 
 from ._version import __version__
 
@@ -143,6 +146,22 @@ def template_error_msg(filename, exc):
             f"{exc.__class__.__name__}: {exc}")
 
 
+def to_rst_filter(text):
+    """
+    Jinja2 filter function that converts text to RST, resolving Ansible specific
+    constructs such as "C(...)".
+    """
+    return to_rst_plain(parse(text, Context()))
+
+
+def to_md_filter(text):
+    """
+    Jinja2 filter function that converts text to Markdown, resolving Ansible
+    specific constructs such as "C(...)".
+    """
+    return to_md(parse(text, Context()))
+
+
 def create_output_files(template_file, name, spec_files, out_dir, out_ext):
     """
     Create the output file for one spec file.
@@ -165,6 +184,10 @@ def create_output_files(template_file, name, spec_files, out_dir, out_ext):
 
     # Let undefined variables fail rendering
     env.undefined = jinja2.StrictUndefined
+
+    # Add Jinja2 filters
+    env.filters["to_rst"] = to_rst_filter
+    env.filters["to_md"] = to_md_filter
 
     print(f"Loading template file: {template_file}")
     try:
