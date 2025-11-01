@@ -71,6 +71,27 @@ and it will create an .md file with the documentation of the role:
 Example template files can be downloaded from
 https://github.com/andy-maier/ansible-doc-template-extractor/tree/master/examples/templates
 
+# Writing templates
+
+You can write your own templates for any format or language.
+
+The following rules apply for the templates:
+
+* The templating language is [Jinja2](https://jinja.palletsprojects.com/en/stable/templates/).
+
+* The following Jinja2 extensions are available:
+
+  - The filters provided by the
+    [jinja2-ansible-filters](https://pypi.org/project/jinja2-ansible-filters)
+    package. For a description, see
+    [Ansible built-in filters](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/index.html#filter-plugins).
+
+  - [jinja2.ext.do Expression Statement](https://jinja.palletsprojects.com/en/stable/extensions/#expression-statement)
+
+  - `to_rst` and `to_md` filters that are provided by this package and
+    that convert text to RST or Markdown, respectively, resolving Ansible-specific
+    constructs such as "C(...)".
+
 # Reporting issues
 
 If you encounter a problem, please report it as an
