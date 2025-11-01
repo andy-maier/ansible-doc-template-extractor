@@ -31,7 +31,7 @@ include = [
 ]
 
 [project.scripts]
-ansible-doc-template-extractor = "ansible_doc_template_extractor.ansible_doc_template_extractor:main"
+ansible-doc-template-extractor = "ansible_doc_template_extractor.cli:main"
 
 [project]
 name = "ansible-doc-template-extractor"

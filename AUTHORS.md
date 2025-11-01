@@ -3,5 +3,4 @@
 Sorted list of authors derived from git commit history:
 ```
 Andreas Maier <andreas.r.maier@gmx.de>
-Andreas Maier <maiera@de.ibm.com>
 ```

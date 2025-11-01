@@ -4,4 +4,5 @@
 # Format for replacing name and email based upon commit email:
 #    Proper Name <proper@email.xx> <commit@email.xx>
 #
-Andreas Maier <maiera@de.ibm.com> <andy-maier@users.noreply.github.com>
+Andreas Maier <andreas.r.maier@gmx.de> <andy-maier@users.noreply.github.com>
+Andreas Maier <andreas.r.maier@gmx.de> <maiera@de.ibm.com>
