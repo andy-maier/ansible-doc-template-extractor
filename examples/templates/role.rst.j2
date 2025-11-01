@@ -1,20 +1,20 @@
 {#
  # Template for Ansible roles that have meta/argument_spec.yml for use with ansible-doc-template-extractor.
- # This template produces an .md file.
+ # This template produces an .rst file.
  # For the input variables that are set, run: ansible-doc-template-extractor --help-template.
  #}
 {% macro para_generation(paras, level) %}
 {# Macro that generates a list of paragraphs #}
 {% if paras is string %}
-{{ "  " * level }}{{ paras | to_md }}
+{{ "  " * level }}{{ paras | to_rst }}
 
 {% elif paras is iterable %}
 {%   for para in paras %}
-{{ "  " * level }}{{ para | to_md }}
+{{ "  " * level }}{{ para | to_rst }}
 
 {%   endfor %}
 {% else %}
-{{ "  " * level }}{{ para | to_md }}
+{{ "  " * level }}{{ para | to_rst }}
 {% endif %}
 {% endmacro %}
 {% macro option_generation(opts, level) %}
@@ -41,10 +41,10 @@
 {{ "  " * level }}**{{ name }}** ({{ type_txt }}):
 
 {{ para_generation(spec.description, level + 1) }}
-  {{ "  " * level }}{{ required_txt | to_md }}
+  {{ "  " * level }}{{ required_txt | to_rst }}
 {%     if spec.choices is defined %}
 
-  {{ "  " * level }}{{ choices_txt | to_md }}
+  {{ "  " * level }}{{ choices_txt | to_rst }}
 {%     endif %}
 {%     if spec.options is defined %}
 {{ option_generation(spec.options, level + 1) }}
@@ -52,19 +52,24 @@
 
 {%   endfor %}
 {% endmacro %}
+.. _{{ name }}_role:
+
 {% for role_name, role_dict in spec_file_dict.argument_specs.items() %}
 {%   if role_name == 'main' %}
 {%     set title = "Role {} -- {}".format(name, role_dict.short_description) %}
 {%   else %}
 {%     set title = "Subrole {}.{} -- {}".format(name, role_name, role_dict.short_description) %}
 {%   endif %}
-# {{ title }}
+{{ title }}
+{{ '=' * title | length }}
 
-## Synopsis
+Synopsis
+--------
 
 {{ para_generation(role_dict.description, 0) }}
 {%   if role_dict.version_added is defined %}
-## Version added
+Version added
+-------------
 
 {{ role_dict.version_added }}
 {%   endif %}
@@ -72,23 +77,27 @@
 {%   set has_out_params = role_dict.options.out_params is defined and role_dict.options.out_params.type | default(None) == 'dict' %}
 {%   if has_in_params or has_out_params %}
 {%     if has_in_params %}
-## Input Parameters
+Input Parameters
+----------------
 
 {{ para_generation(role_dict.options.in_params.description, 0) }}
 {{ option_generation(role_dict.options.in_params.options, 0) }}
 {%     endif %}
 {%     if has_out_params %}
-## Output Parameters
+Output Parameters
+-----------------
 
 {{ para_generation(role_dict.options.out_params.description, 0) }}
 {{ option_generation(role_dict.options.out_params.options, 0) }}
 {%     endif %}
 {%   else %}
-## Parameters
+Parameters
+----------
 
 {{ option_generation(role_dict.options, 0) }}
 {%   endif %}
-## Authors
+Authors
+-------
 
 {%   for author in role_dict.author %}
 * {{ author }}
