@@ -26,7 +26,10 @@ from antsibull_docs_parser.parser import parse, Context
 from antsibull_docs_parser.rst import to_rst_plain
 from antsibull_docs_parser.md import to_md
 
-from ._version import __version__
+try:
+    from ._version_scm import version
+except ImportError:
+    version = "unknown"
 
 
 DEFAULT_EXT = "md"
@@ -105,7 +108,7 @@ def print_version():
     Print the version of this program.
     """
     # pylint: disable=no-member
-    print(f"version: {__version__}")
+    print(f"version: {version}")
 
 
 def print_help_template():
