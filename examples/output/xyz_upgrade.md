@@ -1,0 +1,90 @@
+# Playbook xyz_upgrade -- Upgrade XYZ container to a new version
+
+## Synopsis
+
+This playbook upgrades an XYZ container to a new version\.
+
+
+
+## Prerequisites
+
+From where the playbook is run\, there is network connectivity to the server running the XYZ container\.
+
+
+
+## Version added
+
+1.17
+
+## Input Parameters
+
+Playbook input variable \'params\'\.
+
+
+
+* **server** (string):
+
+  IP address or hostname of the server that runs the XYZ container\.
+
+
+  Required\.
+
+* **version** (string):
+
+  Desired new version of the XYZ container\.
+
+
+  Required\.
+
+* **foo_object** (object):
+
+  Demonstrate nested objects
+
+
+  Optional\.
+
+  * **bar** (string):
+
+    The bar\.
+
+
+    Required\.
+
+
+
+* **foo_array** (list of object):
+
+  Demonstrate nested array of objects
+
+
+  Optional\.
+
+  * **bar** (string):
+
+    The bar\.
+
+
+    Required\.
+
+
+
+
+
+## Output Parameters
+
+Playbook output variable \'output\'\, in case of success\.
+
+
+
+* **previous_version** (string):
+
+  Version of the XYZ container before the upgrade\.
+
+
+  Required\.
+
+
+
+## Authors
+
+* Andreas Maier

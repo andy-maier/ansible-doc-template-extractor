@@ -1,0 +1,64 @@
+# Spec file format for Ansible playbooks, defined by the ansible-doc-template-extractor project.
+playbook:
+  name: xyz_upgrade
+  title: Upgrade XYZ container to a new version
+  description:
+    - This playbook upgrades an XYZ container to a new version.
+  prerequisites:
+    - From where the playbook is run, there is network connectivity to the
+      server running the XYZ container.
+  version_added: "1.17"
+  examples:
+    - description: Upgrade the XYZ container to a specified version
+      command: |
+        ansible-playbook xyz_upgrade -e '{"params": {"server": "10.11.12.13", "version": "1.8.0"}}'
+  input_schema:
+    # JSON schema
+    description: Playbook input variable 'params'.
+    type: object
+    additionalProperties: false
+    required:
+      - server
+      - version
+    properties:
+      server:
+        description: IP address or hostname of the server that runs the XYZ container.
+        type: string
+      version:
+        description: Desired new version of the XYZ container.
+        type: string
+      foo_object:
+        description: Demonstrate nested objects
+        type: object
+        additionalProperties: false
+        required:
+          - bar
+        properties:
+          bar:
+            description: The bar.
+            type: string
+      foo_array:
+        description: Demonstrate nested array of objects
+        type: array
+        items:
+          type: object
+          additionalProperties: false
+          required:
+            - bar
+          properties:
+            bar:
+              description: The bar.
+              type: string
+  output_schema:
+    # JSON schema
+    description: Playbook output variable 'output', in case of success.
+    type: object
+    additionalProperties: false
+    required:
+      - previous_version
+    properties:
+      previous_version:
+        description: Version of the XYZ container before the upgrade.
+        type: string
+  authors:
+    - Andreas Maier

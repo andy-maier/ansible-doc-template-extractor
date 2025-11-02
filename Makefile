@@ -142,6 +142,9 @@ dist_dependent_files := \
 example_role_dirs := $(wildcard examples/roles/*)
 example_role_md_files := $(patsubst examples/roles/%,examples/output/%.md,$(example_role_dirs))
 example_role_rst_files := $(patsubst examples/roles/%,examples/output/%.rst,$(example_role_dirs))
+example_playbook_files := $(wildcard examples/playbooks/*)
+example_playbook_md_files := $(patsubst examples/playbooks/%.specs.yml,examples/output/%.md,$(example_playbook_files))
+example_playbook_rst_files := $(patsubst examples/playbooks/%.specs.yml,examples/output/%.rst,$(example_playbook_files))
 
 # Directory for .done files
 done_dir := done
@@ -261,14 +264,20 @@ all: install develop check ruff pylint bandit build authors
 	@echo "Makefile: $@ done."
 
 .PHONY: examples
-examples: $(example_role_md_files) $(example_role_rst_files)
+examples: $(example_role_md_files) $(example_role_rst_files) $(example_playbook_md_files) $(example_playbook_rst_files)
 	@echo "Makefile: $@ done."
 
 examples/output/%.md: examples/roles/%/meta/argument_specs.yml $(package_dir)/templates/role.md.j2 $(done_dir)/install_$(pymn).done
-	ansible-doc-template-extractor --format md --out-dir examples/output $<
+	ansible-doc-template-extractor -v --format md --out-dir examples/output $<
 
 examples/output/%.rst: examples/roles/%/meta/argument_specs.yml $(package_dir)/templates/role.rst.j2 $(done_dir)/install_$(pymn).done
-	ansible-doc-template-extractor --format rst --out-dir examples/output $<
+	ansible-doc-template-extractor -v --format rst --out-dir examples/output $<
+
+examples/output/%.md: examples/playbooks/%.specs.yml $(package_dir)/templates/playbook.md.j2 $(done_dir)/install_$(pymn).done
+	ansible-doc-template-extractor -v --format md --out-dir examples/output $<
+
+examples/output/%.rst: examples/playbooks/%.specs.yml $(package_dir)/templates/playbook.rst.j2 $(done_dir)/install_$(pymn).done
+	ansible-doc-template-extractor -v --format rst --out-dir examples/output $<
 
 .PHONY: release_branch
 release_branch:
