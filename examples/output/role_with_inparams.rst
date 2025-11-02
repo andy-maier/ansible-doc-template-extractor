@@ -91,4 +91,3 @@ Authors
 -------
 
 * Andreas Maier
-

@@ -84,4 +84,3 @@ Their values are the names of variables to be set upon return from the role\.
 ## Authors
 
 * Andreas Maier
-

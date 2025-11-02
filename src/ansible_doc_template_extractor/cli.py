@@ -15,6 +15,7 @@ Ansible Documentation Template Extractor
 """
 
 import os
+import re
 import argparse
 import sys
 import jinja2
@@ -30,11 +31,20 @@ except ImportError:
     version = "unknown"
 
 
+VALID_TYPES = ["role", "playbook", "other"]
 VALID_FORMATS = ["rst", "md", "other"]
 DEFAULT_FORMAT = "rst"
 DEFAULT_OUT_DIR = "."
 DEFAULT_OUT_DIR_STR = \
     "Current directory" if DEFAULT_OUT_DIR == "." else DEFAULT_OUT_DIR
+
+# Patterns for spec file names.
+# They are used for detecting the spec type, and for parsing the Ansible role
+# or playbook name (in match item 2).
+ROLE_SPEC_FILE_PATTERN = re.compile(
+    r"(^|{s})([^{s}]+){s}meta{s}argument_specs\.yml$".format(s=os.sep))
+PLAYBOOK_SPEC_FILE_PATTERN = re.compile(
+    r"(^|{s})([^{s}]+)\.specs\.yml$".format(s=os.sep))
 
 
 class HelpTemplateAction(argparse.Action):
@@ -42,6 +52,14 @@ class HelpTemplateAction(argparse.Action):
 
     def __call__(self, parser, namespace, values, option_string=None):
         print_help_template()
+        parser.exit()  # stops immediately (like --help)
+
+
+class HelpPlaybookSpecAction(argparse.Action):
+    "argparse action for --help-playbook-spec option"
+
+    def __call__(self, parser, namespace, values, option_string=None):
+        print_help_playbook_spec()
         parser.exit()  # stops immediately (like --help)
 
 
@@ -53,27 +71,25 @@ class HelpVersionAction(argparse.Action):
         parser.exit()  # stops immediately (like --help)
 
 
-def parse_args(argv):
+def create_arg_parser(prog):
     """
-    Parses the command line arguments.
+    Creates and returns the command line argument parser.
     """
 
-    prog = os.path.basename(sys.argv[0])
     usage = "%(prog)s [options] [SPEC_FILE ...]"
-    desc = ("Extract documentation from a spec file in YAML format "
-            "(such as <role>/meta/argument_specs.yml for roles) using a "
-            "Jinja2 template file. Template files for RST and Markdown output "
-            "formats for roles are included. For playbooks and for other "
-            "output formats, templates can be provided by the user.")
+    desc = ("Extract documentation from a spec file in YAML format using a "
+            "Jinja2 template file. For Ansible roles, the Ansible-defined "
+            "format for <role>/meta/argument_specs.yml files is used. For "
+            "Ansible playbooks, this project has defined a spec file format "
+            "with files named <playbook>.specs.yml. Template files for RST and "
+            "Markdown output formats for roles and playbooks are included in "
+            "this program. For other types of Ansible items or other spec file "
+            "formats or other output formats, template files can be provided "
+            "by the user.")
     epilog = ""
 
     parser = argparse.ArgumentParser(
         prog=prog, usage=usage, description=desc, epilog=epilog, add_help=True)
-
-    parser.add_argument(
-        "--out-dir", "-o", metavar="DIR", default=DEFAULT_OUT_DIR,
-        help="path name of the output directory. "
-        f"Default: {DEFAULT_OUT_DIR_STR}.")
 
     parser.add_argument(
         "spec_file", metavar="SPEC_FILE", nargs="*",
@@ -81,31 +97,46 @@ def parse_args(argv):
         "Zero or more spec files can be specified.")
 
     parser.add_argument(
-        "--name", "-n", metavar="NAME", default=None,
-        help="name of the Ansible role or playbook. When this option is used, "
-        "only one spec file may be specified. "
-        "Default: Derived from path name of the spec file: "
-        "<name>/meta/argument_specs.yml.")
+        "--out-dir", "-o", metavar="DIR", default=DEFAULT_OUT_DIR,
+        help="path name of the output directory. "
+        f"Optional; default: {DEFAULT_OUT_DIR_STR}.")
 
     parser.add_argument(
         "--format", "-f", metavar="FORMAT", choices=VALID_FORMATS,
         default=DEFAULT_FORMAT,
         help="format of the output file(s). "
         f"Valid values: {', '.join(VALID_FORMATS)}. "
-        f"Default: {DEFAULT_FORMAT}.")
+        f"Optional; default: {DEFAULT_FORMAT}.")
+
+    parser.add_argument(
+        "--type", "-t", metavar="TYPE", choices=VALID_TYPES, default=None,
+        help="type of the Ansible item. "
+        f"Valid values: {', '.join(VALID_TYPES)}. "
+        "Optional; default is detected from path name of spec file: "
+        "<name>/meta/argument_specs.yml is detected as 'role'; "
+        "<name>.specs.yml is detected as 'playbook'; anything else is 'other'.")
+
+    parser.add_argument(
+        "--name", metavar="NAME", default=None,
+        help="name of the Ansible role or playbook. "
+        "This option is only needed if the spec files do not follow the "
+        "naming convention described for option --type. "
+        "When this option is used, only one spec file may be specified. "
+        "Optional for known types; default is detected from path name of spec "
+        "file. Required for type 'other'.")
 
     parser.add_argument(
         "--ext", metavar="EXT", default=None,
         help="file extension (suffix) of the output file(s). "
-        "Default: For formats 'rst' and 'md', the format. Required for "
-        "format 'other'.")
+        "Optional for known formats; default is the --format value. Required "
+        "for format 'other'.")
 
     parser.add_argument(
-        "--template", "-t", metavar="FILE", default=None,
-        help="path name of the Jinja2 template file. See --help-template for "
-        "details. "
-        "Default: For roles, the built-in templates for formats 'rst' and "
-        "'md'. Required for non-roles and for format 'other'.")
+        "--template", metavar="FILE", default=None,
+        help="path name of the Jinja2 template file. "
+        "See --help-template for details. "
+        "Optional for known types and formats; default is the corresponding "
+        "built-in template. Required for type 'other' or for format 'other'.")
 
     parser.add_argument(
         "--verbose", "-v", action="store_true",
@@ -117,26 +148,13 @@ def parse_args(argv):
 
     parser.add_argument(
         "--help-template", action=HelpTemplateAction, nargs=0,
-        help="show help for the template file and exit.")
+        help="show help for the template files and exit.")
 
-    args = parser.parse_args(argv)
+    parser.add_argument(
+        "--help-playbook-spec", action=HelpPlaybookSpecAction, nargs=0,
+        help="show help for the playbook spec file format and exit.")
 
-    if args.name and len(args.spec_file) > 1:
-        parser.error(
-            "when the --name option is used, only one spec file may be "
-            "specified.")
-
-    if args.format == "other" and not args.ext:
-        parser.error(
-            "when format 'other' is specified, the --ext option is "
-            "required.")
-
-    if args.format == "other" and not args.template:
-        parser.error(
-            "when format 'other' is specified, the --template option is "
-            "required.")
-
-    return args
+    return parser
 
 
 def print_version():
@@ -148,7 +166,7 @@ def print_version():
 
 def print_help_template():
     """
-    Print help for the Jinja2 template file.
+    Print help for the Jinja2 template files.
     """
     print("""
 Help for Jinja2 template files
@@ -189,6 +207,39 @@ The following rules apply when writing templates:
 """)  # noqa: E501
 
 
+def print_help_playbook_spec():
+    """
+    Print help for the format of playbook spec files.
+    """
+    print("""
+Help for the format of Ansible playbook spec files.
+
+Note: This spec file format is preliminary at this point and can still change.
+
+This project has defined a format for spec files that document Ansible
+playbooks:
+
+playbook:
+  name: <Playbook name>
+  title: <Playbook title>
+  description:
+    <string or list of strings with playbook descriptions>
+  prerequisites:
+    <string or list of strings with playbook prerequisites>
+  version_added: <If the playbook was added to Ansible, the Ansible version>
+  examples:
+    - description: <string or list of strings with example description>
+      command: <example ansible-playbook command>
+  input_schema:
+    <A JSON schema that describes a single input variable of the playbook>
+  output_schema:
+    <A JSON schema that describes a single output variable for success>
+  authors:
+    - <list of strings with playbook author names>
+
+""")  # noqa: E501
+
+
 class Error(Exception):
     """
     Indicates a runtime error.
@@ -225,29 +276,40 @@ def to_md_filter(text):
     return to_md(parse(text, Context()))
 
 
-def create_output_files(args):
+def create_output_file(parser, args, spec_file):
     """
-    Create the output files for the specified spec files.
+    Create the output file for one spec file.
     """
-    verbose = args.verbose
-    spec_files = args.spec_file
-    name = args.name
 
+    verbose = args.verbose
+    out_dir = args.out_dir
     out_format = args.format
+
+    if args.type:
+        spec_type = args.type
+    else:
+        if ROLE_SPEC_FILE_PATTERN.search(spec_file):
+            spec_type = "role"
+        elif PLAYBOOK_SPEC_FILE_PATTERN.search(spec_file):
+            spec_type = "playbook"
+        else:
+            spec_type = "other"
+
     if args.ext:
         out_ext = args.ext.strip(".")
     else:
         # Arg check ensured that format is not 'other'
         out_ext = out_format
-    out_dir = args.out_dir
 
     if args.template:
         template_file = args.template
     else:
         # Arg check ensured that format is not 'other'
+        if spec_type == "other":
+            parser.error("for type 'other', the --template option is required.")
         my_dir = os.path.dirname(__file__)
         template_file = os.path.join(
-            my_dir, "templates", f"role.{out_format}.j2")
+            my_dir, "templates", f"{spec_type}.{out_format}.j2")
 
     extensions = [
         jinja2_ansible_filters.AnsibleCoreFiltersExtension,
@@ -284,26 +346,31 @@ def create_output_files(args):
             f"Syntax error in template file {template_file}, "
             f"line {exc.lineno}: {exc.message}")
 
-    for spec_file in spec_files:
-        create_output_file(
-            verbose, template, template_file, name, spec_file, out_dir, out_ext)
-
-
-def create_output_file(
-        verbose, template, template_file, name, spec_file, out_dir, out_ext):
-    """
-    Create the output file for one spec file.
-    """
-
-    if name is None:
-        # We assume the role directory structure:
-        # .../<role>/meta/argument_specs.yml
-        spec_file_abs = os.path.abspath(spec_file)
-        role_dir = os.path.dirname(spec_file_abs)
-        role_dir = os.path.dirname(role_dir)
-        name = os.path.basename(role_dir)
+    name = None  # Avoid pylint possibly-used-before-assignment
+    if args.name:
+        name = args.name
+    else:
+        if spec_type == "role":
+            m = ROLE_SPEC_FILE_PATTERN.search(spec_file)
+            if m:
+                name = m.group(2)
+            else:
+                parser.error(
+                    "for type 'role', the --name option is required if the "
+                    "spec file name does not follow the role convention.")
+        elif spec_type == "playbook":
+            m = PLAYBOOK_SPEC_FILE_PATTERN.search(spec_file)
+            if m:
+                name = m.group(2)
+            else:
+                parser.error(
+                    "for type 'playbook', the --name option is required if the "
+                    "spec file name does not follow the playbook convention.")
+        else:  # spec_type == "other"
+            parser.error("For type 'other', the --name option is required.")
 
     if verbose:
+        print(f"Ansible spec type: {spec_type}")
         print(f"Ansible name: {name}")
 
     out_file = os.path.join(out_dir, f"{name}.{out_ext}")
@@ -342,11 +409,29 @@ def main():
     """
     Entry point for the program.
     """
+    prog = os.path.basename(sys.argv[0])
+    parser = create_arg_parser(prog)
 
-    args = parse_args(sys.argv[1:])
+    args = parser.parse_args(sys.argv[1:])
+
+    if args.name and len(args.spec_file) > 1:
+        parser.error(
+            "when the --name option is used, only one spec file may be "
+            "specified.")
+
+    if args.format == "other" and not args.ext:
+        parser.error(
+            "when format 'other' is specified, the --ext option is "
+            "required.")
+
+    if args.format == "other" and not args.template:
+        parser.error(
+            "when format 'other' is specified, the --template option is "
+            "required.")
 
     try:
-        create_output_files(args)
+        for spec_file in args.spec_file:
+            create_output_file(parser, args, spec_file)
     except Error as exc:
         print(f"Error: {exc}")
         return 1
