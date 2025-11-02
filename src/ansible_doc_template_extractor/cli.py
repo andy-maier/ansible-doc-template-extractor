@@ -108,7 +108,7 @@ def parse_args(argv):
         "'md'. Required for non-roles and for format 'other'.")
 
     parser.add_argument(
-        "--verbose", action="store_true",
+        "--verbose", "-v", action="store_true",
         help="be more verbose while processing.")
 
     parser.add_argument(

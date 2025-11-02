@@ -12,7 +12,7 @@ to support the format of the spec file.
 The format of the spec files for Ansible roles is described here:
 https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_reuse_roles.html#specification-format
 
-Template files for Markdown and RST format for the spec files for Ansible roles
+Template files for RST and Markdown format for the spec files for Ansible roles
 are included with the ansible-doc-template-extractor package. You can write your
 own templates for other formats or for Ansible playbooks (and other Ansible
 items).
@@ -63,24 +63,30 @@ Suppose you have the following subtree:
 Then you can run the extractor as follows:
 
 ```
-$ ansible-doc-template-extractor -o docs my_collection/roles/my_role/meta/argument_specs.yml
-Loading template file: .../templates/role.md.j2
+$ ansible-doc-template-extractor -v -o docs my_collection/roles/my_role/meta/argument_specs.yml
+
+Loading template file: .../templates/role.rst.j2
 Ansible name: my_role
 Loading spec file: my_collection/roles/my_role/meta/argument_specs.yml
 Created output file: docs/my_role.md
 ```
 
-This will create an .md file in Markdown format with the documentation of the
-role:
+This will create an RST file with the documentation of the role:
 
 ```
 ├── docs
-│   └── my_role.md
+│   └── my_role.rst
+```
+
+Display the help message to learn about other options:
+
+```
+$ ansible-doc-template-extractor --help
 ```
 
 # Writing templates
 
-The template files for roles and for the Markdown and RST formats are included
+The template files for roles and for the RST and Markdown formats are included
 with the installed ansible-doc-template-extractor package.
 
 You can write your own templates for any other format or for Ansible playbooks
