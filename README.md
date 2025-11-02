@@ -83,25 +83,34 @@ role:
 The template files for roles and for the Markdown and RST formats are included
 with the installed ansible-doc-template-extractor package.
 
-You can write your own templates for any other format or for Ansible playbooks.
+You can write your own templates for any other format or for Ansible playbooks
+(or other Ansible items).
 
-The following rules apply for the templates:
+The following rules apply when writing templates:
 
 * The templating language is [Jinja2](https://jinja.palletsprojects.com/en/stable/templates/).
 
-* The following Jinja2 extensions are available:
+* The following Jinja2 extensions are enabled for use by the template:
 
   - The filters provided by the
     [jinja2-ansible-filters](https://pypi.org/project/jinja2-ansible-filters)
     package. For a description, see
     [Ansible built-in filters](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/index.html#filter-plugins).
 
-  - [jinja2.ext.do Expression Statement](https://jinja.palletsprojects.com/en/stable/extensions/#expression-statement)
+  - The [jinja2.ext.do Expression Statement](https://jinja.palletsprojects.com/en/stable/extensions/#expression-statement)
 
-  - `to_rst` and `to_md` filters that are provided by the
-    ansible-doc-template-extractor package and convert text to RST or Markdown,
-    respectively. They handle formatting and resolve Ansible-specific
+  - The `to_rst` and `to_md` filters that are provided by the
+    ansible-doc-template-extractor package. They convert text to RST and
+    Markdown, respectively. They handle formatting and resolve Ansible-specific
     constructs such as "C(...)".
+
+* The following Jinja2 variables are set for use by the template:
+
+  - **name** (str): Name of the Ansible role or playbook.
+
+  - **spec_file_name** (str): Path name of the spec file.
+
+  - **spec_file_dict** (dict): Content of the spec file.
 
 # Reporting issues
 
