@@ -122,7 +122,7 @@ playbook:
 ```
 
 An example spec file for playbooks using this format is in the
-[examples/playbooks](examples/playbooks) directory.
+[examples/playbooks](https://github.com/andy-maier/ansible-doc-template-extractor/tree/main/examples/playbooks) directory.
 
 # Writing custom templates
 
@@ -156,7 +156,7 @@ The following rules apply when writing templates:
   - **spec_file_dict** (dict): Content of the spec file.
 
 You can use the templates in the
-[templates](src/ansible_doc_template_extractor/templates)
+[templates](https://github.com/andy-maier/ansible-doc-template-extractor/tree/main/src/ansible_doc_template_extractor/templates)
 directory as examples for your own custom templates.
 
 # Reporting issues
