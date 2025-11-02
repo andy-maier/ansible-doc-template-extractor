@@ -151,17 +151,40 @@ def print_help_template():
     Print help for the Jinja2 template file.
     """
     print("""
-Help for Jinja2 template file
+Help for Jinja2 template files
 
-Jinja2 template files are described in https://jinja.palletsprojects.com/en/stable/templates/
+The template files for roles for the Markdown and RST formats are included with
+this program.
 
-This program sets up the following variables for use by the template:
+You can write your own templates for any other format or for Ansible playbooks
+(or other Ansible items).
 
-* name (str): Name of the Ansible role or playbook.
+The following rules apply when writing templates:
 
-* spec_file_name (str): Path name of Ansible spec file.
+* The templating language is Jinja2 (see
+  https://jinja.palletsprojects.com/en/stable/templates/).
 
-* spec_file_dict (dict): Content of Ansible spec file.
+* The following Jinja2 extensions are enabled for use by the template:
+
+  - The filters provided by the jinja2-ansible-filters package
+    (see https://pypi.org/project/jinja2-ansible-filters for the list of filters and
+    https://docs.ansible.com/ansible/latest/collections/ansible/builtin/index.html#filter-plugins
+    for a description of all built-in Ansible filters).
+
+  - jinja2.ext.do Expression Statement (see
+    https://jinja.palletsprojects.com/en/stable/extensions/#expression-statement)
+
+  - The `to_rst` and `to_md` filters that are provided by this program. They
+    convert text to RST and Markdown, respectively. They handle formatting and
+    resolve Ansible-specific constructs such as "C(...)".
+
+* The following Jinja2 variables are set for use by the template:
+
+  - name (str): Name of the Ansible role or playbook.
+
+  - spec_file_name (str): Path name of the spec file.
+
+  - spec_file_dict (dict): Content of the spec file.
 
 """)  # noqa: E501
 
