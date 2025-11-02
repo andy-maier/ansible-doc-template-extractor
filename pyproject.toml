@@ -30,6 +30,11 @@ include = [
     "ansible_doc_template_extractor.*",
 ]
 
+[tool.setuptools.package-data]
+ansible_doc_template_extractor = [
+    "templates/*.j2"
+]
+
 [project.scripts]
 ansible-doc-template-extractor = "ansible_doc_template_extractor.cli:main"
 

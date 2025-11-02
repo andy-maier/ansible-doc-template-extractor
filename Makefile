@@ -264,11 +264,11 @@ all: install develop check ruff pylint bandit build authors
 examples: $(example_role_md_files) $(example_role_rst_files)
 	@echo "Makefile: $@ done."
 
-examples/output/%.md: examples/roles/%/meta/argument_specs.yml examples/templates/role.md.j2 $(done_dir)/install_$(pymn).done
-	ansible-doc-template-extractor --template examples/templates/role.md.j2 examples/output $<
+examples/output/%.md: examples/roles/%/meta/argument_specs.yml $(package_dir)/templates/role.md.j2 $(done_dir)/install_$(pymn).done
+	ansible-doc-template-extractor --out-dir examples/output $<
 
-examples/output/%.rst: examples/roles/%/meta/argument_specs.yml examples/templates/role.rst.j2 $(done_dir)/install_$(pymn).done
-	ansible-doc-template-extractor --ext rst --template examples/templates/role.rst.j2 examples/output $<
+examples/output/%.rst: examples/roles/%/meta/argument_specs.yml $(package_dir)/templates/role.rst.j2 $(done_dir)/install_$(pymn).done
+	ansible-doc-template-extractor --format rst --out-dir examples/output $<
 
 .PHONY: release_branch
 release_branch:
