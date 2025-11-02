@@ -58,7 +58,7 @@ Input parameters for the role\.
 
 * **host_wwpns** (list of str):
 
-  WWPNs for the host\, in &lt;code&gt;hh\:hh\.\.\.&lt;/code&gt; or &lt;code&gt;hhhh\.\.\.&lt;/code&gt; format\.
+  WWPNs for the host\, in <code>hh\:hh\.\.\.</code> or <code>hhhh\.\.\.</code> format\.
 
 
   Required\.
@@ -73,7 +73,7 @@ Their values are the names of variables to be set upon return from the role\.
 
 * **host_info** (str):
 
-  Properties of the host \(specific to &lt;code&gt;sar\_type&lt;/code&gt;\)\.
+  Properties of the host \(specific to <code>sar\_type</code>\)\.
 
   Type\: dict
 
