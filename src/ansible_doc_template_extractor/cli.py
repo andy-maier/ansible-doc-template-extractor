@@ -108,6 +108,10 @@ def parse_args(argv):
         "'rst'. Required for non-roles and for format 'other'.")
 
     parser.add_argument(
+        "--verbose", action="store_true",
+        help="be more verbose while processing.")
+
+    parser.add_argument(
         "--version", action=HelpVersionAction, nargs=0,
         help="show the version of the program and exit.")
 
@@ -202,7 +206,7 @@ def create_output_files(args):
     """
     Create the output files for the specified spec files.
     """
-
+    verbose = args.verbose
     spec_files = args.spec_file
     name = args.name
 
@@ -244,7 +248,8 @@ def create_output_files(args):
     env.filters["to_rst"] = to_rst_filter
     env.filters["to_md"] = to_md_filter
 
-    print(f"Loading template file: {template_file}")
+    if verbose:
+        print(f"Loading template file: {template_file}")
     try:
         template = env.get_template(template_name)
     except jinja2.TemplateNotFound:
@@ -258,11 +263,11 @@ def create_output_files(args):
 
     for spec_file in spec_files:
         create_output_file(
-            template, template_file, name, spec_file, out_dir, out_ext)
+            verbose, template, template_file, name, spec_file, out_dir, out_ext)
 
 
 def create_output_file(
-        template, template_file, name, spec_file, out_dir, out_ext):
+        verbose, template, template_file, name, spec_file, out_dir, out_ext):
     """
     Create the output file for one spec file.
     """
@@ -274,11 +279,14 @@ def create_output_file(
         role_dir = os.path.dirname(spec_file_abs)
         role_dir = os.path.dirname(role_dir)
         name = os.path.basename(role_dir)
-    print(f"Ansible name: {name}")
+
+    if verbose:
+        print(f"Ansible name: {name}")
 
     out_file = os.path.join(out_dir, f"{name}.{out_ext}")
 
-    print(f"Loading spec file: {spec_file}")
+    if verbose:
+        print(f"Loading spec file: {spec_file}")
     try:
         with open(spec_file, 'r', encoding='utf-8') as fp:
             spec_file_dict = yaml.safe_load(fp)
