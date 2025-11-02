@@ -18,7 +18,7 @@ own templates for other formats or for Ansible playbooks (and other Ansible
 items).
 
 Disclaimer: The ansible-doc-template-extractor tool should be seen as a
-temporary bridge until there is official documentation extractin support for
+temporary bridge until there is official documentation extraction support for
 Ansible roles and playbooks. There have been discussions in Ansible forums to
 add support for Ansible roles to the ansible-doc and ansible-navigator tools.
 Once that happens, the ansible-doc-template-extractor tool is probably no
