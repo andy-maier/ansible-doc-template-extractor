@@ -38,13 +38,13 @@
 {%     else %}
 {%       set choices_txt = "" %}
 {%     endif %}
-{{ "  " * level }}**{{ name }}** ({{ type_txt }}):
+{{ "  " * level }}* **{{ name }}** ({{ type_txt }}):
 
 {{ para_generation(spec.description, level + 1) }}
-  {{ "  " * level }}{{ required_txt | to_md }}
+{{ "  " * level }}  {{ required_txt | to_md }}
 {%     if spec.choices is defined %}
 
-  {{ "  " * level }}{{ choices_txt | to_md }}
+{{ "  " * level }}  {{ choices_txt | to_md }}
 {%     endif %}
 {%     if spec.options is defined %}
 {{ option_generation(spec.options, level + 1) }}
