@@ -26,7 +26,7 @@ Input parameters for the role\.
 
   Required\.
 
-  Choices\: \[\&#39;ds8k\&#39;\, \&#39;fs9k\&#39;\]\.
+  Choices\: ds8k\, fs9k\.
 
 * **sar_hostname** (str):
 

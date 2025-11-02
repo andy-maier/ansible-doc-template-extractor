@@ -34,7 +34,7 @@
 {%       set type_txt = spec.type %}
 {%     endif %}
 {%     if spec.choices is defined %}
-{%       set choices_txt = "Choices: {}.".format(spec.choices) %}
+{%       set choices_txt = "Choices: {}.".format(spec.choices | join(', ')) %}
 {%     else %}
 {%       set choices_txt = "" %}
 {%     endif %}
