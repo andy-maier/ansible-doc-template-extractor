@@ -4,28 +4,39 @@
 the format Ansible roles use in their `meta/argument_specs.yml` files as input,
 and arbitrary Jinja2 template files to control what is generated as output.
 
-It can also be used for Ansible playbooks, as long as a YAML argument spec file
-is provided. The format can differ from the argument spec files for roles,
-but of course the template file needs to match the format.
+It can also be used for Ansible playbooks (and other Ansible items), as long as
+a spec file in YAML format is provided that documents it. The format can differ
+from the argument spec files for roles, but of course the template file needs
+to support the format of the spec file.
 
-The format of the argument spec files for Ansible roles is described here:
+The format of the spec files for Ansible roles is described here:
 https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_reuse_roles.html#specification-format
 
-Disclaimer: There have been discussions in Ansible forums to add support for
-Ansible roles to the ansible-doc and ansible-navigator tools. Once that
-happens, the ansible-doc-template-extractor tool is probably no longer needed.
-The ansible-doc-template-extractor tool should be seen as a temporary bridge
-until there is more official documentation extraction support provided.
+Template files for Markdown and RST format for the spec files for Ansible roles
+are included with the ansible-doc-template-extractor package. You can write your
+own templates for other formats or for Ansible playbooks (and other Ansible
+items).
+
+Disclaimer: The ansible-doc-template-extractor tool should be seen as a
+temporary bridge until there is official documentation extractin support for
+Ansible roles and playbooks. There have been discussions in Ansible forums to
+add support for Ansible roles to the ansible-doc and ansible-navigator tools.
+Once that happens, the ansible-doc-template-extractor tool is probably no
+longer needed for Ansible roles. In the event that an official spec format for
+Ansible playbooks gets defined one day and that this format gets supported by
+the ansible-doc and ansible-navigator tools, the ansible-doc-template-extractor
+tool is probably no longer needed at all.
 
 # Installation
 
-If you want to install it into a virtual Python environment:
+If you want to install the package into a virtual Python environment:
 
 ```
 $ pip install ansible-doc-template-extractor
 ```
 
-Otherwise, you can also install it without having a virtual Python environment:
+Otherwise, you can also install it without depending on a virtual Python
+environment:
 
 - If not yet available, install the "pipx" command as described in
   https://pipx.pypa.io/stable/installation/.
@@ -46,34 +57,33 @@ Suppose you have the following subtree:
 |       ├── my_role
 |           └── meta
 |               └── argument_specs.yml
-├── templates
-│   └── role.md.j2
 ├── docs
 ```
 
 Then you can run the extractor as follows:
 
 ```
-$ ansible-doc-template-extractor --template templates/role.md.j2 docs my_collection/roles/my_role/meta/argument_specs.yml
-Loading template file: templates/role.md.j2
+$ ansible-doc-template-extractor -o docs my_collection/roles/my_role/meta/argument_specs.yml
+Loading template file: .../templates/role.md.j2
 Ansible name: my_role
 Loading spec file: my_collection/roles/my_role/meta/argument_specs.yml
 Created output file: docs/my_role.md
 ```
 
-and it will create an .md file with the documentation of the role:
+This will create an .md file in Markdown format with the documentation of the
+role:
 
 ```
 ├── docs
 │   └── my_role.md
 ```
 
-Example template files can be downloaded from
-https://github.com/andy-maier/ansible-doc-template-extractor/tree/master/examples/templates
-
 # Writing templates
 
-You can write your own templates for any format or language.
+The template files for roles and for the Markdown and RST formats are included
+with the installed ansible-doc-template-extractor package.
+
+You can write your own templates for any other format or for Ansible playbooks.
 
 The following rules apply for the templates:
 
@@ -88,8 +98,9 @@ The following rules apply for the templates:
 
   - [jinja2.ext.do Expression Statement](https://jinja.palletsprojects.com/en/stable/extensions/#expression-statement)
 
-  - `to_rst` and `to_md` filters that are provided by this package and
-    that convert text to RST or Markdown, respectively, resolving Ansible-specific
+  - `to_rst` and `to_md` filters that are provided by the
+    ansible-doc-template-extractor package and convert text to RST or Markdown,
+    respectively. They handle formatting and resolve Ansible-specific
     constructs such as "C(...)".
 
 # Reporting issues
