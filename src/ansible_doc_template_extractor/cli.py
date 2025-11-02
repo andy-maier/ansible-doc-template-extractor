@@ -238,8 +238,8 @@ def create_output_files(args):
 
     env = jinja2.Environment(
         loader=jinja2.FileSystemLoader(template_dir),
-        trim_blocks=True, lstrip_blocks=True,
-        autoescape=True, extensions=extensions)
+        trim_blocks=True, lstrip_blocks=False,
+        autoescape=False, extensions=extensions)  # nosec: B701
 
     # Let undefined variables fail rendering
     env.undefined = jinja2.StrictUndefined
