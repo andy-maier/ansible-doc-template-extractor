@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -57,7 +55,7 @@ class HelpVersionAction(argparse.Action):
 
 def parse_args(argv):
     """
-    Parses the CLI arguments.
+    Parses the command line arguments.
     """
 
     prog = os.path.basename(sys.argv[0])
@@ -141,7 +139,6 @@ def print_version():
     """
     Print the version of this program.
     """
-    # pylint: disable=no-member
     print(f"version: {version}")
 
 
@@ -312,7 +309,7 @@ def create_output_file(
 
 def main():
     """
-    Main function for the script.
+    Entry point for the program.
     """
 
     args = parse_args(sys.argv[1:])
@@ -324,7 +321,3 @@ def main():
         return 1
 
     return 0
-
-
-if __name__ == "__main__":
-    sys.exit(main())
