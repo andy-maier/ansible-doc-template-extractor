@@ -30,8 +30,8 @@ except ImportError:
     version = "unknown"
 
 
-VALID_FORMATS = ["md", "rst", "other"]
-DEFAULT_FORMAT = "md"
+VALID_FORMATS = ["rst", "md", "other"]
+DEFAULT_FORMAT = "rst"
 DEFAULT_OUT_DIR = "."
 DEFAULT_OUT_DIR_STR = \
     "Current directory" if DEFAULT_OUT_DIR == "." else DEFAULT_OUT_DIR
@@ -97,15 +97,15 @@ def parse_args(argv):
     parser.add_argument(
         "--ext", metavar="EXT", default=None,
         help="file extension (suffix) of the output file(s). "
-        "Default: For formats 'md' and 'rst', the format. Required for "
+        "Default: For formats 'rst' and 'md', the format. Required for "
         "format 'other'.")
 
     parser.add_argument(
         "--template", "-t", metavar="FILE", default=None,
         help="path name of the Jinja2 template file. See --help-template for "
         "details. "
-        "Default: For roles, the built-in templates for formats 'md' and "
-        "'rst'. Required for non-roles and for format 'other'.")
+        "Default: For roles, the built-in templates for formats 'rst' and "
+        "'md'. Required for non-roles and for format 'other'.")
 
     parser.add_argument(
         "--verbose", action="store_true",

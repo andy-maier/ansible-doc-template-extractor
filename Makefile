@@ -265,7 +265,7 @@ examples: $(example_role_md_files) $(example_role_rst_files)
 	@echo "Makefile: $@ done."
 
 examples/output/%.md: examples/roles/%/meta/argument_specs.yml $(package_dir)/templates/role.md.j2 $(done_dir)/install_$(pymn).done
-	ansible-doc-template-extractor --out-dir examples/output $<
+	ansible-doc-template-extractor --format md --out-dir examples/output $<
 
 examples/output/%.rst: examples/roles/%/meta/argument_specs.yml $(package_dir)/templates/role.rst.j2 $(done_dir)/install_$(pymn).done
 	ansible-doc-template-extractor --format rst --out-dir examples/output $<
