@@ -104,12 +104,14 @@ The spec file format defined by this project for Ansible playbooks:
 ```
 playbook:
   name: <Playbook name>
-  title: <Playbook title>
+  short_description: <Playbook title>
   description:
     <string or list of strings with playbook descriptions>
-  prerequisites:
-    <string or list of strings with playbook prerequisites>
+  requirements:
+    <string or list of strings with playbook requirements>
   version_added: <If the playbook was added to Ansible, the Ansible version>
+  author:
+    <string or list of strings with playbook author names>
   examples:
     - description: <string or list of strings with example description>
       command: <example ansible-playbook command>
@@ -117,8 +119,6 @@ playbook:
     <A JSON schema that describes a single input variable of the playbook>
   output_schema:
     <A JSON schema that describes a single output variable for success>
-  authors:
-    - <list of strings with playbook author names>
 ```
 
 An example spec file for playbooks using this format is in the
