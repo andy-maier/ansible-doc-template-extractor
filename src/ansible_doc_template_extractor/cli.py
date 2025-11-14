@@ -297,7 +297,7 @@ def get_path(path_list):
     return path_str.lstrip(".")
 
 
-def validate(data, schema, kind):
+def validate(data, schema, data_file, data_kind):
     """
     Validate a data object (e.g. dict loaded from JSON or YAML) against
     a JSON schema object.
@@ -308,7 +308,10 @@ def validate(data, schema, kind):
 
       schema (dict): JSON schema object used for the validation.
 
-      kind (str): Kind of data object, for messages.
+      data_file (str): Path name of file with the data to be validated,
+        for messages.
+
+      data_kind (str): Kind of data object, for messages. E.g. "spec file"
 
     Raises:
 
@@ -320,19 +323,19 @@ def validate(data, schema, kind):
         elem_path = get_path(exc.absolute_path)
         schema_path = get_path(exc.absolute_schema_path)
         raise Error(
-            f"The JSON schema for {kind} is invalid: "
+            f"The JSON schema for {data_kind} is invalid: "
             f"Element {elem_path!r} violates schema item {schema_path!r} in "
             "the JSON meta-schema. Details: "
-            f"Validator: {exc.validator}={exc.validator_value}"
+            f"Schema validator: {exc.validator}={exc.validator_value}"
         )
     except jsonschema.exceptions.ValidationError as exc:
         elem_path = get_path(exc.absolute_path)
         schema_path = get_path(exc.absolute_schema_path)
         raise Error(
-            f"Schema validation of {kind} failed on element {elem_path}: "
-            f"{exc.message}. "
+            f"Schema validation of {data_kind} {data_file} failed on element "
+            f"{elem_path!r}: {exc.message}. "
             f"Details: Schema item: {schema_path}, "
-            f"Validator: {exc.validator}={exc.validator_value}"
+            f"Schema validator: {exc.validator}={exc.validator_value}"
         )
 
 
@@ -392,7 +395,7 @@ def load_yaml_file(kind, yaml_file, schema_file=None, verbose=False):
 
         if verbose:
             print(f"Validating {kind} with schema file")
-        validate(yaml_obj, schema_obj, kind)
+        validate(yaml_obj, schema_obj, yaml_file, kind)
 
     return yaml_obj
 
