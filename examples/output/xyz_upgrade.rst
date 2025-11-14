@@ -14,11 +14,17 @@ Synopsis
 This playbook upgrades an XYZ container to a new version.
 
 
+No version check is performed, this playbook simply replaces the container.
 
-Prerequisites
--------------
+
+
+Requirements
+------------
 
 From where the playbook is run, there is network connectivity to the server running the XYZ container.
+
+
+Permissions.
 
 
 

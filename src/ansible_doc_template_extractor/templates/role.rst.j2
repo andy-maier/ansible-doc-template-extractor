@@ -71,8 +71,15 @@
 Synopsis
 --------
 
+{% if role_dict.description is iterable and role_dict.description is not string %}
+{%   for item in role_dict.description %}
+{{ para_generation(item, 0) }}
+{%   endfor %}
+{% else %}
 {{ para_generation(role_dict.description, 0) }}
+{% endif %}
 {%   if role_dict.version_added is defined %}
+
 Version added
 -------------
 
@@ -82,6 +89,7 @@ Version added
 {%   set has_out_params = role_dict.options.out_params is defined and role_dict.options.out_params.type | default(None) == 'dict' %}
 {%   if has_in_params or has_out_params %}
 {%     if has_in_params %}
+
 Input Parameters
 ----------------
 
@@ -89,6 +97,7 @@ Input Parameters
 {{ option_generation(role_dict.options.in_params.options, 0) }}
 {%     endif %}
 {%     if has_out_params %}
+
 Output Parameters
 -----------------
 
@@ -96,15 +105,23 @@ Output Parameters
 {{ option_generation(role_dict.options.out_params.options, 0) }}
 {%     endif %}
 {%   else %}
+
 Parameters
 ----------
 
 {{ option_generation(role_dict.options, 0) }}
 {%   endif %}
+{%   if role_dict.author is defined %}
+
 Authors
 -------
 
-{%   for author in role_dict.author %}
+{%     if role_dict.author is iterable and role_dict.author is not string %}
+{%       for author in role_dict.author %}
 * {{ author }}
-{%   endfor %}
+{%       endfor %}
+{%     else %}
+* {{ role_dict.author }}
+{%     endif %}
+{%   endif %}
 {% endfor %}

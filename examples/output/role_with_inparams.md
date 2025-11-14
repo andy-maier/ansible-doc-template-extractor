@@ -8,7 +8,9 @@
 
 Ensure that a host on a storage system exists and has host WWPNs\.
 
+
 This role is idempotent\.
+
 
 
 ## Input Parameters
@@ -68,9 +70,11 @@ Input parameters for the role\.
   Required\.
 
 
+
 ## Output Parameters
 
 Output parameters for the role\.
+
 
 Their values are the names of variables to be set upon return from the role\.
 
@@ -83,6 +87,7 @@ Their values are the names of variables to be set upon return from the role\.
 
 
   Optional\.
+
 
 
 ## Authors

@@ -20,6 +20,7 @@ import argparse
 import sys
 import jinja2
 import yaml
+import jsonschema
 import jinja2_ansible_filters
 from antsibull_docs_parser.parser import parse, Context
 from antsibull_docs_parser.rst import to_rst_plain
@@ -139,6 +140,13 @@ def create_arg_parser(prog):
         "built-in template. Required for type 'other' or for format 'other'.")
 
     parser.add_argument(
+        "--schema", metavar="FILE", default=None,
+        help="path name of a JSON schema file in YAML format that validates "
+        "the spec file. Optional. Default is to validate types 'role' and "
+        "'playbook' with built-in schema files, and not to validate other "
+        "types. An empty string can be used to turn off schema validation.")
+
+    parser.add_argument(
         "--verbose", "-v", action="store_true",
         help="be more verbose while processing.")
 
@@ -221,12 +229,14 @@ playbooks:
 
 playbook:
   name: <Playbook name>
-  title: <Playbook title>
+  short_description: <Playbook title>
   description:
     <string or list of strings with playbook descriptions>
-  prerequisites:
-    <string or list of strings with playbook prerequisites>
+  requirements:
+    <string or list of strings with playbook requirements>
   version_added: <If the playbook was added to Ansible, the Ansible version>
+  author:
+    <string or list of strings with playbook author names>
   examples:
     - description: <string or list of strings with example description>
       command: <example ansible-playbook command>
@@ -234,8 +244,6 @@ playbook:
     <A JSON schema that describes a single input variable of the playbook>
   output_schema:
     <A JSON schema that describes a single output variable for success>
-  authors:
-    - <list of strings with playbook author names>
 
 """)  # noqa: E501
 
@@ -274,6 +282,119 @@ def to_md_filter(text):
     constructs such as "C(...)".
     """
     return to_md(parse(text, Context()))
+
+
+def get_path(path_list):
+    """
+    Convert a JSON element or schema path into a human readable path string.
+    """
+    path_str = ""
+    for item in path_list:
+        if isinstance(item, int):
+            path_str += f"[{item}]"
+        elif isinstance(item, str):
+            path_str += f".{item}"
+    return path_str.lstrip(".")
+
+
+def validate(data, schema, kind):
+    """
+    Validate a data object (e.g. dict loaded from JSON or YAML) against
+    a JSON schema object.
+
+    Parameters:
+
+      data (dict): Data object to be validated.
+
+      schema (dict): JSON schema object used for the validation.
+
+      kind (str): Kind of data object, for messages.
+
+    Raises:
+
+      Error: Validation failed
+    """
+    try:
+        jsonschema.validate(data, schema)
+    except jsonschema.exceptions.SchemaError as exc:
+        elem_path = get_path(exc.absolute_path)
+        schema_path = get_path(exc.absolute_schema_path)
+        raise Error(
+            f"The JSON schema for {kind} is invalid: "
+            f"Element {elem_path!r} violates schema item {schema_path!r} in "
+            "the JSON meta-schema. Details: "
+            f"Validator: {exc.validator}={exc.validator_value}"
+        )
+    except jsonschema.exceptions.ValidationError as exc:
+        elem_path = get_path(exc.absolute_path)
+        schema_path = get_path(exc.absolute_schema_path)
+        raise Error(
+            f"Schema validation of {kind} failed on element {elem_path}: "
+            f"{exc.message}. "
+            f"Details: Schema item: {schema_path}, "
+            f"Validator: {exc.validator}={exc.validator_value}"
+        )
+
+
+def load_yaml_file(kind, yaml_file, schema_file=None, verbose=False):
+    """
+    Load a YAML file and return its content as an object (usually dict).
+
+    If a schema file is specified, the YAML file is validated against that
+    schema.
+
+    Parameters:
+
+      kind (str): Kind of YAML file, for messages.
+
+      yaml_file (str): Path name of YAML file to load.
+
+      schema_file (str): Path name of JSON schema file in YAML format.
+
+      verbose (bool): Print verbose messages.
+
+    Returns:
+
+      dict: Content of YAML file.
+
+    Raises:
+
+      Error: Loading or validation failed.
+    """
+
+    if verbose:
+        print(f"Loading {kind}: {yaml_file}")
+    try:
+        with open(yaml_file, 'r', encoding='utf-8') as fp:
+            yaml_obj = yaml.safe_load(fp)
+    except (IOError, OSError) as exc:
+        raise Error(
+            f"{kind} cannot be opened for reading: {exc}")
+    except (yaml.scanner.ScannerError, yaml.parser.ParserError) as exc:
+        exc_str = str(exc).replace('\n', '; ')
+        raise Error(
+            f"{kind} has invalid YAML syntax: {exc_str}")
+
+    if schema_file:
+
+        if verbose:
+            print(f"Loading schema file for {kind}: {schema_file}")
+        try:
+            with open(schema_file, 'r', encoding='utf-8') as fp:
+                schema_obj = yaml.safe_load(fp)
+        except (IOError, OSError) as exc:
+            raise Error(
+                f"Schema file for {kind} cannot be opened for reading: {exc}")
+        except (yaml.scanner.ScannerError, yaml.parser.ParserError) as exc:
+            exc_str = str(exc).replace('\n', '; ')
+            raise Error(
+                f"Schema file for {kind} has invalid YAML syntax: {exc_str}")
+
+        if verbose:
+            print(f"Validating {kind} with schema file")
+        validate(yaml_obj, schema_obj, kind)
+
+    return yaml_obj
 
 
 def create_output_file(parser, args, spec_file):
@@ -375,15 +496,18 @@ def create_output_file(parser, args, spec_file):
 
     out_file = os.path.join(out_dir, f"{name}.{out_ext}")
 
-    if verbose:
-        print(f"Loading spec file: {spec_file}")
-    try:
-        with open(spec_file, 'r', encoding='utf-8') as fp:
-            spec_file_dict = yaml.safe_load(fp)
-    except (IOError, yaml.error.YAMLError) as exc:
-        raise Error(
-            f"Cannot load spec file {spec_file}: "
-            f"{exc.__class__.__name__}: {exc}")
+    if args.schema == "":
+        schema_file = None
+    elif args.schema is not None:
+        schema_file = args.schema
+    elif spec_type in ("role", "playbook"):
+        schema_file = os.path.join(
+            my_dir, "schemas", f"{spec_type}.schema.yml")
+    else:
+        schema_file = None
+
+    spec_file_dict = load_yaml_file(
+        "spec file", spec_file, schema_file, verbose)
 
     try:
         data = template.render(

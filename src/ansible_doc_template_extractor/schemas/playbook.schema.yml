@@ -1,0 +1,80 @@
+$schema: "http://json-schema.org/draft-07/schema#"
+description: "JSON schema for validating the playbook spec file format defined in this project"
+type: object
+required:
+  - playbook
+additionalProperties: false
+properties:
+  playbook:
+    description: "The playbook description"
+    type: object
+    required:
+      - name
+      - short_description
+      - description
+    additionalProperties: false
+    properties:
+      name:
+        description: "Name of the playbook (just the basename, without namespace and file extension)"
+        type: string
+      short_description:
+        description: "A short, one-line description of the entry point.
+          Ansible markup can be used.
+          It should be a phrase and not a sentence, and it should not end in a period."
+        type: string
+      description:
+        description: "A longer description that may contain multiple lines. Can be specified as a single string or as a list of strings."
+        oneOf:
+          - description: "A single string. Ansible markup can be used."
+            type: string
+          - description: "A list of strings. Each list item is a new paragraph."
+            type: array
+            items:
+              description: "A single string. Ansible markup can be used."
+              type: string
+      requirements:
+        description: "Requirements for the playbook. Can be specified as a single string or as a list of strings."
+        oneOf:
+          - description: "A single string. Ansible markup can be used."
+            type: string
+          - description: "A list of strings. Each list item is a new paragraph."
+            type: array
+            items:
+              description: "A single string. Ansible markup can be used."
+              type: string
+      version_added:
+        description: "Collection version in which the playbook was added"
+        type: string
+      author:
+        description: "The author(s) of the playbook. A single author can be specified as a single string or as a list of strings with one item."
+        oneOf:
+          - description: "Full name of the author."
+            type: string
+          - description: "A list of authors."
+            type: array
+            items:
+              description: "Full name of the author."
+              type: string
+      examples:
+        description: "List of examples for how to use the playbook"
+        type: array
+        items:
+          description: "An example for how to use the playbook"
+          type: object
+          required:
+            - description
+            - command
+          additionalProperties: false
+          properties:
+            description:
+              description: "A brief one-paragraph description of the example"
+              type: string
+            command:
+              description: "The ansible-playbook command for the example"
+              type: string
+      input_schema:
+        # The JSON schema for the input parameters of the playbook
+        $ref: "http://json-schema.org/draft-07/schema"
+      output_schema:
+        # The JSON schema for the output parameters of the playbook
+        $ref: "http://json-schema.org/draft-07/schema"
