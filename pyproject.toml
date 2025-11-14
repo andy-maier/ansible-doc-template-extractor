@@ -32,7 +32,8 @@ include = [
 
 [tool.setuptools.package-data]
 ansible_doc_template_extractor = [
-    "templates/*.j2"
+    "templates/*.j2",
+    "schemas/*.yml",
 ]
 
 [project.scripts]

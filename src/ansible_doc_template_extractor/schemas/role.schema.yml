@@ -1,0 +1,102 @@
+$schema: "http://json-schema.org/draft-07/schema#"
+description: "JSON schema for validating the role spec file format (meta/argument_specs.yml) defined by Ansible"
+definitions:
+  parameters:
+    description: "The parameters for the role entry point."
+    type: object
+    patternProperties:
+      ^[a-zA-Z0-9_]+$:
+        description: "A role parameter. The property name is the name of the role parameter."
+        type: object
+        required:
+          - description
+        additionalProperties: false
+        properties:
+          description:
+            description: "Detailed explanation of the role parameter.
+              It should be written in full sentences."
+            oneOf:
+              - description: "A single paragraph. Ansible markup can be used."
+                type: string
+              - description: "A list of paragraphs."
+                type: array
+                items:
+                  description: "A single paragraph. Ansible markup can be used."
+                  type: string
+          version_added:
+            description: "Collection version in which the parameter was added. Only needed if the parameter was added after the initial role/entry point release."
+            type: string
+          type:
+            description: "The Ansible data type of the parameter. See https://docs.ansible.com/projects/ansible/latest/dev_guide/developing_program_flow_modules.html#argument-spec for allowed values. The default is 'str'."
+            type: string
+          required:
+            description: "Indicates that the parameter is required to be specified. Default: false"
+            type: boolean
+          default:
+            description: "Default value for the parameter if it is not required. Default: null. If the parameter has a boolean type, you should use true/false if you want to be compatible with ansible-lint."
+            # The default value can have any Ansible data type
+          choices:
+            description: "List of valid values for the parameter."
+            type: array
+            items:
+              description: "A valid value for the parameter."
+              # The array items can have any Ansible data type
+          elements:
+            description: "The Ansible data type for list elements when the type is list."
+            type: string
+          options:
+            # The structure of the parameter value when the type is dict.
+            $ref: "#/definitions/parameters"
+type: object
+required:
+  - argument_specs
+additionalProperties: false
+properties:
+  argument_specs:
+    description: "The argument specifications for the role"
+    type: object
+    required:
+      - main
+    patternProperties:
+      ^[a-zA-Z0-9_]+$:
+        description: "The argument specification for a single role entry point of the role (e.g. main).
+          The property name is the name of the role entry point.
+          This should be 'main' in the case of an unspecified entry point.
+          This will be the base name of the tasks file to execute, with no .yml or .yaml file extension."
+        type: object
+        required:
+          - short_description
+          - description
+          - options
+        additionalProperties: false
+        properties:
+          short_description:
+            description: "A short, one-line description of the entry point.
+              Ansible markup can be used.
+              It should be a phrase and not a sentence, and it should not end in a period."
+            type: string
+          description:
+            description: "A longer description that may contain multiple lines."
+            oneOf:
+              - description: "A single string. Ansible markup can be used."
+                type: string
+              - description: "A list of strings. Each list item is a new paragraph."
+                type: array
+                items:
+                  description: "A single string. Ansible markup can be used."
+                  type: string
+          version_added:
+            description: "Collection version in which the role entry point was added."
+            type: string
+          author:
+            description: "The author(s) of the role. A single author can be specified as a single string or as a list of strings with one item."
+            oneOf:
+              - description: "Full name of the author."
+                type: string
+              - description: "A list of authors."
+                type: array
+                items:
+                  description: "Full name of the author."
+                  type: string
+          options:
+            $ref: "#/definitions/parameters"

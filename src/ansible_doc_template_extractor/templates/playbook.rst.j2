@@ -74,20 +74,32 @@
 {% set playbook_dict = spec_file_dict.playbook %}
 .. _{{ name }}_playbook:
 
-{% set title = "Playbook {} -- {}".format(name, playbook_dict.title) %}
+{% set title = "Playbook {} -- {}".format(name, playbook_dict.short_description) %}
 {{ title }}
 {{ '=' * title | length }}
 
 Synopsis
 --------
 
+{% if playbook_dict.description is iterable and playbook_dict.description is not string %}
+{%   for item in playbook_dict.description %}
+{{ para_generation(item, 0) }}
+{%   endfor %}
+{% else %}
 {{ para_generation(playbook_dict.description, 0) }}
-{% if playbook_dict.prerequisites is defined %}
+{% endif %}
+{% if playbook_dict.requirements is defined %}
 
-Prerequisites
--------------
+Requirements
+------------
 
-{{ para_generation(playbook_dict.prerequisites, 0) }}
+{%   if playbook_dict.requirements is iterable and playbook_dict.requirements is not string %}
+{%     for item in playbook_dict.requirements %}
+{{ para_generation(item, 0) }}
+{%     endfor %}
+{%   else %}
+{{ para_generation(playbook_dict.requirements, 0) }}
+{%   endif %}
 {% endif %}
 {% if playbook_dict.version_added is defined %}
 
@@ -132,12 +144,16 @@ Examples
 
 {%   endfor %}
 {% endif %}
-{% if playbook_dict.authors is defined %}
+{% if playbook_dict.author is defined %}
 
 Authors
 -------
 
-{%   for author in playbook_dict.authors %}
-* {{ author }}
-{%   endfor %}
+{%   if playbook_dict.author is iterable and playbook_dict.author is not string %}
+{%     for item in playbook_dict.author %}
+* {{ item }}
+{%     endfor %}
+{%   else %}
+* {{ playbook_dict.author }}
+{%   endif %}
 {% endif %}
