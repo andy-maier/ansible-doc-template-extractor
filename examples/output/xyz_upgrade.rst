@@ -98,6 +98,20 @@ Playbook output variable 'output', in case of success.
 
 
 
+Examples
+--------
+
+* Upgrade the XYZ container to a specified version
+
+
+
+  .. code-block:: bash
+
+      ansible-playbook xyz_upgrade
+          -e '{"params": {"server": "10.11.12.13", "version": "1.8.0"}}'
+
+
+
 Authors
 -------
 

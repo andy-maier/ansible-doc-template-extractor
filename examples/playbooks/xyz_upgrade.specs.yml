@@ -11,7 +11,8 @@ playbook:
   examples:
     - description: Upgrade the XYZ container to a specified version
       command: |
-        ansible-playbook xyz_upgrade -e '{"params": {"server": "10.11.12.13", "version": "1.8.0"}}'
+        ansible-playbook xyz_upgrade
+            -e '{"params": {"server": "10.11.12.13", "version": "1.8.0"}}'
   input_schema:
     # JSON schema
     description: Playbook input variable 'params'.

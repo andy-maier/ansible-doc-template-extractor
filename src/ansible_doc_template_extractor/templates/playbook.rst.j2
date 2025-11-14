@@ -17,6 +17,12 @@
 {{ "  " * level }}{{ para | to_rst }}
 {% endif %}
 {% endmacro %}
+{% macro indent(multiline, level) %}
+{# Macro that generates an indented multi-line string #}
+{%   for line in multiline.split('\n') %}
+{{ "  " * level }}{{ line }}
+{%   endfor %}
+{% endmacro %}
 {% macro schema_generation(obj, level) %}
 {# Macro that generates a list of properties defined in an object within a JSON schema, recursively #}
 {%   for name, spec in obj.properties.items() if not name.startswith('_') %}
@@ -111,6 +117,20 @@ Output Parameters
 
 {%   endif %}
 {{ schema_generation(playbook_dict.output_schema, 0) }}
+{% endif %}
+{% if playbook_dict.examples is defined %}
+
+Examples
+--------
+
+{%   for example in playbook_dict.examples %}
+* {{ para_generation(example.description, 0) }}
+
+  .. code-block:: bash
+
+{{ indent(example.command | trim, 3) }}
+
+{%   endfor %}
 {% endif %}
 {% if playbook_dict.authors is defined %}
 
