@@ -501,6 +501,7 @@ def create_output_file(parser, args, spec_file):
     elif args.schema is not None:
         schema_file = args.schema
     elif spec_type in ("role", "playbook"):
+        my_dir = os.path.dirname(__file__)
         schema_file = os.path.join(
             my_dir, "schemas", f"{spec_type}.schema.yml")
     else:
