@@ -124,6 +124,22 @@ playbook:
 An example spec file for playbooks using this format is in the
 [examples/playbooks](https://github.com/andy-maier/ansible-doc-template-extractor/tree/main/examples/playbooks) directory.
 
+# Schema validation of spec files
+
+**ansible-doc-template-extractor** can validate the spec files using JSON
+schema.
+
+By default, spec files of the known types "role" and "playbook" are validated
+using built-in schema files provided with the program. For spec file type
+"other", and also when custom templates are used for the known types, the
+program supports the `--schema` option to specify a custom JSON schema file.
+
+Custom JSON schema files must conform to
+[JSON schema draft 7](http://json-schema.org/draft-07/schema) and must be in
+YAML format. See the built-in
+[schema files](https://github.com/andy-maier/ansible-doc-template-extractor/tree/main/src/ansible_doc_template_extractor/schemas)
+to have a basis to start from.
+
 # Writing custom templates
 
 You can write your own custom templates for any other output format and/or for
