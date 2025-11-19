@@ -8,15 +8,15 @@ The supported formats of the spec files are:
 * For Ansible roles:
   - The standard format for role spec files defined by Ansible
     (see [docs](https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_reuse_roles.html#specification-format)
-    and [schema](/src/ansible_doc_template_extractor/schemas/role_ansible.schema.yml)).
+    and [schema](https://github.com/andy-maier/ansible-doc-template-extractor/blob/main/src/ansible_doc_template_extractor/schemas/role_ansible.schema.yml)).
   - An extended format for role spec files defined by this project
-    (see [schema](/src/ansible_doc_template_extractor/schemas/role.schema.yml)).
+    (see [schema](https://github.com/andy-maier/ansible-doc-template-extractor/blob/main/src/ansible_doc_template_extractor/schemas/role.schema.yml)).
 * For Ansible playbooks:
   - The draft format for playbook spec files defined by Ansible
     (see [docs](https://docs.ansible.com/projects/ansible/devel/playbook_guide/playbooks_variables_validation.html#specification-format)
-    and [schema](/src/ansible_doc_template_extractor/schemas/playbook_ansible.schema.yml)).
+    and [schema](https://github.com/andy-maier/ansible-doc-template-extractor/blob/main/src/ansible_doc_template_extractor/schemas/playbook_ansible.schema.yml)).
   - An extended format for role spec files defined by this project
-    (see [schema](/src/ansible_doc_template_extractor/schemas/playbook.schema.yml)).
+    (see [schema](https://github.com/andy-maier/ansible-doc-template-extractor/blob/main/src/ansible_doc_template_extractor/schemas/playbook.schema.yml)).
 
 You can also use any other spec file format, as long as it is in YAML and you
 provide a custom JSON schema file and a custom template for it.
@@ -136,10 +136,10 @@ on top of the standard role spec format defined by Ansible
   - `examples` - A list of examples on how to use the role entry point.
 
 For details on these extensions, see the
-[role schema](/src/ansible_doc_template_extractor/schemas/role.schema.yml).
+[role schema](https://github.com/andy-maier/ansible-doc-template-extractor/blob/main/src/ansible_doc_template_extractor/schemas/role.schema.yml).
 
 Example role spec files using this format are in the
-[examples/roles](/examples/roles)
+[examples/roles](https://github.com/andy-maier/ansible-doc-template-extractor/blob/main/examples/roles)
 directory.
 
 ## Project-defined extensions for playbook spec files
@@ -169,10 +169,10 @@ on top of the draft playbook spec format defined by Ansible
   - `default` - Default value if the option is not specified.
 
 For details on these extensions, see the
-[playbook schema](/src/ansible_doc_template_extractor/schemas/playbook.schema.yml).
+[playbook schema](https://github.com/andy-maier/ansible-doc-template-extractor/blob/main/src/ansible_doc_template_extractor/schemas/playbook.schema.yml).
 
 Example playbook spec files using this format are in the
-[examples/playbooks](/examples/playbooks)
+[examples/playbooks](https://github.com/andy-maier/ansible-doc-template-extractor/blob/main/examples/playbooks)
 directory.
 
 # Schema validation of spec files
@@ -188,7 +188,7 @@ program supports the `--schema` option to specify a custom JSON schema file.
 Custom JSON schema files must conform to
 [JSON schema draft 2020-12](http://json-schema.org/draft-2020-12/schema) and must be in
 YAML format. See the built-in
-[schema files](/src/ansible_doc_template_extractor/schemas)
+[schema files](https://github.com/andy-maier/ansible-doc-template-extractor/blob/main/src/ansible_doc_template_extractor/schemas)
 to have a basis to start from.
 
 If the JSON schema files use the `format` keyword to define constraints on
@@ -232,7 +232,7 @@ The following rules apply when writing templates:
   - **spec_file_dict** (dict): Content of the spec file.
 
 You can use the templates in the
-[templates](/src/ansible_doc_template_extractor/templates)
+[templates](https://github.com/andy-maier/ansible-doc-template-extractor/blob/main/src/ansible_doc_template_extractor/templates)
 directory as examples for your own custom templates.
 
 # Reporting issues
