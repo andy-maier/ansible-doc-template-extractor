@@ -197,6 +197,11 @@ jobs:
         RUN_TYPE: ${{ steps.set-run-type.outputs.result }}
       run: |
         make bandit
+    - name: Run examples
+      env:
+        RUN_TYPE: ${{ steps.set-run-type.outputs.result }}
+      run: |
+        make examples -B
 
   test_finish:
     needs: test
