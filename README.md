@@ -5,21 +5,32 @@ reads the documentation from spec files in YAML format and produces
 documentation output using Jinja2 template files.
 
 The supported formats of the spec files are:
-* For Ansible roles, the Ansible-defined format in the
-  `<role>/meta/argument_specs.yml` files
-  (see [here](https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_reuse_roles.html#specification-format)).
-* For Ansible playbooks, a format defined by this project (see below).
-* You can also use any other spec file format for roles, playbooks or any other
-  Ansible items, as long as it is in YAML and you provide a custom template
-  for it.
+* For Ansible roles:
+  - The standard format for role spec files defined by Ansible
+    (see [docs](https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_reuse_roles.html#specification-format)
+    and [schema](/src/ansible_doc_template_extractor/schemas/role_ansible.schema.yml)).
+  - An extended format for role spec files defined by this project
+    (see [schema](/src/ansible_doc_template_extractor/schemas/role.schema.yml)).
+* For Ansible playbooks:
+  - The draft format for playbook spec files defined by Ansible
+    (see [docs](https://docs.ansible.com/projects/ansible/devel/playbook_guide/playbooks_variables_validation.html#specification-format)
+    and [schema](/src/ansible_doc_template_extractor/schemas/playbook_ansible.schema.yml)).
+  - An extended format for role spec files defined by this project
+    (see [schema](/src/ansible_doc_template_extractor/schemas/playbook.schema.yml)).
+
+You can also use any other spec file format, as long as it is in YAML and you
+provide a custom JSON schema file and a custom template for it.
 
 The ansible-doc-template-extractor program includes a number of built-in
 template files:
 
-* role.rst.j2: Produces RST format from the Ansible-defined spec files for roles.
-* role.md.j2: Produces Markdown format from the Ansible-defined spec files for roles.
-* playbook.rst.j2: Produces RST format from the project-defined spec files for playbooks.
-* playbook.md.j2: Produces Markdown format from the project-defined spec files for playbooks.
+* role.rst.j2: Produces RST format from spec files for roles.
+* role.md.j2: Produces Markdown format from spec files for roles.
+* playbook.rst.j2: Produces RST format from spec files for playbooks.
+* playbook.md.j2: Produces Markdown format from spec files for playbooks.
+
+All these templates support both the Ansible-defined spec file formats and
+the project-defined extensions to these formats.
 
 These templates are selected automatically based on the detected spec file type
 and output format.
@@ -27,15 +38,16 @@ and output format.
 You can write your own custom templates for other output formats and/or
 other spec file formats (see below).
 
-Disclaimer: The ansible-doc-template-extractor tool should be seen as a
+Disclaimer: The ansible-doc-template-extractor project should be seen as a
 temporary bridge until there is official documentation extraction support for
 Ansible roles and playbooks. There have been discussions in Ansible forums to
 add support for Ansible roles to the ansible-doc and ansible-navigator tools.
 Once that happens, the ansible-doc-template-extractor tool is probably no
 longer needed for Ansible roles. In the event that an official spec format for
-Ansible playbooks gets defined one day and that this format gets supported by
+Ansible playbooks gets defined and that this format gets supported by
 the ansible-doc and ansible-navigator tools, the ansible-doc-template-extractor
-tool is probably no longer needed at all.
+tool may not be needed anymore, except if the project-defined spec file
+extensions are important to you.
 
 # Installation
 
@@ -95,34 +107,73 @@ Display the help message to learn about other options:
 $ ansible-doc-template-extractor --help
 ```
 
-# Format of spec file for Ansible playbooks
+# Project-defined spec file formats
 
-Note: This spec file format is preliminary at this point and can still change.
+This project has defined spec file formats that extend the Ansible-defined
+formats for playbook spec files and role spec files, in order to address
+some deficiencies in the Ansible-defined formats.
 
-The spec file format defined by this project for Ansible playbooks:
+The project-defined spec file format for roles has been verified to be
+backwards compatible for Ansible's use of it for role argument validation.
 
-```
-playbook:
-  name: <Playbook name>
-  short_description: <Playbook title>
-  description:
-    <string or list of strings with playbook descriptions>
-  requirements:
-    <string or list of strings with playbook requirements>
-  version_added: <If the playbook was added to Ansible, the Ansible version>
-  author:
-    <string or list of strings with playbook author names>
-  examples:
-    - description: <string or list of strings with example description>
-      command: <example ansible-playbook command>
-  input_schema:
-    <A JSON schema that describes a single input variable of the playbook>
-  output_schema:
-    <A JSON schema that describes a single output variable for success>
-```
+The Ansible-defined draft playbook spec file format is not yet used by
+Ansible for argument validation, so a similar verification has not been
+made yet for the project-defined spec file format for playbooks.
 
-An example spec file for playbooks using this format is in the
-[examples/playbooks](https://github.com/andy-maier/ansible-doc-template-extractor/tree/main/examples/playbooks) directory.
+## Project-defined extensions for role spec files
+
+The project-defined role spec file format has the following extensions
+on top of the standard role spec format defined by Ansible
+(see [docs](https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_reuse_roles.html#specification-format)):
+
+* Adds the following properties to the role entry point level:
+
+  - `output` - Output parameters of the role entry point.
+  - `local` - Local variables of the role entry point. The role should use some
+    naming  convention for local variables to avoid clashes with variables
+    defined by the calling playbook or role, for example by starting the
+    variable name with an underscore.
+  - `examples` - A list of examples on how to use the role entry point.
+
+For details on these extensions, see the
+[role schema](/src/ansible_doc_template_extractor/schemas/role.schema.yml).
+
+Example role spec files using this format are in the
+[examples/roles](/examples/roles)
+directory.
+
+## Project-defined extensions for playbook spec files
+
+The project-defined playbook spec file format has the following extensions
+on top of the draft playbook spec format defined by Ansible
+(see [docs](https://docs.ansible.com/projects/ansible/devel/playbook_guide/playbooks_variables_validation.html#specification-format)):
+
+* Adds the following properties to the playbook level:
+
+  - `short_description` - Short one line description, used as title.
+  - `requirements` - List of requirements for using the playbook.
+  - `version_added` - Collection or Ansible version that added the playbook.
+  - `author` - List of authors of the playbook.
+  - `options_schema` - The input parameters of the playbook, described as a
+    JSON schema. This is mutually exclusive to the existing `options` property,
+    which is also supported.
+  - `output` - The output parameters of the playbook, described in the Ansible
+    options format (that is used for `options`).
+  - `output_schema` - The output parameters of the playbook, described as a
+    JSON schema. This is mutually exclusive to the `output` property.
+  - `examples` - A list of examples on how to use the playbook.
+
+* Adds the following properties to the options level:
+
+  - `version_added` - Collection or Ansible version that added the option.
+  - `default` - Default value if the option is not specified.
+
+For details on these extensions, see the
+[playbook schema](/src/ansible_doc_template_extractor/schemas/playbook.schema.yml).
+
+Example playbook spec files using this format are in the
+[examples/playbooks](/examples/playbooks)
+directory.
 
 # Schema validation of spec files
 
@@ -137,7 +188,7 @@ program supports the `--schema` option to specify a custom JSON schema file.
 Custom JSON schema files must conform to
 [JSON schema draft 2020-12](http://json-schema.org/draft-2020-12/schema) and must be in
 YAML format. See the built-in
-[schema files](https://github.com/andy-maier/ansible-doc-template-extractor/tree/main/src/ansible_doc_template_extractor/schemas)
+[schema files](/src/ansible_doc_template_extractor/schemas)
 to have a basis to start from.
 
 If the JSON schema files use the `format` keyword to define constraints on
@@ -181,7 +232,7 @@ The following rules apply when writing templates:
   - **spec_file_dict** (dict): Content of the spec file.
 
 You can use the templates in the
-[templates](https://github.com/andy-maier/ansible-doc-template-extractor/tree/main/src/ansible_doc_template_extractor/templates)
+[templates](/src/ansible_doc_template_extractor/templates)
 directory as examples for your own custom templates.
 
 # Reporting issues

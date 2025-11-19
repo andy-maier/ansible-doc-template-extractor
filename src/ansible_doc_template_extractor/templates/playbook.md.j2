@@ -24,6 +24,41 @@
 {{ "  " * level }}{{ line }}
 {%   endfor %}
 {% endmacro %}
+{% macro option_generation(opts, level) %}
+{# Macro that generates a list of options, recursively #}
+{%   set sorted = false %}{# Flag to sort options by name #}
+{%   for name, spec in (opts | dictsort if sorted else opts.items()) %}
+{%     if spec.required | default(False) == True %}
+{%       set required_txt = "Required." %}
+{%     elif spec.default is defined %}
+{%       set required_txt = "Optional, default: {}.".format(spec.default) %}
+{%     else %}
+{%       set required_txt = "Optional." %}
+{%     endif %}
+{%     if spec.type == 'list' %}
+{%       set type_txt = "list of {}".format(spec.elements) %}
+{%     else %}
+{%       set type_txt = spec.type %}
+{%     endif %}
+{%     if spec.choices is defined %}
+{%       set choices_txt = "Choices: {}.".format(spec.choices | join(', ')) %}
+{%     else %}
+{%       set choices_txt = "" %}
+{%     endif %}
+{{ "  " * level }}* **{{ name }}** ({{ type_txt }}):
+
+{{ para_generation(spec.description, level + 1) }}
+{{ "  " * level }}  {{ required_txt | to_md }}
+{%     if spec.choices is defined %}
+
+{{ "  " * level }}  {{ choices_txt | to_md }}
+{%     endif %}
+{%     if spec.options is defined %}
+{{ option_generation(spec.options, level + 1) }}
+{%     endif %}
+
+{%   endfor %}
+{% endmacro %}
 {% macro schema_generation(obj, level) %}
 {# Macro that generates a list of properties defined in an object within a JSON schema, recursively #}
 {%   for name, spec in obj.properties.items() %}
@@ -102,17 +137,27 @@
 
 {{ playbook_dict.version_added }}
 {% endif %}
-{% if playbook_dict.input_schema is defined %}
+{% if playbook_dict.options is defined %}
 
 ## Input Parameters
 
-{%   if playbook_dict.input_schema.description is defined %}
-{{ para_generation(playbook_dict.input_schema.description, 0) }}
+{{ option_generation(playbook_dict.options, 0) }}
+{% elif playbook_dict.options_schema is defined %}
+
+## Input Parameters
+
+{%   if playbook_dict.options_schema.description is defined %}
+{{ para_generation(playbook_dict.options_schema.description, 0) }}
 
 {%   endif %}
-{{ schema_generation(playbook_dict.input_schema, 0) }}
+{{ schema_generation(playbook_dict.options_schema, 0) }}
 {% endif %}
-{% if playbook_dict.output_schema is defined %}
+{% if playbook_dict.output is defined %}
+
+## Output Parameters
+
+{{ option_generation(playbook_dict.output, 0) }}
+{% elif playbook_dict.output_schema is defined %}
 
 ## Output Parameters
 
