@@ -198,7 +198,7 @@ using the `jsonschema.Draft202012Validator` (see
 Note that some of the formats require certain Python packages to be installed,
 as detailed there. If you use formats in your custom schemas that have such
 dependencies, you need to make sure the corresponding Python packages are
-installed. The built-in JSON schemas to not use the `format` keyword.
+installed. The built-in JSON schemas do not use the `format` keyword.
 
 # Writing custom templates
 
