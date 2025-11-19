@@ -19,17 +19,23 @@ definitions:
       ^[a-zA-Z0-9_]+$:
         description: "Key: The name of the option."
         type: object
-        additionalProperties: true
+        additionalProperties: false
         properties:
           description:
             description: "Detailed explanation of the option. It should be written in full sentences."
             $ref: "#/definitions/description"
+          version_added:  # Extension on top of draft Ansible playbook spec format
+            description: "Collection or Ansible version in which the option was added. Only needed if the option was added after the initial playbok release."
+            type: string
           type:
             description: "The Ansible data type of the option. See https://docs.ansible.com/projects/ansible/latest/dev_guide/developing_program_flow_modules.html#argument-spec for allowed values. The default is 'str'."
             type: string
           required:
             description: "Indicates that the option is required to be specified in the role input. Default: false"
             type: boolean
+          default:  # Extension on top of draft Ansible playbook spec format
+            description: "Default value for the option if it is not required. Default: null. If the option has a boolean type, you should use true/false if you want to be compatible with ansible-lint."
+            # The default value can have any Ansible data type
           choices:
             description: "List of valid values for the option."
             type: array
@@ -87,11 +93,17 @@ properties:
                 items:
                   description: "Full name of the author."
                   type: string
-          input_schema:  # Extension on top of draft Ansible playbook spec format
-            # The JSON schema for the input parameters of the playbook
+          options:
+            description: "The input parameters of the role, in Ansible option format. This is mutually exclusive with 'options_schema'."
+            $ref: "#/definitions/options"
+          options_schema:  # Extension on top of draft Ansible playbook spec format
+            description: "The input parameters of the role, in JSON schema format. This is mutually exclusive with 'options'."
             $ref: "http://json-schema.org/draft/2020-12/schema"
+          output:  # Extension on top of draft Ansible playbook spec format
+            description: "The output parameters of the role, in Ansible option format. This is mutually exclusive with 'output_schema'."
+            $ref: "#/definitions/options"
           output_schema:  # Extension on top of draft Ansible playbook spec format
-            # The JSON schema for the output parameters of the playbook
+            description: "The output parameters of the role, in JSON schema format. This is mutually exclusive with 'output'."
             $ref: "http://json-schema.org/draft/2020-12/schema"
           examples:  # Extension on top of draft Ansible playbook spec format
             description: "List of examples for how to use the playbook"

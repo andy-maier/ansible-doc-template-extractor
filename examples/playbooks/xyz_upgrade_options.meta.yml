@@ -1,0 +1,51 @@
+# Spec file format for Ansible playbooks, using the format defined by this project.
+argument_specs:
+  xyz_upgrade_options:
+    short_description: Upgrade XYZ container to a new version (Ansible options format)
+    description:
+      - This playbook upgrades an XYZ container to a new version.
+      - No version check is performed, this playbook simply replaces the container.
+    requirements:
+      - From where the playbook is run, there is network connectivity to the
+        server running the XYZ container.
+      - Permissions.
+    version_added: "1.17"
+    author:
+      - Andreas Maier
+    options:
+      # Ansible options format
+      server:
+        type: str
+        required: true
+        description: IP address or hostname of the server that runs the XYZ container.
+      version:
+        type: str
+        required: true
+        description: Desired new version of the XYZ container.
+      foo_object:
+        type: dict
+        description: Demonstrate nested objects
+        options:
+          bar:
+            type: str
+            required: true
+            description: The bar.
+      foo_array:
+        type: list
+        description: Demonstrate nested array of objects
+        elements: dict
+        options:
+          bar:
+            type: str
+            required: true
+            description: The bar.
+    output:
+      # Ansible options format
+      previous_version:
+        description: Version of the XYZ container before the upgrade.
+        type: str
+    examples:
+      - short_description: Upgrade the XYZ container to a specified version
+        command: |
+          ansible-playbook xyz_upgrade
+              -e '{"params": {"server": "10.11.12.13", "version": "1.8.0"}}'

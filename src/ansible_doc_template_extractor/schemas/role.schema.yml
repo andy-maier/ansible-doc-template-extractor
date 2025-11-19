@@ -95,10 +95,13 @@ properties:
                   description: "Full name of the author."
                   type: string
           options:
+            description: "The input parameters of the role."
             $ref: "#/definitions/options"
           local:  # Extension on top of standard role spec format
+            description: "The local variables set by the role."
             $ref: "#/definitions/options"
           output:  # Extension on top of standard role spec format
+            description: "The output parameters of the role."
             $ref: "#/definitions/options"
           examples:  # Extension on top of standard role spec format
             description: "A list of examples"
