@@ -135,10 +135,19 @@ using built-in schema files provided with the program. For spec file type
 program supports the `--schema` option to specify a custom JSON schema file.
 
 Custom JSON schema files must conform to
-[JSON schema draft 7](http://json-schema.org/draft-07/schema) and must be in
+[JSON schema draft 2020-12](http://json-schema.org/draft-2020-12/schema) and must be in
 YAML format. See the built-in
 [schema files](https://github.com/andy-maier/ansible-doc-template-extractor/tree/main/src/ansible_doc_template_extractor/schemas)
 to have a basis to start from.
+
+If the JSON schema files use the `format` keyword to define constraints on
+string-typed properties (such as `format: ipv4`), these formats are validated
+using the `jsonschema.Draft202012Validator` (see
+[Validating Formats](https://python-jsonschema.readthedocs.io/en/latest/validate/#validating-formats)).
+Note that some of the formats require certain Python packages to be installed,
+as detailed there. If you use formats in your custom schemas that have such
+dependencies, you need to make sure the corresponding Python packages are
+installed. The built-in JSON schemas to not use the `format` keyword.
 
 # Writing custom templates
 

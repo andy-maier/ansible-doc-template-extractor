@@ -297,7 +297,7 @@ def get_path(path_list):
     return path_str.lstrip(".")
 
 
-def validate(data, schema, data_file, data_kind):
+def validate(data, schema, data_file, schema_file, data_kind):
     """
     Validate a data object (e.g. dict loaded from JSON or YAML) against
     a JSON schema object.
@@ -311,6 +311,8 @@ def validate(data, schema, data_file, data_kind):
       data_file (str): Path name of file with the data to be validated,
         for messages.
 
+      schema_file (str): Path name of JSON schema file, for messages.
+
       data_kind (str): Kind of data object, for messages. E.g. "spec file"
 
     Raises:
@@ -318,15 +320,17 @@ def validate(data, schema, data_file, data_kind):
       Error: Validation failed
     """
     try:
-        jsonschema.validate(data, schema)
+        jsonschema.validate(
+            data, schema,
+            format_checker=jsonschema.Draft202012Validator.FORMAT_CHECKER)
     except jsonschema.exceptions.SchemaError as exc:
         elem_path = get_path(exc.absolute_path)
         schema_path = get_path(exc.absolute_schema_path)
         raise Error(
-            f"The JSON schema for {data_kind} is invalid: "
-            f"Element {elem_path!r} violates schema item {schema_path!r} in "
-            "the JSON meta-schema. Details: "
-            f"Schema validator: {exc.validator}={exc.validator_value}"
+            f"The JSON schema in {schema_file} is invalid; schema element "
+            f"{elem_path!r} violates the JSON meta-schema: {exc.message}. "
+            f"Details: Meta-schema item: {schema_path}, "
+            f"Meta-schema validator: {exc.validator}={exc.validator_value}"
         )
     except jsonschema.exceptions.ValidationError as exc:
         elem_path = get_path(exc.absolute_path)
@@ -395,7 +399,7 @@ def load_yaml_file(kind, yaml_file, schema_file=None, verbose=False):
 
         if verbose:
             print(f"Validating {kind} with schema file")
-        validate(yaml_obj, schema_obj, yaml_file, kind)
+        validate(yaml_obj, schema_obj, yaml_file, schema_file, kind)
 
     return yaml_obj
 
