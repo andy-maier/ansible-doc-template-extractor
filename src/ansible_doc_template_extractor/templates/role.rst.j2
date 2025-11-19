@@ -18,6 +18,12 @@
 {{ "  " * level }}{{ para | to_rst }}
 {% endif %}
 {% endmacro %}
+{% macro indent(multiline, level) %}
+{# Macro that generates an indented multi-line string #}
+{%   for line in multiline.split('\n') %}
+{{ "  " * level }}{{ line }}
+{%   endfor %}
+{% endmacro %}
 {% macro option_generation(opts, level) %}
 {# Macro that generates a list of options, recursively #}
 {%   set sorted = false %}{# Flag to sort options by name #}
@@ -107,6 +113,24 @@ Local Variables
 
 {{ option_generation(role_dict.local, 0) }}
 {%   endif %}
+{% if role_dict.examples is defined %}
+
+Examples
+--------
+
+{%     for example in role_dict.examples %}
+* {{ para_generation(example.short_description, 0) }}
+{%       if example.description is defined %}
+
+{{ para_generation(example.description, 1) }}
+{%       endif %}
+
+  .. code-block:: bash
+
+{{ indent(example.code | trim, 3) }}
+
+{%   endfor %}
+{% endif %}
 {%   if role_dict.author is defined %}
 
 Authors
