@@ -82,6 +82,33 @@ Local Variables
 
 
 
+Examples
+--------
+
+* Example for invoking the role
+
+
+
+  .. code-block:: bash
+
+      tasks:
+      
+        - name: "Ensure host object exists on storage system"
+          vars:
+            sys_hostname: "10.11.12.13"
+            sys_username: myuser
+            sys_password: mypwd
+            host_name: "host1"
+            host_wwpns: "aa.bb.cc...."
+          include_role:
+            name: storage_host_create
+      
+        - name: "Debug host info"
+          debug:
+            var: host_info
+
+
+
 Authors
 -------
 
