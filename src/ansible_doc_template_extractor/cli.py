@@ -39,13 +39,20 @@ DEFAULT_OUT_DIR = "."
 DEFAULT_OUT_DIR_STR = \
     "Current directory" if DEFAULT_OUT_DIR == "." else DEFAULT_OUT_DIR
 
+
+# Directory separator related patterns.
+# Note: On Windows, the separator can be '/' or '\', so we need to allow for
+# both and cannot just use os.sep.
+SEP = r"[\/\\]"
+NO_SEP = r"[^\/\\]"
+
 # Patterns for spec file names.
 # They are used for detecting the spec type, and for parsing the Ansible role
 # or playbook name (in match item 2).
 ROLE_SPEC_FILE_PATTERN = re.compile(
-    r"(^|{s})([^{s}]+){s}meta{s}argument_specs\.yml$".format(s=os.sep))
+    rf"(^|{SEP})({NO_SEP}+){SEP}meta{SEP}argument_specs\.yml$")
 PLAYBOOK_SPEC_FILE_PATTERN = re.compile(
-    r"(^|{s})([^{s}]+)\.meta\.yml$".format(s=os.sep))
+    rf"(^|{SEP})({NO_SEP}+)\.meta\.yml$")
 
 
 class HelpTemplateAction(argparse.Action):
