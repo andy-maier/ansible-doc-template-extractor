@@ -137,6 +137,8 @@ dist_dependent_files := \
     README.md \
     requirements.txt \
     $(package_py_files_no_version) \
+    $(wildcard $(package_dir)/templates/*.j2) \
+    $(wildcard $(package_dir)/schemas/*.yml) \
 
 # Example files
 example_role_dirs := $(wildcard examples/roles/*)
