@@ -1,0 +1,64 @@
+$schema: "http://json-schema.org/draft/2020-12/schema"
+title: "JSON schema for draft Ansible playbook spec files"
+description: "JSON schema for validating the draft playbook spec file format defined by Ansible (see https://docs.ansible.com/projects/ansible/devel/playbook_guide/playbooks_variables_validation.html#specification-format)"
+definitions:
+  description:
+    description: "A description with a single string or a list of strings."
+    oneOf:
+      - description: "A single string. Ansible markup can be used."
+        type: string
+      - description: "A list of strings. Each list item is a new paragraph."
+        type: array
+        items:
+          description: "A single string. Ansible markup can be used."
+          type: string
+  options:
+    description: "Options (i.e. input parameters) for the playbook."
+    type: object
+    patternProperties:
+      ^[a-zA-Z0-9_]+$:
+        description: "Key: The name of the option."
+        type: object
+        additionalProperties: true
+        properties:
+          description:
+            description: "Detailed explanation of the option. It should be written in full sentences."
+            $ref: "#/definitions/description"
+          type:
+            description: "The Ansible data type of the option. See https://docs.ansible.com/projects/ansible/latest/dev_guide/developing_program_flow_modules.html#argument-spec for allowed values. The default is 'str'."
+            type: string
+          required:
+            description: "Indicates that the option is required to be specified in the role input. Default: false"
+            type: boolean
+          choices:
+            description: "List of valid values for the option."
+            type: array
+            items:
+              description: "A valid value for the option."
+              # The array items can have any Ansible data type
+          elements:
+            description: "The Ansible data type for list elements when the type is 'list'."
+            type: string
+          options:
+            # The structure of the option value when the type is dict.
+            $ref: "#/definitions/options"
+type: object
+required:
+  - argument_specs
+additionalProperties: false
+properties:
+  argument_specs:
+    description: "The argument specifications for the playbook."
+    type: object
+    patternProperties:
+      ^[a-zA-Z0-9_]+$:
+        description: "Key: The name of the playbook (just the base name, without namespace and file extension)."
+        type: object
+        additionalProperties: true
+        properties:
+          description:
+            description: "A description of the playbook.
+              May contain multiple paragraphs of multiple lines. Ansible markup can be used."
+            $ref: "#/definitions/description"
+          options:
+            $ref: "#/definitions/options"

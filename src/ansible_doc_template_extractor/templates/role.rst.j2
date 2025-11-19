@@ -1,5 +1,6 @@
 {#
- # Template for Ansible roles that have meta/argument_spec.yml for use with ansible-doc-template-extractor.
+ # Template for Ansible role spec files for use by ansible-doc-template-extractor.
+ # This template uses the role spec file format defined in the ansible-doc-template-extractor project.
  # This template produces an .rst file.
  # For the input variables that are set, run: ansible-doc-template-extractor --help-template.
  #}
@@ -20,7 +21,7 @@
 {% macro option_generation(opts, level) %}
 {# Macro that generates a list of options, recursively #}
 {%   set sorted = false %}{# Flag to sort options by name #}
-{%   for name, spec in (opts | dictsort if sorted else opts.items()) if not name.startswith('_') %}
+{%   for name, spec in (opts | dictsort if sorted else opts.items()) %}
 {%     if spec.required | default(False) == True %}
 {%       set required_txt = "Required." %}
 {%     elif spec.default is defined %}
@@ -71,13 +72,13 @@
 Synopsis
 --------
 
-{% if role_dict.description is iterable and role_dict.description is not string %}
-{%   for item in role_dict.description %}
+{%   if role_dict.description is iterable and role_dict.description is not string %}
+{%     for item in role_dict.description %}
 {{ para_generation(item, 0) }}
-{%   endfor %}
-{% else %}
+{%     endfor %}
+{%   else %}
 {{ para_generation(role_dict.description, 0) }}
-{% endif %}
+{%   endif %}
 {%   if role_dict.version_added is defined %}
 
 Version added
@@ -85,31 +86,26 @@ Version added
 
 {{ role_dict.version_added }}
 {%   endif %}
-{%   set has_in_params = role_dict.options.in_params is defined and role_dict.options.in_params.type | default(None) == 'dict' %}
-{%   set has_out_params = role_dict.options.out_params is defined and role_dict.options.out_params.type | default(None) == 'dict' %}
-{%   if has_in_params or has_out_params %}
-{%     if has_in_params %}
+{%   if role_dict.options.keys() | list | length > 0 %}
 
 Input Parameters
 ----------------
 
-{{ para_generation(role_dict.options.in_params.description, 0) }}
-{{ option_generation(role_dict.options.in_params.options, 0) }}
-{%     endif %}
-{%     if has_out_params %}
+{{ option_generation(role_dict.options, 0) }}
+{%   endif %}
+{%   if role_dict.output is defined and role_dict.output | length > 0 %}
 
 Output Parameters
 -----------------
 
-{{ para_generation(role_dict.options.out_params.description, 0) }}
-{{ option_generation(role_dict.options.out_params.options, 0) }}
-{%     endif %}
-{%   else %}
+{{ option_generation(role_dict.output, 0) }}
+{%   endif %}
+{%   if role_dict.local is defined and role_dict.local | length > 0 %}
 
-Parameters
-----------
+Local Variables
+---------------
 
-{{ option_generation(role_dict.options, 0) }}
+{{ option_generation(role_dict.local, 0) }}
 {%   endif %}
 {%   if role_dict.author is defined %}
 

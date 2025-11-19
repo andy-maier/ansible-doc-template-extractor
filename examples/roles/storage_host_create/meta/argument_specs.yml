@@ -1,0 +1,60 @@
+# Spec file format for Ansible roles, using the format defined by this project.
+argument_specs:
+  main:
+    short_description:
+      Ensure that a host on a storage system exists and has host WWPNs.
+    description:
+      - Ensure that a host on a storage system exists and has host WWPNs.
+      - This role is idempotent.
+    author:
+      - Andreas Maier
+    options:
+      sys_hostname:
+        type: str
+        required: true
+        description: IP address or hostname of the storage system for logging in.
+      sys_username:
+        type: str
+        required: true
+        description: Username on the storage system.
+      sys_password:
+        type: str
+        required: true
+        description: Password on the storage system.
+      host_name:
+        type: str
+        required: true
+        description: Name of the host to be created.
+      host_wwpns:
+        type: list
+        elements: str
+        required: true
+        description: WWPNs for the host, in C(hh:hh...) or C(hhhh...) format.
+    local:
+      _foo:
+        type: object
+        description: ""
+    output:
+      host_info:
+        type: dict
+        required: true
+        description:
+          - Properties of the host (specific to C(sar_type)).
+    examples:
+      - short_description: Example for invoking the role
+        code: |
+          tasks:
+
+            - name: "Ensure host object exists on storage system"
+              vars:
+                sys_hostname: "10.11.12.13"
+                sys_username: myuser
+                sys_password: mypwd
+                host_name: "host1"
+                host_wwpns: "aa.bb.cc...."
+              include_role:
+                name: storage_host_create
+
+            - name: "Debug host info"
+              debug:
+                var: host_info
