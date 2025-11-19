@@ -45,7 +45,7 @@ DEFAULT_OUT_DIR_STR = \
 ROLE_SPEC_FILE_PATTERN = re.compile(
     r"(^|{s})([^{s}]+){s}meta{s}argument_specs\.yml$".format(s=os.sep))
 PLAYBOOK_SPEC_FILE_PATTERN = re.compile(
-    r"(^|{s})([^{s}]+)\.specs\.yml$".format(s=os.sep))
+    r"(^|{s})([^{s}]+)\.meta\.yml$".format(s=os.sep))
 
 
 class HelpTemplateAction(argparse.Action):
@@ -82,7 +82,7 @@ def create_arg_parser(prog):
             "Jinja2 template file. For Ansible roles, the Ansible-defined "
             "format for <role>/meta/argument_specs.yml files is used. For "
             "Ansible playbooks, this project has defined a spec file format "
-            "with files named <playbook>.specs.yml. Template files for RST and "
+            "with files named <playbook>.meta.yml. Template files for RST and "
             "Markdown output formats for roles and playbooks are included in "
             "this program. For other types of Ansible items or other spec file "
             "formats or other output formats, template files can be provided "
@@ -115,7 +115,7 @@ def create_arg_parser(prog):
         f"Valid values: {', '.join(VALID_TYPES)}. "
         "Optional; default is detected from path name of spec file: "
         "<name>/meta/argument_specs.yml is detected as 'role'; "
-        "<name>.specs.yml is detected as 'playbook'; anything else is 'other'.")
+        "<name>.meta.yml is detected as 'playbook'; anything else is 'other'.")
 
     parser.add_argument(
         "--name", metavar="NAME", default=None,

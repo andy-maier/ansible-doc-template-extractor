@@ -1,80 +1,118 @@
 $schema: "http://json-schema.org/draft/2020-12/schema"
-description: "JSON schema for validating the playbook spec file format defined in this project"
-type: object
-required:
-  - playbook
-additionalProperties: false
-properties:
-  playbook:
-    description: "The playbook description"
-    type: object
-    required:
-      - name
-      - short_description
-      - description
-    additionalProperties: false
-    properties:
-      name:
-        description: "Name of the playbook (just the basename, without namespace and file extension)"
+title: "JSON schema for extended Ansible playbook spec files"
+description: "JSON schema for validating the Ansible playbook spec file format defined in this project"
+definitions:
+  description:
+    description: "A description with a single string or a list of strings."
+    oneOf:
+      - description: "A single string. Ansible markup can be used."
         type: string
-      short_description:
-        description: "A short, one-line description of the entry point.
-          Ansible markup can be used.
-          It should be a phrase and not a sentence, and it should not end in a period."
-        type: string
-      description:
-        description: "A longer description that may contain multiple lines. Can be specified as a single string or as a list of strings."
-        oneOf:
-          - description: "A single string. Ansible markup can be used."
-            type: string
-          - description: "A list of strings. Each list item is a new paragraph."
-            type: array
-            items:
-              description: "A single string. Ansible markup can be used."
-              type: string
-      requirements:
-        description: "Requirements for the playbook. Can be specified as a single string or as a list of strings."
-        oneOf:
-          - description: "A single string. Ansible markup can be used."
-            type: string
-          - description: "A list of strings. Each list item is a new paragraph."
-            type: array
-            items:
-              description: "A single string. Ansible markup can be used."
-              type: string
-      version_added:
-        description: "Collection version in which the playbook was added"
-        type: string
-      author:
-        description: "The author(s) of the playbook. A single author can be specified as a single string or as a list of strings with one item."
-        oneOf:
-          - description: "Full name of the author."
-            type: string
-          - description: "A list of authors."
-            type: array
-            items:
-              description: "Full name of the author."
-              type: string
-      examples:
-        description: "List of examples for how to use the playbook"
+      - description: "A list of strings. Each list item is a new paragraph."
         type: array
         items:
-          description: "An example for how to use the playbook"
-          type: object
+          description: "A single string. Ansible markup can be used."
+          type: string
+  options:
+    description: "Options (i.e. input parameters) for the playbook."
+    type: object
+    patternProperties:
+      ^[a-zA-Z0-9_]+$:
+        description: "Key: The name of the option."
+        type: object
+        additionalProperties: true
+        properties:
+          description:
+            description: "Detailed explanation of the option. It should be written in full sentences."
+            $ref: "#/definitions/description"
+          type:
+            description: "The Ansible data type of the option. See https://docs.ansible.com/projects/ansible/latest/dev_guide/developing_program_flow_modules.html#argument-spec for allowed values. The default is 'str'."
+            type: string
           required:
-            - description
-            - command
-          additionalProperties: false
-          properties:
-            description:
-              description: "A brief one-paragraph description of the example"
-              type: string
-            command:
-              description: "The ansible-playbook command for the example"
-              type: string
-      input_schema:
-        # The JSON schema for the input parameters of the playbook
-        $ref: "http://json-schema.org/draft-07/schema"
-      output_schema:
-        # The JSON schema for the output parameters of the playbook
-        $ref: "http://json-schema.org/draft-07/schema"
+            description: "Indicates that the option is required to be specified in the role input. Default: false"
+            type: boolean
+          choices:
+            description: "List of valid values for the option."
+            type: array
+            items:
+              description: "A valid value for the option."
+              # The array items can have any Ansible data type
+          elements:
+            description: "The Ansible data type for list elements when the type is 'list'."
+            type: string
+          options:
+            # The structure of the option value when the type is dict.
+            $ref: "#/definitions/options"
+type: object
+required:
+  - argument_specs
+additionalProperties: false
+properties:
+  argument_specs:
+    description: "The argument specifications for the playbook."
+    type: object
+    patternProperties:
+      ^[a-zA-Z0-9_]+$:
+        description: "Key: The name of the playbook (just the base name, without namespace and file extension)."
+        type: object
+        required:
+          - short_description
+          - description
+        additionalProperties: false
+        properties:
+          short_description:  # Extension on top of draft Ansible playbook spec format
+            description: "A short, one-line title of the playbook.
+              Ansible markup can be used. It should be a phrase and not a sentence, and it should not end in a period."
+            type: string
+          description:
+            description: "A description of the playbook.
+              May contain multiple paragraphs of multiple lines. Ansible markup can be used."
+            $ref: "#/definitions/description"
+          requirements:  # Extension on top of draft Ansible playbook spec format
+            description: "A list of requirements for the playbook."
+            type: array
+            items:
+              description: "A requirement for the playbook.
+                May contain multiple paragraphs of multiple lines. Ansible markup can be used."
+              $ref: "#/definitions/description"
+          version_added:  # Extension on top of draft Ansible playbook spec format
+            description: "Collection or Ansible version in which the playbook was added"
+            type: string
+          author:  # Extension on top of draft Ansible playbook spec format
+            description: "The author(s) of the playbook. A single author can be specified as a single string or as a list of strings with one item."
+            oneOf:
+              - description: "Full name of the author."
+                type: string
+              - description: "A list of authors."
+                type: array
+                items:
+                  description: "Full name of the author."
+                  type: string
+          input_schema:  # Extension on top of draft Ansible playbook spec format
+            # The JSON schema for the input parameters of the playbook
+            $ref: "http://json-schema.org/draft/2020-12/schema"
+          output_schema:  # Extension on top of draft Ansible playbook spec format
+            # The JSON schema for the output parameters of the playbook
+            $ref: "http://json-schema.org/draft/2020-12/schema"
+          examples:  # Extension on top of draft Ansible playbook spec format
+            description: "List of examples for how to use the playbook"
+            type: array
+            items:
+              description: "An example for how to use the playbook"
+              type: object
+              required:
+                - short_description
+                - command
+              additionalProperties: false
+              properties:
+                short_description:
+                  description: "A short, one-line description of the example.
+                    Ansible markup can be used.
+                    It should be a phrase and not a sentence, and it should not end in a period."
+                  type: string
+                description:
+                  description: "A longer description of the example.
+                    May contain multiple paragraphs of multiple lines. Ansible markup can be used."
+                  $ref: "#/definitions/description"
+                command:
+                  description: "The ansible-playbook command for the example"
+                  type: string

@@ -1,6 +1,6 @@
 $schema: "http://json-schema.org/draft/2020-12/schema"
-title: "JSON schema for extended Ansible role spec files"
-description: "JSON schema for validating the extended Ansible role spec file format defined in this project"
+title: "JSON schema for standard Ansible role spec files"
+description: "JSON schema for validating the standard role spec file format defined by Ansible"
 definitions:
   description:
     description: "A description with a single string or a list of strings."
@@ -19,36 +19,34 @@ definitions:
       ^[a-zA-Z0-9_]+$:
         description: "Key: The name of the option."
         type: object
-        required:
-          - description
-        additionalProperties: false
+        additionalProperties: true
         properties:
           description:
-            description: "Detailed explanation of the role option. It should be written in full sentences."
+            description: "Detailed explanation of the role variable. It should be written in full sentences."
             $ref: "#/definitions/description"
           version_added:
-            description: "Collection or Ansible version in which the option was added. Only needed if the option was added after the initial role/entry point release."
+            description: "Collection or Ansible version in which the variable was added. Only needed if the variable was added after the initial role/entry point release."
             type: string
           type:
-            description: "The Ansible data type of the option. See https://docs.ansible.com/projects/ansible/latest/dev_guide/developing_program_flow_modules.html#argument-spec for allowed values. The default is 'str'."
+            description: "The Ansible data type of the variable. See https://docs.ansible.com/projects/ansible/latest/dev_guide/developing_program_flow_modules.html#argument-spec for allowed values. The default is 'str'."
             type: string
           required:
-            description: "Indicates that the option is required to be specified in the role input. Default: false"
+            description: "Indicates that the variable is required to be specified in the role input. Default: false"
             type: boolean
           default:
-            description: "Default value for the option if it is not required. Default: null. If the option has a boolean type, you should use true/false if you want to be compatible with ansible-lint."
+            description: "Default value for the variable if it is not required. Default: null. If the variable has a boolean type, you should use true/false if you want to be compatible with ansible-lint."
             # The default value can have any Ansible data type
           choices:
-            description: "List of valid values for the option."
+            description: "List of valid values for the variable."
             type: array
             items:
-              description: "A valid value for the option."
+              description: "A valid value for the variable."
               # The array items can have any Ansible data type
           elements:
             description: "The Ansible data type for list elements when the type is list."
             type: string
           options:
-            # The structure of the option value when the type is dict.
+            # The structure of the variable value when the type is dict.
             $ref: "#/definitions/options"
 type: object
 required:
@@ -96,26 +94,3 @@ properties:
                   type: string
           options:
             $ref: "#/definitions/options"
-          local:  # Extension on top of standard role spec format
-            $ref: "#/definitions/options"
-          output:  # Extension on top of standard role spec format
-            $ref: "#/definitions/options"
-          examples:  # Extension on top of standard role spec format
-            description: "A list of examples"
-            type: array
-            items:
-              description: "An example"
-              type: object
-              properties:
-                short_description:
-                  description: "A short, one-line description of the example.
-                    Ansible markup can be used.
-                    It should be a phrase and not a sentence, and it should not end in a period."
-                  type: string
-                description:
-                  description: "A longer description of the example.
-                    May contain multiple paragraphs of multiple lines. Ansible markup can be used."
-                  $ref: "#/definitions/description"
-                code:
-                  description: "Playbook/role code for the example"
-                  type: string
