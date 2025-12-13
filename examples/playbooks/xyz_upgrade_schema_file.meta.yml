@@ -1,0 +1,21 @@
+# Spec file format for Ansible playbooks, using the format defined by this project.
+argument_specs:
+  xyz_upgrade_schema_file:
+    short_description: Upgrade XYZ container to a new version (JSON schema file format)
+    description:
+      - This playbook upgrades an XYZ container to a new version.
+      - No version check is performed, this playbook simply replaces the container.
+    requirements:
+      - From where the playbook is run, there is network connectivity to the
+        server running the XYZ container.
+      - Permissions.
+    version_added: "1.17"
+    author:
+      - Andreas Maier
+    options_schema_file: schemas/xyz_upgrade_schema_file_options.yml
+    output_schema_file: schemas/xyz_upgrade_schema_file_output.yml
+    examples:
+      - short_description: Upgrade the XYZ container to a specified version
+        command: |
+          ansible-playbook xyz_upgrade
+              -e '{"params": {"server": "10.11.12.13", "version": "1.8.0"}}'

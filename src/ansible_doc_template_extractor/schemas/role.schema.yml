@@ -33,7 +33,7 @@ definitions:
             description: "The Ansible data type of the option. See https://docs.ansible.com/projects/ansible/latest/dev_guide/developing_program_flow_modules.html#argument-spec for allowed values. The default is 'str'."
             type: string
           required:
-            description: "Indicates that the option is required to be specified in the role input. Default: false"
+            description: "Indicates that the option is required to be specified. Default: false"
             type: boolean
           default:
             description: "Default value for the option if it is not required. Default: null. If the option has a boolean type, you should use true/false if you want to be compatible with ansible-lint."

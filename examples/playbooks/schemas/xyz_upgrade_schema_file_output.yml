@@ -1,0 +1,10 @@
+$schema: "http://json-schema.org/draft/2020-12/schema"
+description: Playbook output variable 'output', in case of success.
+type: object
+additionalProperties: false
+required:
+  - previous_version
+properties:
+  previous_version:
+    description: Version of the XYZ container before the upgrade.
+    type: string
