@@ -27,16 +27,20 @@ definitions:
             description: "Detailed explanation of the role option. It should be written in full sentences."
             $ref: "#/definitions/description"
           version_added:
-            description: "Collection or Ansible version in which the option was added. Only needed if the option was added after the initial role/entry point release."
+            description: "Collection or Ansible version in which the option was added. Only needed if the option was
+              added after the initial role/entry point release."
             type: string
           type:
-            description: "The Ansible data type of the option. See https://docs.ansible.com/projects/ansible/latest/dev_guide/developing_program_flow_modules.html#argument-spec for allowed values. The default is 'str'."
+            description: "The Ansible data type of the option. See
+              https://docs.ansible.com/projects/ansible/latest/dev_guide/developing_program_flow_modules.html#argument-spec
+              for allowed values. The default is 'str'."
             type: string
           required:
             description: "Indicates that the option is required to be specified. Default: false"
             type: boolean
           default:
-            description: "Default value for the option if it is not required. Default: null. If the option has a boolean type, you should use true/false if you want to be compatible with ansible-lint."
+            description: "Default value for the option if it is not required. Default: null. If the option has a
+              boolean type, you should use true/false if you want to be compatible with ansible-lint."
             # The default value can have any Ansible data type
           choices:
             description: "List of valid values for the option."
@@ -79,13 +83,15 @@ properties:
               It should be a phrase and not a sentence, and it should not end in a period."
             type: string
           description:
-            description: "A longer description of the role entry point that may contain multiple lines. Ansible markup can be used."
+            description: "A longer description of the role entry point that may contain multiple lines. Ansible markup
+              can be used."
             $ref: "#/definitions/description"
           version_added:
             description: "Collection or Ansible version in which the role entry point was added."
             type: string
           author:
-            description: "The author(s) of the role. A single author can be specified as a single string or as a list of strings with one item."
+            description: "The author(s) of the role. A single author can be specified as a single string or as a list
+              of strings with one item."
             oneOf:
               - description: "Full name of the author."
                 type: string

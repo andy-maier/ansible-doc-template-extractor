@@ -89,7 +89,7 @@ Examples
 
 
 
-  .. code-block:: bash
+  .. code-block:: yaml
 
       tasks:
       
