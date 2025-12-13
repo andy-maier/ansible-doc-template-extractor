@@ -1,7 +1,7 @@
 # Spec file format for Ansible playbooks, using the format defined by this project.
 argument_specs:
   xyz_upgrade_schema:
-    short_description: Upgrade XYZ container to a new version (JSON schema format)
+    short_description: Upgrade XYZ container to a new version (Embedded JSON schema format)
     description:
       - This playbook upgrades an XYZ container to a new version.
       - No version check is performed, this playbook simply replaces the container.

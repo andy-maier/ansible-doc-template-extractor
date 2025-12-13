@@ -1,0 +1,36 @@
+$schema: "http://json-schema.org/draft/2020-12/schema"
+description: Playbook input variable 'params'.
+type: object
+additionalProperties: false
+required:
+  - server
+  - version
+properties:
+  server:
+    description: IP address or hostname of the server that runs the XYZ container.
+    type: string
+  version:
+    description: Desired new version of the XYZ container.
+    type: string
+  foo_object:
+    description: Demonstrate nested objects
+    type: object
+    additionalProperties: false
+    required:
+      - bar
+    properties:
+      bar:
+        description: The bar.
+        type: string
+  foo_array:
+    description: Demonstrate nested array of objects
+    type: array
+    items:
+      type: object
+      additionalProperties: false
+      required:
+        - bar
+      properties:
+        bar:
+          description: The bar.
+          type: string

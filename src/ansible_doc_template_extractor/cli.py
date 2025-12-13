@@ -18,6 +18,9 @@ import os
 import re
 import argparse
 import sys
+import pathlib
+import json
+
 import jinja2
 import yaml
 import jsonschema
@@ -271,7 +274,7 @@ def template_error_msg(filename, exc):
         line_txt = f", line {exc.lineno}"
     else:
         line_txt = ""
-    return (f"Error: Could not render template file {filename}{line_txt}: "
+    return (f"Could not render template file {filename}{line_txt}: "
             f"{exc.__class__.__name__}: {exc}")
 
 
@@ -289,6 +292,69 @@ def to_md_filter(text):
     constructs such as "C(...)".
     """
     return to_md(parse(text, Context()))
+
+
+def load_schema_file_function(schema_file, base_file, kind):
+    """
+    Jinja2 global function that loads a JSON schema file and validates the
+    schema against the JSON meta-schema.
+
+    The JSON schema file must be in JSON or YAML format.
+
+    The path name of the JSON schema file must be relative to the directory of
+    the base file.
+
+    Parameters:
+
+      schema_file (str): Relative path name of JSON schema file to be loaded.
+
+      base_file (str): Path name of the base file whose directory path
+        is used to locate the schema file.
+
+      kind (str): Kind of schema file, for error messages.
+
+    Returns:
+
+      dict: Content of the JSON schema file, parsed into a Python dict.
+
+    Raises:
+
+      Error: Loading or validation failed.
+    """
+    schema_file = pathlib.Path(base_file).parent / schema_file
+
+    print(f"Loading schema file for {kind}: {schema_file}")
+
+    if schema_file.suffix == ".json":
+        try:
+            with schema_file.open(encoding="utf-8") as f:
+                schema = json.load(f)
+        except (IOError, ValueError) as exc:
+            raise Error(str(exc)) from exc
+    elif schema_file.suffix in {".yml", ".yaml"}:
+        try:
+            with schema_file.open(encoding="utf-8") as f:
+                schema = yaml.safe_load(f)
+        except (IOError, yaml.YAMLError) as exc:
+            raise Error(str(exc)) from exc
+    else:
+        raise Error(
+            f"Schema file for {kind} has an unsupported suffix: {schema_file}")
+
+    print(f"Validating schema for {kind} against JSON meta-schema")
+    try:
+        jsonschema.Draft202012Validator.check_schema(schema)
+    except jsonschema.SchemaError as exc:
+        elem_path = get_path(exc.absolute_path)
+        schema_path = get_path(exc.absolute_schema_path)
+        raise Error(
+            f"The JSON schema in {schema_file} is invalid; schema element "
+            f"{elem_path!r} violates the JSON meta-schema: {exc.message}. "
+            f"Details: Meta-schema item: {schema_path}, "
+            f"Meta-schema validator: {exc.validator}={exc.validator_value}"
+        )
+
+    return schema
 
 
 def get_path(path_list):
@@ -330,7 +396,7 @@ def validate(data, schema, data_file, schema_file, data_kind):
         jsonschema.validate(
             data, schema,
             format_checker=jsonschema.Draft202012Validator.FORMAT_CHECKER)
-    except jsonschema.exceptions.SchemaError as exc:
+    except jsonschema.SchemaError as exc:
         elem_path = get_path(exc.absolute_path)
         schema_path = get_path(exc.absolute_schema_path)
         raise Error(
@@ -339,7 +405,7 @@ def validate(data, schema, data_file, schema_file, data_kind):
             f"Details: Meta-schema item: {schema_path}, "
             f"Meta-schema validator: {exc.validator}={exc.validator_value}"
         )
-    except jsonschema.exceptions.ValidationError as exc:
+    except jsonschema.ValidationError as exc:
         elem_path = get_path(exc.absolute_path)
         schema_path = get_path(exc.absolute_schema_path)
         raise Error(
@@ -405,7 +471,7 @@ def load_yaml_file(kind, yaml_file, schema_file=None, verbose=False):
                 f"Schema file for {kind} has invalid YAML syntax: {exc_str}")
 
         if verbose:
-            print(f"Validating {kind} with schema file")
+            print(f"Validating {kind} against its schema file")
         validate(yaml_obj, schema_obj, yaml_file, schema_file, kind)
 
     return yaml_obj
@@ -464,9 +530,10 @@ def create_output_file(parser, args, spec_file):
     # Let undefined variables fail rendering
     env.undefined = jinja2.StrictUndefined
 
-    # Add Jinja2 filters
+    # Add Jinja2 filters and global functions
     env.filters["to_rst"] = to_rst_filter
     env.filters["to_md"] = to_md_filter
+    env.globals["load_schema_file"] = load_schema_file_function
 
     if verbose:
         print(f"Loading template file: {template_file}")

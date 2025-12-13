@@ -30,7 +30,7 @@ template files:
 * playbook.md.j2: Produces Markdown format from spec files for playbooks.
 
 All these templates support both the Ansible-defined spec file formats and
-the project-defined extensions to these formats.
+the extensions to these formats defined by this project.
 
 These templates are selected automatically based on the detected spec file type
 and output format.
@@ -155,13 +155,26 @@ on top of the draft playbook spec format defined by Ansible
   - `version_added` - Collection or Ansible version that added the playbook.
   - `author` - List of authors of the playbook.
   - `options_schema` - The input parameters of the playbook, described as a
-    JSON schema. This is mutually exclusive to the existing `options` property,
-    which is also supported.
+    JSON schema.
+  - `options_schema_file` - Same as `options_schema`, except that the JSON
+    schema is in a JSON or YAML file that is referenced via its path name,
+    instead of embedding the schema. The path name must be relative to the
+    directory of the spec file referencing the schema file.
   - `output` - The output parameters of the playbook, described in the Ansible
     options format (that is used for `options`).
   - `output_schema` - The output parameters of the playbook, described as a
-    JSON schema. This is mutually exclusive to the `output` property.
+    JSON schema.
+  - `output_schema_file` - Same as `output_schema`, except that the JSON schema
+    is in a JSON or YAML file that is referenced via its path name, instead of
+    embedding the schema. The path name must be relative to the directory of
+    the spec file referencing the schema file.
   - `examples` - A list of examples on how to use the playbook.
+
+  The `options`, `options_schema` and `options_schema_file` properties are
+  mutually exclusive.
+
+  The `output`, `output_schema` and `output_schema_file` properties are
+  mutually exclusive.
 
 * Adds the following properties to the options level:
 

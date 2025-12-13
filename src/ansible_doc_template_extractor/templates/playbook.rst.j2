@@ -61,7 +61,8 @@
 {% endmacro %}
 {% macro schema_generation(obj, level) %}
 {# Macro that generates a list of properties defined in an object within a JSON schema, recursively #}
-{%   for name, spec in obj.properties.items() %}
+{%   for name in obj.properties | default([]) %}
+{%     set spec = obj.properties[name] %}
 {%     set required = name in obj.required %}
 {%     if required %}
 {%       set required_txt = "Required." %}
@@ -160,6 +161,17 @@ Input Parameters
 
 {%   endif %}
 {{ schema_generation(playbook_dict.options_schema, 0) }}
+{% elif playbook_dict.options_schema_file is defined %}
+
+Input Parameters
+----------------
+
+{%   set options_schema = load_schema_file(playbook_dict.options_schema_file, spec_file_name, "input parameters") %}
+{%   if options_schema.description is defined %}
+{{ para_generation(options_schema.description, 0) }}
+
+{%   endif %}
+{{ schema_generation(options_schema, 0) }}
 {% endif %}
 {% if playbook_dict.output is defined %}
 
@@ -177,6 +189,17 @@ Output Parameters
 
 {%   endif %}
 {{ schema_generation(playbook_dict.output_schema, 0) }}
+{% elif playbook_dict.output_schema_file is defined %}
+
+Output Parameters
+-----------------
+
+{%   set output_schema = load_schema_file(playbook_dict.output_schema_file, spec_file_name, "output parameters") %}
+{%   if output_schema.description is defined %}
+{{ para_generation(output_schema.description, 0) }}
+
+{%   endif %}
+{{ schema_generation(output_schema, 0) }}
 {% endif %}
 {% if playbook_dict.examples is defined %}
 
