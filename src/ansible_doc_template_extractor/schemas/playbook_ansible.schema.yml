@@ -25,7 +25,9 @@ definitions:
             description: "Detailed explanation of the option. It should be written in full sentences."
             $ref: "#/definitions/description"
           type:
-            description: "The Ansible data type of the option. See https://docs.ansible.com/projects/ansible/latest/dev_guide/developing_program_flow_modules.html#argument-spec for allowed values. The default is 'str'."
+            description: "The Ansible data type of the option. See
+              https://docs.ansible.com/projects/ansible/latest/dev_guide/developing_program_flow_modules.html#argument-spec
+              for allowed values. The default is 'str'."
             type: string
           required:
             description: "Indicates that the option is required to be specified in the role input. Default: false"

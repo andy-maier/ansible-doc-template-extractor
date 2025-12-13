@@ -80,7 +80,7 @@ This role is idempotent\.
 
 
 
-  ```
+  ```yaml
   tasks:
   
     - name: "Ensure host object exists on storage system"
