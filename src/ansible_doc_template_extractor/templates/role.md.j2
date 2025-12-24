@@ -54,6 +54,9 @@
 {{ "  " * level }}  {{ choices_txt | to_md }}
 {%     endif %}
 {%     if spec.options is defined %}
+
+{{ "  " * level }}  Dict items:
+
 {{ option_generation(spec.options, level + 1) }}
 {%     endif %}
 
