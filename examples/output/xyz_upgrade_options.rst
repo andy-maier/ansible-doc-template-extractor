@@ -56,6 +56,9 @@ Input Parameters
 
 
   Optional.
+
+  Dict items:
+
   * **bar** (str):
 
     The bar.
@@ -71,6 +74,9 @@ Input Parameters
 
 
   Optional.
+
+  Dict items:
+
   * **bar** (str):
 
     The bar.

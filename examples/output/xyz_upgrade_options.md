@@ -48,6 +48,9 @@ Permissions\.
 
 
   Optional\.
+
+  Dict items:
+
   * **bar** (str):
 
     The bar\.
@@ -63,6 +66,9 @@ Permissions\.
 
 
   Optional\.
+
+  Dict items:
+
   * **bar** (str):
 
     The bar\.
