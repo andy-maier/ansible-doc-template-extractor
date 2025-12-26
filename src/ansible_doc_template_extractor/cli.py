@@ -26,7 +26,7 @@ import yaml
 import jsonschema
 import jinja2_ansible_filters
 from antsibull_docs_parser.parser import parse, Context
-from antsibull_docs_parser.rst import to_rst_plain
+from antsibull_docs_parser.rst import to_rst
 from antsibull_docs_parser.md import to_md
 
 try:
@@ -42,6 +42,7 @@ DEFAULT_OUT_DIR = "."
 DEFAULT_OUT_DIR_STR = \
     "Current directory" if DEFAULT_OUT_DIR == "." else DEFAULT_OUT_DIR
 
+LIST_STARTERS = ("*", "-", "#")
 
 # Directory separator related patterns.
 # Note: On Windows, the separator can be '/' or '\', so we need to allow for
@@ -212,7 +213,7 @@ The following rules apply when writing templates:
 
   - The `to_rst` and `to_md` filters that are provided by this program. They
     convert text to RST and Markdown, respectively. They handle formatting and
-    resolve Ansible-specific constructs such as "C(...)".
+    resolve Ansible markup such as "C(...)".
 
 * The following Jinja2 variables are set for use by the template:
 
@@ -278,12 +279,49 @@ def template_error_msg(filename, exc):
             f"{exc.__class__.__name__}: {exc}")
 
 
+def normalized_text(text):
+    """
+    Return normalized text by:
+    * Inserting a blank line before a bullet line if the previous line is not
+      empty.
+    * Inserting a blank line after a bullet line if the next line is not empty
+      and not a bullet line
+    """
+    lines = text.splitlines()
+    normalized_lines = []
+    for i, line in enumerate(lines):
+        stripped = line.strip()
+
+        # Insert blank line before a bullet line
+        if (stripped.startswith(LIST_STARTERS) and i > 0
+                and lines[i - 1].strip() != ""):
+            normalized_lines.append("")
+        normalized_lines.append(line)
+
+        # Insert blank line after a bullet line
+        if (stripped.startswith(LIST_STARTERS) and i + 1 < len(lines)
+                and not lines[i + 1].strip().startswith(LIST_STARTERS)
+                and lines[i + 1].strip() != ""):
+            normalized_lines.append("")
+
+    normalized_str = "\n".join(normalized_lines)
+    return normalized_str
+
+
 def to_rst_filter(text):
     """
     Jinja2 filter that converts text to RST, resolving Ansible specific
     constructs such as "C(...)".
     """
-    return to_rst_plain(parse(text, Context()))
+    try:
+        parsed_items = parse(text, Context(), errors="exception")
+    except ValueError as exc:
+        raise Error(f"Cannot parse text as RST: {exc}") from exc
+    rst_text = to_rst(parsed_items)
+    for c in LIST_STARTERS:
+        rst_text = rst_text.replace(f"\\{c}", c)
+    rst_text = normalized_text(rst_text)
+    return rst_text
 
 
 def to_md_filter(text):
@@ -291,7 +329,15 @@ def to_md_filter(text):
     Jinja2 filter that converts text to Markdown, resolving Ansible specific
     constructs such as "C(...)".
     """
-    return to_md(parse(text, Context()))
+    try:
+        parsed_items = parse(text, Context(), errors="exception")
+    except ValueError as exc:
+        raise Error(f"Cannot parse text as Markdown: {exc}") from exc
+    md_text = to_md(parsed_items)
+    for c in LIST_STARTERS:
+        md_text = md_text.replace(f"\\{c}", c)
+    md_text = normalized_text(md_text)
+    return md_text
 
 
 def load_schema_file_function(schema_file, base_file, kind):

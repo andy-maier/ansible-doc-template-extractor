@@ -131,23 +131,23 @@ TESTCASES_TO_MD_FILTER = [
         None
     ),
     (
-        "Asterisk list chars are escaped",
+        "Asterisk list chars are preserved",
         "* List item 1",
-        "\\* List item 1",
+        "* List item 1",
         None,
         None
     ),
     (
-        "Dash list chars are escaped",
+        "Dash list chars are preserved",
         "- List item 1",
-        "\\- List item 1",
+        "- List item 1",
         None,
         None
     ),
     (
-        "Number list chars are escaped",
+        "Number list chars are preserved",
         "# List item 1",
-        "\\# List item 1",
+        "# List item 1",
         None,
         None
     ),
