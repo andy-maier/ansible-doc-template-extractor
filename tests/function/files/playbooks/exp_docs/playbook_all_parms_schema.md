@@ -72,7 +72,21 @@ Test playbook with all input/output parameters with embedded JSON schema
 
       Optional\.
 
+    * **^inparm_dict_dict_pat_[0-9]$** (str):
 
+      Optional pattern inparm\_dict\_dict parameter of type str
+
+
+      Optional\.
+
+
+
+  * **^inparm_dict_pat_[0-9]$** (str):
+
+    Optional pattern inparm\_dict parameter of type str
+
+
+    Optional\.
 
 
 
@@ -119,7 +133,21 @@ Test playbook with all input/output parameters with embedded JSON schema
 
 
 
+  * **^inparm_list_dict_pat_[0-9]$** (str):
 
+    Optional pattern inparm\_list\_dict\_dict parameter of type str
+
+
+    Optional\.
+
+
+
+* **^inparm_pat_[0-9]$** (str):
+
+  Optional pattern input parameter of type str
+
+
+  Optional\.
 
 
 
@@ -178,7 +206,21 @@ Test playbook with all input/output parameters with embedded JSON schema
 
       Optional\.
 
+    * **^outparm_dict_dict_pat_[0-9]$** (str):
 
+      Optional pattern outparm\_dict\_dict parameter of type str
+
+
+      Optional\.
+
+
+
+  * **^outparm_dict_pat_[0-9]$** (str):
+
+    Optional pattern outparm\_dict parameter of type str
+
+
+    Optional\.
 
 
 
@@ -225,7 +267,21 @@ Test playbook with all input/output parameters with embedded JSON schema
 
 
 
+  * **^outparm_list_dict_pat_[0-9]$** (str):
 
+    Optional pattern outparm\_list\_dict\_dict parameter of type str
+
+
+    Optional\.
+
+
+
+* **^outparm_pat_[0-9]$** (str):
+
+  Optional pattern output parameter of type str
+
+
+  Optional\.
 
 
 

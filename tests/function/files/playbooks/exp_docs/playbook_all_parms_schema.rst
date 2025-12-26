@@ -80,7 +80,21 @@ Input Parameters
 
       Optional.
 
+    * **^inparm_dict_dict_pat_[0-9]$** (str):
 
+      Optional pattern inparm\_dict\_dict parameter of type str
+
+
+      Optional.
+
+
+
+  * **^inparm_dict_pat_[0-9]$** (str):
+
+    Optional pattern inparm\_dict parameter of type str
+
+
+    Optional.
 
 
 
@@ -127,7 +141,21 @@ Input Parameters
 
 
 
+  * **^inparm_list_dict_pat_[0-9]$** (str):
 
+    Optional pattern inparm\_list\_dict\_dict parameter of type str
+
+
+    Optional.
+
+
+
+* **^inparm_pat_[0-9]$** (str):
+
+  Optional pattern input parameter of type str
+
+
+  Optional.
 
 
 
@@ -187,7 +215,21 @@ Output Parameters
 
       Optional.
 
+    * **^outparm_dict_dict_pat_[0-9]$** (str):
 
+      Optional pattern outparm\_dict\_dict parameter of type str
+
+
+      Optional.
+
+
+
+  * **^outparm_dict_pat_[0-9]$** (str):
+
+    Optional pattern outparm\_dict parameter of type str
+
+
+    Optional.
 
 
 
@@ -234,7 +276,21 @@ Output Parameters
 
 
 
+  * **^outparm_list_dict_pat_[0-9]$** (str):
 
+    Optional pattern outparm\_list\_dict\_dict parameter of type str
+
+
+    Optional.
+
+
+
+* **^outparm_pat_[0-9]$** (str):
+
+  Optional pattern output parameter of type str
+
+
+  Optional.
 
 
 
