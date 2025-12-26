@@ -41,6 +41,14 @@ argument_specs:
                 inparm_dict_dict_str:
                   description: Optional inparm_dict_dict parm of type str
                   type: string
+              patternProperties:
+                ^inparm_dict_dict_pat_[0-9]$:
+                  description: Optional pattern inparm_dict_dict parameter of type str
+                  type: string
+          patternProperties:
+            ^inparm_dict_pat_[0-9]$:
+              description: Optional pattern inparm_dict parameter of type str
+              type: string
         inparm_list_str:
           description: Optional input parameter of type list of str
           type: array
@@ -66,6 +74,14 @@ argument_specs:
                   inparm_list_dict_dict_str:
                     description: Optional inparm_list_dict_dict parm of type str
                     type: string
+            patternProperties:
+              ^inparm_list_dict_pat_[0-9]$:
+                description: Optional pattern inparm_list_dict_dict parameter of type str
+                type: string
+      patternProperties:
+        ^inparm_pat_[0-9]$:
+          description: Optional pattern input parameter of type str
+          type: string
     output_schema:
       title: "JSON schema for playbook_all_parms_schema_file output parameters"
       description: "JSON schema for playbook_all_parms_schema_file output parameters"
@@ -101,6 +117,14 @@ argument_specs:
                 outparm_dict_dict_str:
                   description: Optional outparm_dict_dict parm of type str
                   type: string
+              patternProperties:
+                ^outparm_dict_dict_pat_[0-9]$:
+                  description: Optional pattern outparm_dict_dict parameter of type str
+                  type: string
+          patternProperties:
+            ^outparm_dict_pat_[0-9]$:
+              description: Optional pattern outparm_dict parameter of type str
+              type: string
         outparm_list_str:
           description: Optional output parameter of type list of str
           type: array
@@ -126,4 +150,12 @@ argument_specs:
                   outparm_list_dict_dict_str:
                     description: Optional outparm_list_dict_dict parm of type str
                     type: string
+            patternProperties:
+              ^outparm_list_dict_pat_[0-9]$:
+                description: Optional pattern outparm_list_dict_dict parameter of type str
+                type: string
+      patternProperties:
+        ^outparm_pat_[0-9]$:
+          description: Optional pattern output parameter of type str
+          type: string
     examples: []
