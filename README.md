@@ -107,6 +107,24 @@ Display the help message to learn about other options:
 $ ansible-doc-template-extractor --help
 ```
 
+# Generated RST and Markdown
+
+The extractor uses functions from the
+[antsibull-docs-parser](https://docs.ansible.com/projects/antsibull-docs-parser)
+package to generate RST or Markdown and performs post-processing in order to
+preserve lines that start with `*`, `-`, or `#`.
+
+This provides support for correctly processing
+[Ansible markup](https://docs.ansible.com/projects/ansible/latest/dev_guide/ansible_markup.html)
+(e.g. `C(constant)`).
+
+For RST, the
+[antsibull_docs_parser.rst.to_rst()](https://docs.ansible.com/projects/antsibull-docs-parser/python-api/#antsibull_docs_parser.rst.to_rst)
+function is used. That function creates specific Sphinx roles that require the
+`sphinx_antsibull_ext` Sphinx extension to be used, which is provided by the
+"antsibull-docs" Pyhton package. For example, the documentation string text
+`O(state=present)` is translated to `` :ansopt:`state=present` ``.
+
 # Project-defined spec file formats
 
 This project has defined spec file formats that extend the Ansible-defined
