@@ -122,7 +122,7 @@ For RST, the
 [antsibull_docs_parser.rst.to_rst()](https://docs.ansible.com/projects/antsibull-docs-parser/python-api/#antsibull_docs_parser.rst.to_rst)
 function is used. That function creates specific Sphinx roles that require the
 `sphinx_antsibull_ext` Sphinx extension to be used, which is provided by the
-"antsibull-docs" Pyhton package. For example, the documentation string text
+"antsibull-docs" Python package. For example, the documentation string text
 `O(state=present)` is translated to `` :ansopt:`state=present` ``.
 
 # Project-defined spec file formats
