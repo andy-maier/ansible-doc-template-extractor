@@ -1,0 +1,60 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+title: "JSON schema for playbook_all_parms_schema_file input parameters"
+description: "JSON schema for playbook_all_parms_schema_file input parameters"
+type: object
+required:
+  - inparm_str
+additionalProperties: false
+properties:
+  inparm_str:
+    description: Required input parameter of type str
+    type: string
+  inparm_bool:
+    description: Optional input parameter of type bool
+    type: boolean
+  inparm_int:
+    description: Optional input parameter of type int
+    type: integer
+  inparm_dict:
+    description: Optional input parameter of type dict
+    type: object
+    required: []
+    additionalProperties: false
+    properties:
+      inparm_dict_str:
+        description: Optional inparm_dict parm of type str
+        type: string
+      inparm_dict_dict:
+        description: Optional inparm_dict parm of type dict
+        type: object
+        required: []
+        additionalProperties: false
+        properties:
+          inparm_dict_dict_str:
+            description: Optional inparm_dict_dict parm of type str
+            type: string
+  inparm_list_str:
+    description: Optional input parameter of type list of str
+    type: array
+    items:
+      type: string
+  inparm_list_dict:
+    description: Optional input parameter of type list of dict
+    type: array
+    items:
+      type: object
+      required: []
+      additionalProperties: false
+      properties:
+        inparm_list_dict_str:
+          description: Optional inparm_list_dict parm of type str
+          type: string
+        inparm_list_dict_dict:
+          description: Optional inparm_list_dict parm of type dict
+          type: object
+          required: []
+          additionalProperties: false
+          properties:
+            inparm_list_dict_dict_str:
+              description: Optional inparm_list_dict_dict parm of type str
+              type: string

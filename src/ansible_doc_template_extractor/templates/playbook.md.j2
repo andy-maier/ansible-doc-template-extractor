@@ -64,6 +64,14 @@
 {% endmacro %}
 {% macro schema_generation(obj, level) %}
 {# Macro that generates a list of properties defined in an object within a JSON schema, recursively #}
+{%   set ansible_type = {
+       'string': 'str',
+       'integer': 'int',
+       'number': 'float',
+       'boolean': 'bool',
+       'object': 'dict',
+       'array': 'list',
+     } %}
 {%   for name in obj.properties | default([]) %}
 {%     set spec = obj.properties[name] %}
 {%     set required = name in obj.required %}
@@ -76,12 +84,16 @@
 {%     endif %}
 {%     if spec.type == 'array' %}
 {%       if spec.__getitem__('items') is defined %}
-{%         set type_txt = "list of {}".format(spec.__getitem__('items').type) %}
+{%         set _json_type = spec.__getitem__('items').type %}
+{%         set _ansi_type = ansible_type.get(_json_type, _json_type) %}
+{%         set type_txt = "list of {}".format(_ansi_type) %}
 {%       else %}
 {%         set type_txt = "list" %}
 {%       endif %}
 {%     else %}
-{%       set type_txt = spec.type %}
+{%       set _json_type = spec.type %}
+{%       set _ansi_type = ansible_type.get(_json_type, _json_type) %}
+{%       set type_txt = _ansi_type %}
 {%     endif %}
 {%     if spec.enum is defined %}
 {%       set choices_txt = "Choices: {}.".format(spec.enum | join(', ')) %}
@@ -98,8 +110,14 @@
 {%     endif %}
 {%     if spec.type == 'array' and spec.__getitem__('items') is defined %}
 
+{%       if spec.__getitem__('items').type == 'object' %}
+{{ "  " * level }}  Dict items:
+
+{%       endif %}
 {{ schema_generation(spec.__getitem__('items'), level + 1) }}
 {%     elif spec.type == 'object' and spec.properties is defined %}
+
+{{ "  " * level }}  Dict items:
 
 {{ schema_generation(spec, level + 1) }}
 {%     endif %}

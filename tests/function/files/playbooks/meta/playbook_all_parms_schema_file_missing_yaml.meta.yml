@@ -1,0 +1,11 @@
+argument_specs:
+  playbook_all_parms_schema_file_missing_yaml:
+    short_description: Test playbook with all input/output parameters with non-existing JSON schema files in YAML
+    description: Test playbook with all input/output parameters with non-existing JSON schema files in YAML
+    requirements: []
+    version_added: "0.0"
+    author:
+      - Someone
+    options_schema_file: missing.schema.yml
+    output_schema_file: missing.schema.yml
+    examples: []

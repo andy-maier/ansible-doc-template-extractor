@@ -1,0 +1,82 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "JSON schema for playbook_all_parms_schema_file output parameters",
+    "description": "JSON schema for playbook_all_parms_schema_file output parameters",
+    "type": "object",
+    "required": [
+        "outparm_str"
+    ],
+    "additionalProperties": false,
+    "properties": {
+        "outparm_str": {
+            "description": "Required output parameter of type str",
+            "type": "string"
+        },
+        "outparm_bool": {
+            "description": "Optional output parameter of type bool",
+            "type": "boolean"
+        },
+        "outparm_int": {
+            "description": "Optional output parameter of type int",
+            "type": "integer"
+        },
+        "outparm_dict": {
+            "description": "Optional output parameter of type dict",
+            "type": "object",
+            "required": [],
+            "additionalProperties": false,
+            "properties": {
+                "outparm_dict_str": {
+                    "description": "Optional outparm_dict parm of type str",
+                    "type": "string"
+                },
+                "outparm_dict_dict": {
+                    "description": "Optional outparm_dict parm of type dict",
+                    "type": "object",
+                    "required": [],
+                    "additionalProperties": false,
+                    "properties": {
+                        "outparm_dict_dict_str": {
+                            "description": "Optional outparm_dict_dict parm of type str",
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "outparm_list_str": {
+            "description": "Optional output parameter of type list of str",
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
+        "outparm_list_dict": {
+            "description": "Optional output parameter of type list of dict",
+            "type": "array",
+            "items": {
+                "type": "object",
+                "required": [],
+                "additionalProperties": false,
+                "properties": {
+                    "outparm_list_dict_str": {
+                        "description": "Optional outparm_list_dict parm of type str",
+                        "type": "string"
+                    },
+                    "outparm_list_dict_dict": {
+                        "description": "Optional outparm_list_dict parm of type dict",
+                        "type": "object",
+                        "required": [],
+                        "additionalProperties": false,
+                        "properties": {
+                            "outparm_list_dict_dict_str": {
+                                "description": "Optional outparm_list_dict_dict parm of type str",
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

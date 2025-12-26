@@ -1,4 +1,4 @@
-$schema: "http://json-schema.org/draft/2020-12/schema"
+$schema: "https://json-schema.org/draft/2020-12/schema"
 title: "JSON schema for extended Ansible role spec files"
 description: "JSON schema for validating the extended Ansible role spec file format defined in this project"
 definitions:

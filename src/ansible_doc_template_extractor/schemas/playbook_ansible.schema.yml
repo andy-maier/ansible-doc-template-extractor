@@ -1,4 +1,4 @@
-$schema: "http://json-schema.org/draft/2020-12/schema"
+$schema: "https://json-schema.org/draft/2020-12/schema"
 title: "JSON schema for draft Ansible playbook spec files"
 description: "JSON schema for validating the draft playbook spec file format defined by Ansible (see https://docs.ansible.com/projects/ansible/devel/playbook_guide/playbooks_variables_validation.html#specification-format)"
 definitions:
