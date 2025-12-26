@@ -36,32 +36,30 @@ Version added
 Input Parameters
 ----------------
 
-Playbook input variable 'params'.
-
-
-
-* **server** (string):
+* **server** (str):
 
   IP address or hostname of the server that runs the XYZ container.
 
 
   Required.
 
-* **version** (string):
+* **version** (str):
 
   Desired new version of the XYZ container.
 
 
   Required.
 
-* **foo_object** (object):
+* **foo_object** (dict):
 
   Demonstrate nested objects
 
 
   Optional.
 
-  * **bar** (string):
+  Dict items:
+
+  * **bar** (str):
 
     The bar.
 
@@ -70,14 +68,16 @@ Playbook input variable 'params'.
 
 
 
-* **foo_array** (list of object):
+* **foo_array** (list of dict):
 
   Demonstrate nested array of objects
 
 
   Optional.
 
-  * **bar** (string):
+  Dict items:
+
+  * **bar** (str):
 
     The bar.
 
@@ -91,11 +91,7 @@ Playbook input variable 'params'.
 Output Parameters
 -----------------
 
-Playbook output variable 'output', in case of success.
-
-
-
-* **previous_version** (string):
+* **previous_version** (str):
 
   Version of the XYZ container before the upgrade.
 
