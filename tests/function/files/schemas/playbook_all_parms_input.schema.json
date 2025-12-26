@@ -23,7 +23,6 @@
         "inparm_dict": {
             "description": "Optional input parameter of type dict",
             "type": "object",
-            "required": [],
             "additionalProperties": false,
             "properties": {
                 "inparm_dict_str": {
@@ -33,7 +32,6 @@
                 "inparm_dict_dict": {
                     "description": "Optional inparm_dict parm of type dict",
                     "type": "object",
-                    "required": [],
                     "additionalProperties": false,
                     "properties": {
                         "inparm_dict_dict_str": {
@@ -56,7 +54,6 @@
             "type": "array",
             "items": {
                 "type": "object",
-                "required": [],
                 "additionalProperties": false,
                 "properties": {
                     "inparm_list_dict_str": {
@@ -66,7 +63,6 @@
                     "inparm_list_dict_dict": {
                         "description": "Optional inparm_list_dict parm of type dict",
                         "type": "object",
-                        "required": [],
                         "additionalProperties": false,
                         "properties": {
                             "inparm_list_dict_dict_str": {
