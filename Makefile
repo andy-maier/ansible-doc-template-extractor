@@ -165,6 +165,20 @@ pylint_rc_file := .pylintrc
 
 pip_level_opts := --upgrade --upgrade-strategy eager
 
+# Pytest
+test_dir := tests
+
+test_py_files := \
+    $(wildcard $(test_dir)/*.py) \
+		$(wildcard $(test_dir)/*/*.py) \
+
+pytest_base_opts := $(TESTOPTS)
+ifdef TESTCASES
+  pytest_opts := $(pytest_base_opts) -k "$(TESTCASES)"
+else
+  pytest_opts := $(pytest_base_opts)
+endif
+
 .PHONY: help
 help:
 	@echo "Makefile for project $(pypi_package_name)"
@@ -178,6 +192,7 @@ help:
 	@echo "  pylint     - Perform pylint checks"
 	@echo "  bandit     - Run bandit checker"
 	@echo "  build      - Build the distribution files in $(dist_dir)"
+	@echo "  test       - Run unit and function tests"
 	@echo "  authors    - Generate AUTHORS.md file from git log"
 	@echo "  examples   - Generate the examples"
 	@echo "  all        - Do all of the above"
@@ -262,7 +277,7 @@ build: _check_version $(bdist_file) $(sdist_file)
 	@echo "Makefile: $@ done."
 
 .PHONY: all
-all: install develop check ruff pylint bandit build authors
+all: install develop check ruff pylint bandit build test authors
 	@echo "Makefile: $@ done."
 
 .PHONY: examples
@@ -395,12 +410,12 @@ clean:
 	-$(call RM_R_FUNC,tmp_*)
 	-$(call RM_FUNC,MANIFEST MANIFEST.in)
 	-$(call RMDIR_R_FUNC,__pycache__)
-	-$(call RMDIR_FUNC,build src/ansible_doc_template_extractor.egg-info)
+	-$(call RMDIR_FUNC,build src/ansible_doc_template_extractor.egg-info .pytest_cache .coverage.*)
 	@echo "Makefile: $@ done."
 
 .PHONY: clobber
 clobber: clean
-	-$(call RMDIR_FUNC,$(doc_build_dir) htmlcov)
+	-$(call RMDIR_FUNC,$(doc_build_dir) htmlcov .coverage)
 	-$(call RM_R_FUNC,*.done)
 	@echo "Makefile: $@ done."
 
@@ -437,28 +452,34 @@ $(bdist_file) $(version_file): $(done_dir)/develop_$(pymn).done $(dist_dependent
 	bash -c "ls -l $(bdist_file) $(version_file) || ls -l $(dist_dir) && $(PYTHON_CMD) -m setuptools_scm"
 	@echo "Makefile: Done building the wheel distribution archive: $(bdist_file)"
 
-$(done_dir)/flake8_$(pymn).done: $(done_dir)/develop_$(pymn).done $(flake8_rc_file) $(package_py_files_no_version)
+$(done_dir)/flake8_$(pymn).done: $(done_dir)/develop_$(pymn).done $(flake8_rc_file) $(package_py_files_no_version) $(test_py_files)
 	@echo "Makefile: Performing flake8 checks"
-	flake8 --config $(flake8_rc_file) $(package_py_files_no_version)
+	flake8 --config $(flake8_rc_file) $(package_py_files_no_version) $(test_dir)
 	echo "done" >$@
 	@echo "Makefile: Done performing flake8 checks"
 
-$(done_dir)/ruff_$(pymn).done: $(done_dir)/develop_$(pymn).done $(ruff_rc_file) $(package_py_files_no_version)
+$(done_dir)/ruff_$(pymn).done: $(done_dir)/develop_$(pymn).done $(ruff_rc_file) $(package_py_files_no_version) $(test_py_files)
 	@echo "Makefile: Performing ruff checks"
 	-$(call RM_FUNC,$@)
-	ruff check --unsafe-fixes --config $(ruff_rc_file) $(package_py_files_no_version)
+	ruff check --unsafe-fixes --config $(ruff_rc_file) $(package_py_files_no_version) $(test_dir)
 	echo "done" >$@
 	@echo "Makefile: Done performing ruff checks"
 
-$(done_dir)/pylint_$(pymn).done: $(done_dir)/develop_$(pymn).done $(pylint_rc_file) $(package_py_files_no_version)
+$(done_dir)/pylint_$(pymn).done: $(done_dir)/develop_$(pymn).done $(pylint_rc_file) $(package_py_files_no_version) $(test_py_files)
 	@echo "Makefile: Performing pylint checks"
-	pylint --rcfile=$(pylint_rc_file) --disable=fixme $(package_py_files_no_version)
+	pylint --rcfile=$(pylint_rc_file) --disable=fixme $(package_py_files_no_version) $(test_dir)
 	echo "done" >$@
 	@echo "Makefile: Done performing pylint checks"
 
 $(done_dir)/bandit_$(pymn).done: $(done_dir)/develop_$(pymn).done $(bandit_rc_file) $(package_py_files_no_version)
 	@echo "Makefile: Running Bandit"
 	-$(call RM_FUNC,$@)
-	bandit -c $(bandit_rc_file) -l $(package_py_files_no_version)
+	bandit -c $(bandit_rc_file) -l $(package_py_files_no_version) $(test_dir)
 	echo "done" >$@
 	@echo "Makefile: Done running Bandit"
+
+.PHONY: test
+test: $(done_dir)/develop_$(pymn).done
+	bash -c "PYTHONPATH=src coverage run --append --source=$(package_dir) -m pytest $(pytest_opts) $(test_dir)"
+	coverage report
+	@echo "Makefile: Done running unit and function tests"

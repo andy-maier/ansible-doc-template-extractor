@@ -1,0 +1,11 @@
+argument_specs:
+  playbook_no_parms:
+    short_description: Test playbook with no input or output parameters
+    description: Test playbook with no input or output parameters
+    requirements: []
+    version_added: "0.0"
+    author:
+      - Someone
+    options: {}
+    output: {}
+    examples: []

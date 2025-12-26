@@ -448,7 +448,7 @@ ignore-imports=yes
 ignore-signatures=yes
 
 # Minimum lines number of a similarity.
-min-similarity-lines=20
+min-similarity-lines=100
 
 
 [DESIGN]

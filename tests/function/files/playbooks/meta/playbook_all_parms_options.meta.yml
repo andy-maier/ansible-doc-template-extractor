@@ -1,0 +1,99 @@
+argument_specs:
+  playbook_all_parms_options:
+    short_description: Test playbook with all input/output parameters with Ansible options
+    description: Test playbook with all input/output parameters with Ansible options
+    requirements: []
+    version_added: "0.0"
+    author:
+      - Someone
+    options:
+      inparm_str:
+        type: str
+        required: true
+        description: Required input parameter of type str
+      inparm_bool:
+        type: bool
+        required: false
+        description: Optional input parameter of type bool
+      inparm_int:
+        type: int
+        description: Optional input parameter of type int
+      inparm_dict:
+        type: dict
+        description: Optional input parameter of type dict
+        options:
+          inparm_dict_str:
+            type: str
+            description: Optional inparm_dict parm of type str
+          inparm_dict_dict:
+            type: dict
+            description: Optional inparm_dict parm of type dict
+            options:
+              inparm_dict_dict_str:
+                type: str
+                description: Optional inparm_dict_dict parm of type str
+      inparm_list_str:
+        type: list
+        elements: str
+        description: Optional input parameter of type list of str
+      inparm_list_dict:
+        type: list
+        elements: dict
+        description: Optional input parameter of type list of dict
+        options:
+          inparm_list_dict_str:
+            type: str
+            description: Optional inparm_list_dict parm of type str
+          inparm_list_dict_dict:
+            type: dict
+            description: Optional inparm_list_dict parm of type dict
+            options:
+              inparm_list_dict_dict_str:
+                type: str
+                description: Optional inparm_list_dict_dict parm of type str
+    output:
+      outparm_str:
+        type: str
+        required: true
+        description: Required output parameter of type str
+      outparm_bool:
+        type: bool
+        required: false
+        description: Optional output parameter of type bool
+      outparm_int:
+        type: int
+        description: Optional output parameter of type int
+      outparm_dict:
+        type: dict
+        description: Optional output parameter of type dict
+        options:
+          outparm_dict_str:
+            type: str
+            description: Optional outparm_dict parm of type str
+          outparm_dict_dict:
+            type: dict
+            description: Optional outparm_dict parm of type dict
+            options:
+              outparm_dict_dict_str:
+                type: str
+                description: Optional outparm_dict_dict parm of type str
+      outparm_list_str:
+        type: list
+        elements: str
+        description: Optional output parameter of type list of str
+      outparm_list_dict:
+        type: list
+        elements: dict
+        description: Optional output parameter of type list of dict
+        options:
+          outparm_list_dict_str:
+            type: str
+            description: Optional outparm_list_dict parm of type str
+          outparm_list_dict_dict:
+            type: dict
+            description: Optional outparm_list_dict parm of type dict
+            options:
+              outparm_list_dict_dict_str:
+                type: str
+                description: Optional outparm_list_dict_dict parm of type str
+    examples: []

@@ -558,7 +558,7 @@ def create_output_file(parser, args, spec_file):
                 name = m.group(2)
             else:
                 parser.error(
-                    "for type 'role', the --name option is required if the "
+                    "For type 'role', the --name option is required if the "
                     "spec file name does not follow the role convention.")
         elif spec_type == "playbook":
             m = PLAYBOOK_SPEC_FILE_PATTERN.search(spec_file)
@@ -566,7 +566,7 @@ def create_output_file(parser, args, spec_file):
                 name = m.group(2)
             else:
                 parser.error(
-                    "for type 'playbook', the --name option is required if the "
+                    "For type 'playbook', the --name option is required if the "
                     "spec file name does not follow the playbook convention.")
         else:  # spec_type == "other"
             parser.error("For type 'other', the --name option is required.")
@@ -577,9 +577,7 @@ def create_output_file(parser, args, spec_file):
 
     out_file = os.path.join(out_dir, f"{name}.{out_ext}")
 
-    if args.schema == "":
-        schema_file = None
-    elif args.schema is not None:
+    if args.schema is not None:
         schema_file = args.schema
     elif spec_type in ("role", "playbook"):
         my_dir = os.path.dirname(__file__)
@@ -639,7 +637,7 @@ def main():
         for spec_file in args.spec_file:
             create_output_file(parser, args, spec_file)
     except Error as exc:
-        print(f"Error: {exc}")
+        print(f"Error: {exc}", flush=True)
         return 1
 
     return 0
