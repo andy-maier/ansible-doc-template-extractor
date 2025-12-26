@@ -27,10 +27,6 @@ Version added
 Input Parameters
 ----------------
 
-JSON schema for playbook\_all\_parms\_schema\_file input parameters
-
-
-
 * **inparm_str** (str):
 
   Required input parameter of type str
@@ -137,10 +133,6 @@ JSON schema for playbook\_all\_parms\_schema\_file input parameters
 
 Output Parameters
 -----------------
-
-JSON schema for playbook\_all\_parms\_schema\_file output parameters
-
-
 
 * **outparm_str** (str):
 
