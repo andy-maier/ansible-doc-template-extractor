@@ -73,7 +73,7 @@
        'array': 'list',
      } %}
 {%   for name, spec in (obj.properties | default([]) | combine(obj.patternProperties | default([]))).items() %}
-{%     set required = name in obj.required %}
+{%     set required = name in obj.required | default([]) %}
 {%     if required %}
 {%       set required_txt = "Required." %}
 {%     elif spec.default is defined %}
