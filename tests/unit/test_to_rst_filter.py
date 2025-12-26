@@ -131,16 +131,16 @@ TESTCASES_TO_RST_FILTER = [
         None
     ),
     (
-        "Asterisk list chars are escaped",
+        "Asterisk list chars are preserved",
         "* List item 1",
-        "\\* List item 1",
+        "* List item 1",
         None,
         None
     ),
     (
-        "Dash list chars are escaped",
+        "Dash list chars are preserved",
         "- List item 1",
-        "\\- List item 1",
+        "- List item 1",
         None,
         None
     ),
@@ -182,28 +182,34 @@ TESTCASES_TO_RST_FILTER = [
     (
         "Ansible markup HORIZONTALLINE is processed",
         "The quick brown fox HORIZONTALLINE jumps over the lazy dog",
-        "The quick brown fox\n\n------------\n\njumps over the lazy dog",
+        "The quick brown fox\n"
+        "\n"
+        ".. raw:: html\n"
+        "\n"
+        "  <hr>\n"
+        "\n"
+        "jumps over the lazy dog",
         None,
         None
     ),
     (
         "Ansible markup O() is processed",
         "For O(state=present) the",
-        "For :literal:`state=present` the",
+        "For :ansopt:`state=present` the",
         None,
         None
     ),
     (
         "Ansible markup V() is processed",
         "Value V(blue) is",
-        "Value :literal:`blue` is",
+        "Value :ansval:`blue` is",
         None,
         None
     ),
     (
         "Ansible markup RV() is processed",
         "Return value RV(color=blue) is",
-        "Return value :literal:`color=blue` is",
+        "Return value :ansretval:`color=blue` is",
         None,
         None
     ),

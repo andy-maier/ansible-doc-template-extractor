@@ -9,6 +9,11 @@
 This playbook upgrades an XYZ container to a new version\.
 
 
+An example list\:
+\* item 1
+\* item 2
+
+
 No version check is performed\, this playbook simply replaces the container\.
 
 
