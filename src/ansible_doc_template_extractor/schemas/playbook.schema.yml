@@ -1,6 +1,18 @@
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+---
 $schema: "https://json-schema.org/draft/2020-12/schema"
 title: "JSON schema for extended Ansible playbook spec files"
-description: "JSON schema for validating the Ansible playbook spec file format defined in this project"
+description: "Ansible playbook spec file in extended format"
 definitions:
   description:
     description: "A description with a single string or a list of strings."
@@ -19,6 +31,8 @@ definitions:
       ^[a-zA-Z0-9_]+$:
         description: "Key: The name of the option."
         type: object
+        required:
+          - description
         additionalProperties: false
         properties:
           description:
@@ -131,18 +145,17 @@ properties:
               description: "An example for how to use the playbook"
               type: object
               required:
-                - short_description
                 - command
               additionalProperties: false
               properties:
                 short_description:
                   description: "A short, one-line description of the example.
                     Ansible markup can be used.
-                    It should be a phrase and not a sentence, and it should not end in a period."
+                    It should be a phrase and not a sentence, and it should not end in a period. Default: 'Example'."
                   type: string
                 description:
                   description: "A longer description of the example.
-                    May contain multiple paragraphs of multiple lines. Ansible markup can be used."
+                    May contain multiple paragraphs of multiple lines. Ansible markup can be used. Default: No description."
                   $ref: "#/definitions/description"
                 command:
                   description: "The ansible-playbook command for the example"

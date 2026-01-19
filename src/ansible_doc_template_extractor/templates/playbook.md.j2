@@ -35,10 +35,11 @@
 {%     else %}
 {%       set required_txt = "Optional." %}
 {%     endif %}
-{%     if spec.type == 'list' %}
+{%     set spec_type = spec.type | default('str') %}
+{%     if spec_type == 'list' %}
 {%       set type_txt = "list of {}".format(spec.elements) %}
 {%     else %}
-{%       set type_txt = spec.type %}
+{%       set type_txt = spec_type %}
 {%     endif %}
 {%     if spec.choices is defined %}
 {%       set choices_txt = "Choices: {}.".format(spec.choices | join(', ')) %}
@@ -47,6 +48,7 @@
 {%     endif %}
 {{ "  " * level }}* **{{ name }}** ({{ type_txt }}):
 
+{%     set _ = spec.description | mandatory("Property '{name}' defined in 'options' or 'output' has no 'description' element".format(name=name)) %}
 {{ para_generation(spec.description, level + 1) }}
 {{ "  " * level }}  {{ required_txt | to_md }}
 {%     if spec.choices is defined %}
@@ -82,8 +84,8 @@
 {%       set required_txt = "Optional." %}
 {%     endif %}
 {%     if spec.type == 'array' %}
-{%       if spec.__getitem__('items') is defined %}
-{%         set _json_type = spec.__getitem__('items').type %}
+{%       if 'items' in spec %}
+{%         set _json_type = spec['items'].type %}
 {%         set _ansi_type = ansible_type.get(_json_type, _json_type) %}
 {%         set type_txt = "list of {}".format(_ansi_type) %}
 {%       else %}
@@ -101,19 +103,21 @@
 {%     endif %}
 {{ "  " * level }}* **{{ name }}** ({{ type_txt }}):
 
+{%     set _ = spec.description | mandatory("Property '{name}' defined in 'options_schema' or 'output_schema' or in the JSON schema file referenced by 'options_schema_file' or 'output_schema_file' has no 'description' element".format(name=name)) %}
+{%     set _ = spec.description | mandatory("Property '{name}' has no description".format(name=name)) %}
 {{ para_generation(spec.description, level + 1) }}
 {{ "  " * level }}  {{ required_txt | to_md }}
 {%     if spec.choices is defined %}
 
 {{ "  " * level }}  {{ choices_txt | to_md }}
 {%     endif %}
-{%     if spec.type == 'array' and spec.__getitem__('items') is defined %}
+{%     if spec.type == 'array' and 'items' in spec %}
 
-{%       if spec.__getitem__('items').type == 'object' %}
+{%       if spec['items'].type == 'object' %}
 {{ "  " * level }}  Dict items:
 
 {%       endif %}
-{{ schema_generation(spec.__getitem__('items'), level + 1) }}
+{{ schema_generation(spec['items'], level + 1) }}
 {%     elif spec.type == 'object' and (spec.properties is defined or spec.patternProperties is defined) %}
 
 {{ "  " * level }}  Dict items:
@@ -197,7 +201,11 @@
 ## Examples
 
 {%     for example in playbook_dict.examples %}
+{%       if example.short_description is defined %}
 * {{ para_generation(example.short_description, 0) }}
+{%       else %}
+* Example
+{%       endif %}
 {%       if example.description is defined %}
 
 {{ para_generation(example.description, 1) }}
