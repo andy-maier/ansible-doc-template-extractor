@@ -112,7 +112,11 @@
 ## Examples
 
 {%     for example in role_dict.examples %}
+{%       if example.short_description is defined %}
 * {{ para_generation(example.short_description, 0) }}
+{%       else %}
+* Example
+{%       endif %}
 {%       if example.description is defined %}
 
 {{ para_generation(example.description, 1) }}
