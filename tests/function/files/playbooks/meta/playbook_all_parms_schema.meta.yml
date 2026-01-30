@@ -106,8 +106,10 @@ argument_specs:
           additionalProperties: false
           properties:
             outparm_dict_str:
-              description: Optional outparm_dict parm of type str
-              type: string
+              description: Optional outparm_dict parm of type str or null
+              type:
+                - string
+                - "null"
             outparm_dict_dict:
               description: Optional outparm_dict parm of type dict
               type: object
