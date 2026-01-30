@@ -1,0 +1,11 @@
+argument_specs:
+  playbook_invalid_name_foo:
+    short_description: Test playbook with invalid name in argument_specs
+    description: Test playbook with invalid name in argument_specs
+    requirements: []
+    version_added: "0.0"
+    author:
+      - Someone
+    options: {}
+    output: {}
+    examples: []

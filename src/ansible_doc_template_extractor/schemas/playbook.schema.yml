@@ -72,8 +72,10 @@ required:
 additionalProperties: false
 properties:
   argument_specs:
-    description: "The argument specifications for the playbook."
+    description: "The argument specifications for the playbook. Only one playbook can be specified"
     type: object
+    minProperties: 1
+    maxProperties: 1
     patternProperties:
       ^[a-zA-Z0-9_]+$:
         description: "Key: The name of the playbook (just the base name, without namespace and file extension)."

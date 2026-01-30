@@ -507,6 +507,17 @@ TESTCASES_ALL = [
         "MYDIR/files/playbooks/exp_docs/playbook_all_parms_schema.md"
     ),
     (
+        "Check error reporting for invalid playbook name in spec file",
+        True,
+        ["--out-dir", "TEMPDIR", "--format", "md",
+         "MYDIR/files/playbooks/meta/playbook_invalid_name.meta.yml"],
+        1,
+        ["The child element of 'argument_specs' does not specify the playbook "
+         "name 'playbook_invalid_name', but 'playbook_invalid_name_foo'"],
+        [],
+        None
+    ),
+    (
         "Role with schema file with invalid meta-schema",
         True,
         ["--out-dir", "TEMPDIR",
