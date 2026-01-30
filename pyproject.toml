@@ -6,7 +6,7 @@
 [build-system]
 requires = [
     # Keep in sync with requirements-base.txt
-    "setuptools>=70.0.0",
+    "setuptools>=78.1.1",
     "setuptools-scm[toml]>=9.2.0",
     "wheel>=0.41.3"
 ]
@@ -50,10 +50,11 @@ maintainers = [
 ]
 
 readme = "README.md"
-license = {text = "Apache License, Version 2.0"}
+# License info in new PEP 639 format (since setuptools 77.0.3)
+license = "Apache-2.0"
+license-files = ["LICENSE"]
 keywords = ["ansible", "documentation", "template"]
 classifiers = [
-    "License :: OSI Approved :: Apache Software License",
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Information Technology",
     'Intended Audience :: System Administrators',
