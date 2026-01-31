@@ -266,6 +266,14 @@ You can use the templates in the
 [templates](https://github.com/andy-maier/ansible-doc-template-extractor/blob/main/src/ansible_doc_template_extractor/templates)
 directory as examples for your own custom templates.
 
+# How to release a version
+
+See [Releasing a version](https://github.com/andy-maier/ansible-doc-template-extractor/blob/main/DEVELOP.md#releasing-a-version).
+
+After a release, start a new minor version for the next functional release and a new
+patch version for a potential fix release.
+See [Starting a new version](https://github.com/andy-maier/ansible-doc-template-extractor/blob/main/DEVELOP.md#starting-a-new-version).
+
 # Reporting issues
 
 If you encounter a problem, please report it as an
