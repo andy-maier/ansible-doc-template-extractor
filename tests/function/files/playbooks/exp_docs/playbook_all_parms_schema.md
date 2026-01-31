@@ -183,9 +183,9 @@ Test playbook with all input/output parameters with embedded JSON schema
 
   Dict items:
 
-  * **outparm_dict_str** (str):
+  * **outparm_dict_str** (str/null):
 
-    Optional outparm\_dict parm of type str
+    Optional outparm\_dict parm of type str or null
 
 
     Optional\.

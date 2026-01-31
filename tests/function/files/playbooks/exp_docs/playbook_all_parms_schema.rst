@@ -192,9 +192,9 @@ Output Parameters
 
   Dict items:
 
-  * **outparm_dict_str** (str):
+  * **outparm_dict_str** (str/null):
 
-    Optional outparm\_dict parm of type str
+    Optional outparm\_dict parm of type str or null
 
 
     Optional.

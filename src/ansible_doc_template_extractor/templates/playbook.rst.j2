@@ -64,8 +64,8 @@
 
 {%   endfor %}
 {% endmacro %}
-{% macro schema_generation(obj, root_obj, level) %}
-{# Macro that generates a list of properties and patternProperties defined in an object within a JSON schema, recursively #}
+{% macro ansible_type_txt(json_types) %}
+{# Macro that returns the Ansible type name for a JSON type or list of types #}
 {%   set ansible_type = {
        'string': 'str',
        'integer': 'int',
@@ -74,6 +74,17 @@
        'object': 'dict',
        'array': 'list',
      } %}
+{%  if json_types is string %}
+{%    set json_types = [json_types] %}
+{%  endif %}
+{%  set a_types = [] %}
+{%  for j_type in json_types %}
+{%    do a_types.append(ansible_type.get(j_type, j_type)) %}
+{%  endfor %}
+{{- '/'.join(a_types) -}}
+{% endmacro %}
+{% macro schema_generation(obj, root_obj, level) %}
+{# Macro that generates a list of properties and patternProperties defined in an object within a JSON schema, recursively #}
 {%   for name, spec in (obj.properties | default([]) | combine(obj.patternProperties | default([]))).items() %}
 {%     if '$ref' in spec %}
 {%       set spec_description = spec.description | default(None) %}
@@ -96,16 +107,13 @@
 {%     endif %}
 {%     if spec_type == 'array' %}
 {%       if 'items' in spec %}
-{%         set _json_type = spec['items'].type | default('string') %}
-{%         set _ansi_type = ansible_type.get(_json_type, _json_type) %}
-{%         set type_txt = "list of {}".format(_ansi_type) %}
+{%         set json_types = spec['items'].type | default('string') %}
+{%         set type_txt = "list of {}".format(ansible_type_txt(json_types)) %}
 {%       else %}
 {%         set type_txt = "list" %}
 {%       endif %}
 {%     else %}
-{%       set _json_type = spec_type %}
-{%       set _ansi_type = ansible_type.get(_json_type, _json_type) %}
-{%       set type_txt = _ansi_type %}
+{%       set type_txt = ansible_type_txt(spec_type) %}
 {%     endif %}
 {%     if spec.enum is defined %}
 {%       set choices_txt = "Choices: {}.".format(spec.enum | join(', ')) %}
