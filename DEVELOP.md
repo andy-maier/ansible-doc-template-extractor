@@ -67,7 +67,7 @@ local clone of the Git repo.
     may need to create the milestone for the future version.
 
 2.  Check for any
-    `dependabot alerts <https://github.com/andy-maier/ansible-doc-template-extractor/security/dependabot>`_.
+    [dependabot alerts](https://github.com/andy-maier/ansible-doc-template-extractor/security/dependabot).
 
     If there are any dependabot alerts, fix them in a separate branch/PR.
 
@@ -100,7 +100,8 @@ local clone of the Git repo.
     If this command fails, the fix can be committed to the release branch
     and the command above can be retried.
 
-4.  On GitHub, create a Pull Request for branch `release_M.N.U`.
+4.  On the [GitHub PR page](https://github.com/andy-maier/ansible-doc-template-extractor/pulls),
+    create a Pull Request for branch `release_M.N.U`.
 
     Important: When creating Pull Requests, GitHub by default targets the
     `main` branch. When releasing based on a stable branch, you need to
@@ -115,13 +116,15 @@ local clone of the Git repo.
     tests for all defined environments, since it discovers by the branch name
     that this is a PR for a release.
 
-7.  On GitHub, once the checks for that Pull Request have succeeded, merge the
+7.  On the [GitHub PR page](https://github.com/andy-maier/ansible-doc-template-extractor/pulls),
+    once the checks for that Pull Request have succeeded, merge the
     Pull Request (no review is needed). This automatically deletes the branch
     on GitHub.
 
     If the PR did not succeed, fix the issues.
 
-8.  On GitHub, close milestone `M.N.U`.
+8.  On the [GitHub milestones page](https://github.com/andy-maier/ansible-doc-template-extractor/milestones),
+    close milestone `M.N.U`.
 
     Verify that the milestone has no open items anymore. If it does have open
     items, investigate why and fix (probably step 1 was not performed).
@@ -202,12 +205,14 @@ local clone of the Git repo.
     * create a dummy change
     * commit and push the start branch (`start_M.N.U`)
 
-2.  On GitHub, create a milestone for the new version `M.N.U`.
+2.  On the [GitHub milestones page](https://github.com/andy-maier/ansible-doc-template-extractor/milestones),
+    create a milestone for the new version `M.N.U`.
 
     You can create a milestone in GitHub via Issues -> Milestones -> New
     Milestone.
 
-3.  On GitHub, create a Pull Request for branch `start_M.N.U`.
+3.  On the [GitHub PR page](https://github.com/andy-maier/ansible-doc-template-extractor/pulls),
+    create a Pull Request for branch `start_M.N.U`.
 
     Important: When creating Pull Requests, GitHub by default targets the
     `main` branch. When starting a version based on a stable branch, you
@@ -217,7 +222,8 @@ local clone of the Git repo.
 
     Set the milestone of that PR to the new version `M.N.U`.
 
-4.  On GitHub, go through all open issues and pull requests that still have
+4.  On the [GitHub issues page](https://github.com/andy-maier/ansible-doc-template-extractor/issues),
+    go through all open issues and pull requests that still have
     milestones for previous releases set, and either set them to the new
     milestone, or to have no milestone.
 
@@ -225,7 +231,8 @@ local clone of the Git repo.
     should not be any such issues or pull requests anymore. So this step here
     is just an additional safeguard.
 
-5.  On GitHub, once the checks for the Pull Request for branch `start_M.N.U`
+5.  On the [GitHub PR page](https://github.com/andy-maier/ansible-doc-template-extractor/pulls),
+    once the checks for the Pull Request for branch `start_M.N.U`
     have succeeded, merge the Pull Request (no review is needed). This
     automatically deletes the branch on GitHub.
 
