@@ -43,7 +43,7 @@ argument_specs:
                 type: str
                 required: true
                 description: A string property in the nested bar_object
-      foo_array:
+      foo_array_obj:
         type: list
         description: Demonstrate an array of objects
         elements: dict
@@ -61,6 +61,10 @@ argument_specs:
                 type: str
                 required: true
                 description: A string property in the nested bar_object
+      foo_array_str:
+        type: list
+        description: Demonstrate an array of strings
+        elements: str
     output:
       # Ansible options format
       previous_version:

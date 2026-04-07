@@ -78,7 +78,7 @@ Permissions\.
 
 
 
-* **foo_array** (list of dict):
+* **foo_array_obj** (list of dict):
 
   Demonstrate an array of objects
 
@@ -111,6 +111,15 @@ Permissions\.
       Required\.
 
 
+
+
+
+* **foo_array_str** (list of str):
+
+  Demonstrate an array of strings
+
+
+  Optional\.
 
 
 
