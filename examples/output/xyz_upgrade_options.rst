@@ -59,7 +59,7 @@ Input Parameters
 
 * **foo_object** (dict):
 
-  Demonstrate nested objects
+  Demonstrate an object
 
 
   Optional.
@@ -68,16 +68,34 @@ Input Parameters
 
   * **bar** (str):
 
-    The bar.
+    A string property in foo\_object
 
 
     Required.
+
+  * **bar_object** (dict):
+
+    A nested object in foo\_object
+
+
+    Required.
+
+    Dict items:
+
+    * **cat** (str):
+
+      A string property in the nested bar\_object
+
+
+      Required.
+
+
 
 
 
 * **foo_array** (list of dict):
 
-  Demonstrate nested array of objects
+  Demonstrate an array of objects
 
 
   Optional.
@@ -86,10 +104,28 @@ Input Parameters
 
   * **bar** (str):
 
-    The bar.
+    A string property in the array item
 
 
     Required.
+
+  * **bar_object** (dict):
+
+    A nested object in the array item
+
+
+    Required.
+
+    Dict items:
+
+    * **cat** (str):
+
+      A string property in the nested bar\_object
+
+
+      Required.
+
+
 
 
 

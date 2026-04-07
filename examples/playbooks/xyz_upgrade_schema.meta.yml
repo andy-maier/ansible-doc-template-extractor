@@ -28,27 +28,49 @@ argument_specs:
           description: Desired new version of the XYZ container.
           type: string
         foo_object:
-          description: Demonstrate nested objects
+          description: Demonstrate an object
           type: object
           additionalProperties: false
           required:
             - bar
+            - bar_object
           properties:
             bar:
-              description: The bar.
+              description: A string property in foo_object
               type: string
+            bar_object:
+              description: A nested object in foo_object
+              type: object
+              additionalProperties: false
+              required:
+                - cat
+              properties:
+                cat:
+                  description: A string property in the nested bar_object
+                  type: string
         foo_array:
-          description: Demonstrate nested array of objects
+          description: Demonstrate an array of objects
           type: array
           items:
             type: object
             additionalProperties: false
             required:
               - bar
+              - bar_object
             properties:
               bar:
-                description: The bar.
+                description: A string property in the array item
                 type: string
+              bar_object:
+                description: A nested object in the array item
+                type: object
+                additionalProperties: false
+                required:
+                  - cat
+                properties:
+                  cat:
+                    description: A string property in the nested bar_object
+                    type: string
     output_schema:
       # JSON schema format
       description: Playbook output variable 'output', in case of success.
