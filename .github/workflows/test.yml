@@ -113,7 +113,7 @@ jobs:
       if: github.event_name != 'schedule'
       uses: gsactions/commit-message-checker@v2
       with:
-        pattern: '^.{1,80}\n\n(.{0,80}\n)*.{0,80}$'
+        pattern: '^.{1,80}( \(#[\d]+\))?\n\n(.{0,80}\n)*.{0,80}$'
         flags: ''
         excludeDescription: true
         excludeTitle: true
