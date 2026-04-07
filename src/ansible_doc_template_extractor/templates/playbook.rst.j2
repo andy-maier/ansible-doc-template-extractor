@@ -25,7 +25,7 @@
 {%   endfor %}
 {% endmacro %}
 {% macro option_generation(opts, level) %}
-{# Macro that generates a list of options, recursively #}
+{# Macro that generates documentation from the parameters in a spec file for playbooks #}
 {%   set sorted = false %}{# Flag to sort options by name #}
 {%   for name, spec in (opts | dictsort if sorted else opts.items()) %}
 {%     if spec.required | default(False) == True %}
@@ -83,21 +83,22 @@
 {%  endfor %}
 {{- '/'.join(a_types) -}}
 {% endmacro %}
-{% macro schema_generation(obj, root_obj, level) %}
-{# Macro that generates a list of properties and patternProperties defined in an object within a JSON schema, recursively #}
-{%   for name, spec in (obj.properties | default([]) | combine(obj.patternProperties | default([]))).items() %}
-{%     if '$ref' in spec %}
-{%       set spec_description = spec.description | default(None) %}
-{%       set ref = spec['$ref'] %}
-{%       set def_name = ref | regex_replace('^#/definitions/', '') %}
-{%       set _ = ('' if '/' not in def_name and def_name != '') | mandatory("Invalid format of $ref value in JSON schema for input or output parameters: '{}'".format(ref)) %}
-{%       set spec = root_obj.definitions[def_name] %}
-{%       if spec_description %}
-{%         do spec.update({'description': spec_description}) %}
-{%       endif %}
+{% macro schema_generation(spec, name, parent_obj, root_obj, level) %}
+{# Macro that generates documentation from a JSON schema for playbook parameters #}
+{%   set spec_type = spec.type | default('string') %}
+{%   set type_txt = ansible_type_txt(spec_type) %}
+{%   if '$ref' in spec %}
+{%     set spec_description = spec.description | default(None) %}
+{%     set ref = spec['$ref'] %}
+{%     set def_name = ref | regex_replace('^#/definitions/', '') %}
+{%     set _ = ('' if '/' not in def_name and def_name != '') | mandatory("Invalid format of $ref value in JSON schema for input or output parameters: '{}'".format(ref)) %}
+{%     set spec = root_obj.definitions[def_name] %}
+{%     if spec_description %}
+{%       do spec.update({'description': spec_description}) %}
 {%     endif %}
-{%     set spec_type = spec.type | default('string') %}
-{%     set required = name in obj.required | default([]) %}
+{%   endif %}
+{%   if parent_obj %}
+{%     set required = name in parent_obj.required | default([]) %}
 {%     if required %}
 {%       set required_txt = "Required." %}
 {%     elif spec.default is defined %}
@@ -105,45 +106,41 @@
 {%     else %}
 {%       set required_txt = "Optional." %}
 {%     endif %}
-{%     if spec_type == 'array' %}
-{%       if 'items' in spec %}
-{%         set json_types = spec['items'].type | default('string') %}
-{%         set type_txt = "list of {}".format(ansible_type_txt(json_types)) %}
-{%       else %}
-{%         set type_txt = "list" %}
-{%       endif %}
-{%     else %}
-{%       set type_txt = ansible_type_txt(spec_type) %}
-{%     endif %}
-{%     if spec.enum is defined %}
-{%       set choices_txt = "Choices: {}.".format(spec.enum | join(', ')) %}
-{%     else %}
-{%       set choices_txt = "" %}
-{%     endif %}
+{%   else %}
+{%       set required_txt = "" %}
+{%   endif %}
+{%   if spec.enum is defined %}
+{%     set choices_txt = "Choices: {}.".format(spec.enum | join(', ')) %}
+{%   else %}
+{%     set choices_txt = "" %}
+{%   endif %}
 {{ "  " * level }}* **{{ name }}** ({{ type_txt }}):
+{%   set _ = spec.description | mandatory("Property '{name}' defined in 'options_schema' or 'output_schema' or in the JSON schema file referenced by 'options_schema_file' or 'output_schema_file' has no 'description' element".format(name=name)) %}
 
-{%     set _ = spec.description | mandatory("Property '{name}' defined in 'options_schema' or 'output_schema' or in the JSON schema file referenced by 'options_schema_file' or 'output_schema_file' has no 'description' element".format(name=name)) %}
 {{ para_generation(spec.description, level + 1) }}
+{%   if required_txt %}
+
 {{ "  " * level }}  {{ required_txt | to_rst }}
-{%     if spec.choices is defined %}
+{%   endif %}
+{%   if choices_txt %}
 
 {{ "  " * level }}  {{ choices_txt | to_rst }}
+{%   endif %}
+{%   if spec_type == "object" %}
+
+{{ "  " * level }}  Properties:
+
+{%     for _name, _spec in (spec.properties | default([]) | combine(spec.patternProperties | default([]))).items() %}
+{{ schema_generation(_spec, _name, spec, root_obj, level + 1) }}
+{%     endfor %}
+{%   elif spec_type == "array" %}
+{%     if 'items' in spec %}
+
+{{ "  " * level }}  Items:
+
+{{ schema_generation(spec['items'], name, None, root_obj, level + 1) }}
 {%     endif %}
-{%     if spec_type == 'array' and 'items' in spec %}
-
-{%       if spec['items'].type | default('string') == 'object' %}
-{{ "  " * level }}  Dict items:
-
-{%       endif %}
-{{ schema_generation(spec['items'], root_obj, level + 1) }}
-{%     elif spec_type == 'object' and (spec.properties is defined or spec.patternProperties is defined) %}
-
-{{ "  " * level }}  Dict items:
-
-{{ schema_generation(spec, root_obj, level + 1) }}
-{%     endif %}
-
-{%   endfor %}
+{%   endif %}
 {% endmacro %}
 
 ..
@@ -200,14 +197,14 @@ Input Parameters
 Input Parameters
 ----------------
 
-{{ schema_generation(playbook_dict.options_schema, playbook_dict.options_schema, 0) }}
+{{ schema_generation(playbook_dict.options_schema, "params", None, playbook_dict.options_schema, 0) }}
 {% elif playbook_dict.options_schema_file is defined %}
 
 Input Parameters
 ----------------
 
 {%   set options_schema = load_schema_file(playbook_dict.options_schema_file, spec_file_name, "input parameters") %}
-{{ schema_generation(options_schema, options_schema, 0) }}
+{{ schema_generation(options_schema, "params", None, options_schema, 0) }}
 {% endif %}
 {% if playbook_dict.output is defined %}
 
@@ -220,14 +217,14 @@ Output Parameters
 Output Parameters
 -----------------
 
-{{ schema_generation(playbook_dict.output_schema, playbook_dict.output_schema, 0) }}
+{{ schema_generation(playbook_dict.output_schema, "output", None, playbook_dict.output_schema, 0) }}
 {% elif playbook_dict.output_schema_file is defined %}
 
 Output Parameters
 -----------------
 
 {%   set output_schema = load_schema_file(playbook_dict.output_schema_file, spec_file_name, "output parameters") %}
-{{ schema_generation(output_schema, output_schema, 0) }}
+{{ schema_generation(output_schema, "output", None, output_schema, 0) }}
 {% endif %}
 {% if playbook_dict.examples is defined %}
 

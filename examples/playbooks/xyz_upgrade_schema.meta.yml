@@ -52,6 +52,7 @@ argument_specs:
           description: Demonstrate an array of objects
           type: array
           items:
+            description: Nested array item
             type: object
             additionalProperties: false
             required:

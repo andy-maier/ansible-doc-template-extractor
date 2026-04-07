@@ -27,270 +27,194 @@ Version added
 Input Parameters
 ----------------
 
-* **inparm_str** (str):
-
-  Required input parameter of type str
-
-
-  Required.
-
-* **inparm_bool** (bool):
-
-  Optional input parameter of type bool
+  * **inparm_str** (str):
+    Required input parameter of type str
 
 
-  Optional.
 
-* **inparm_int** (int):
+    Required.
 
-  Optional input parameter of type int
+  * **inparm_bool** (bool):
+    Optional input parameter of type bool
 
-
-  Optional.
-
-* **inparm_dict** (dict):
-
-  Optional input parameter of type dict
-
-
-  Optional.
-
-  Dict items:
-
-  * **inparm_dict_str** (str):
-
-    Optional inparm\_dict parm of type str
 
 
     Optional.
 
-  * **inparm_dict_dict** (dict):
+  * **inparm_int** (int):
+    Optional input parameter of type int
 
-    Optional inparm\_dict parm of type dict
 
 
     Optional.
 
-    Dict items:
+    * **inparm_dict_str** (str):
+      Optional inparm\_dict parm of type str
 
-    * **inparm_dict_dict_str** (str):
-
-      Optional inparm\_dict\_dict parm of type str
 
 
       Optional.
 
-    * **^inparm_dict_dict_pat_[0-9]$** (str):
+      * **inparm_dict_dict_str** (str):
+        Optional inparm\_dict\_dict parm of type str
 
-      Optional pattern inparm\_dict\_dict parameter of type str
+
+
+        Optional.
+
+      * **^inparm_dict_dict_pat_[0-9]$** (str):
+        Optional pattern inparm\_dict\_dict parameter of type str
+
+
+
+        Optional.
+
+
+    * **^inparm_dict_pat_[0-9]$** (str):
+      Optional pattern inparm\_dict parameter of type str
+
 
 
       Optional.
 
 
+    list of str:
 
-  * **^inparm_dict_pat_[0-9]$** (str):
+    * **inparm_list_str** (str):
+      Optional input parameter of type str
 
-    Optional pattern inparm\_dict parameter of type str
+
+
+
+    list of dict:
+
+      * **inparm_list_dict_str** (str):
+        Optional inparm\_list\_dict parm of type str
+
+
+
+        Optional.
+
+        * **inparm_list_dict_dict_str** (str):
+          Optional inparm\_list\_dict\_dict parm of type str
+
+
+
+          Optional.
+
+
+      * **^inparm_list_dict_pat_[0-9]$** (str):
+        Optional pattern inparm\_list\_dict\_dict parameter of type str
+
+
+
+        Optional.
+
+
+
+  * **^inparm_pat_[0-9]$** (str):
+    Optional pattern input parameter of type str
+
 
 
     Optional.
-
-
-
-* **inparm_list_str** (list of str):
-
-  Optional input parameter of type list of str
-
-
-  Optional.
-
-
-
-* **inparm_list_dict** (list of dict):
-
-  Optional input parameter of type list of dict
-
-
-  Optional.
-
-  Dict items:
-
-  * **inparm_list_dict_str** (str):
-
-    Optional inparm\_list\_dict parm of type str
-
-
-    Optional.
-
-  * **inparm_list_dict_dict** (dict):
-
-    Optional inparm\_list\_dict parm of type dict
-
-
-    Optional.
-
-    Dict items:
-
-    * **inparm_list_dict_dict_str** (str):
-
-      Optional inparm\_list\_dict\_dict parm of type str
-
-
-      Optional.
-
-
-
-  * **^inparm_list_dict_pat_[0-9]$** (str):
-
-    Optional pattern inparm\_list\_dict\_dict parameter of type str
-
-
-    Optional.
-
-
-
-* **^inparm_pat_[0-9]$** (str):
-
-  Optional pattern input parameter of type str
-
-
-  Optional.
 
 
 
 Output Parameters
 -----------------
 
-* **outparm_str** (str):
-
-  Required output parameter of type str
-
-
-  Required.
-
-* **outparm_bool** (bool):
-
-  Optional output parameter of type bool
+  * **outparm_str** (str):
+    Required output parameter of type str
 
 
-  Optional.
 
-* **outparm_int** (int):
+    Required.
 
-  Optional output parameter of type int
+  * **outparm_bool** (bool):
+    Optional output parameter of type bool
 
-
-  Optional.
-
-* **outparm_dict** (dict):
-
-  Optional output parameter of type dict
-
-
-  Optional.
-
-  Dict items:
-
-  * **outparm_dict_str** (str/null):
-
-    Optional outparm\_dict parm of type str or null
 
 
     Optional.
 
-  * **outparm_dict_dict** (dict):
+  * **outparm_int** (int):
+    Optional output parameter of type int
 
-    Optional outparm\_dict parm of type dict
 
 
     Optional.
 
-    Dict items:
+    * **outparm_dict_str** (str/null):
+      Optional outparm\_dict parm of type str or null
 
-    * **outparm_dict_dict_str** (str):
-
-      Optional outparm\_dict\_dict parm of type str
 
 
       Optional.
 
-    * **^outparm_dict_dict_pat_[0-9]$** (str):
+      * **outparm_dict_dict_str** (str):
+        Optional outparm\_dict\_dict parm of type str
 
-      Optional pattern outparm\_dict\_dict parameter of type str
+
+
+        Optional.
+
+      * **^outparm_dict_dict_pat_[0-9]$** (str):
+        Optional pattern outparm\_dict\_dict parameter of type str
+
+
+
+        Optional.
+
+
+    * **^outparm_dict_pat_[0-9]$** (str):
+      Optional pattern outparm\_dict parameter of type str
+
 
 
       Optional.
 
 
+    list of str:
 
-  * **^outparm_dict_pat_[0-9]$** (str):
+    * **outparm_list_str** (str):
+      Optional output parameter of type str
 
-    Optional pattern outparm\_dict parameter of type str
+
+
+
+    list of dict:
+
+      * **outparm_list_dict_str** (str):
+        Optional outparm\_list\_dict parm of type str
+
+
+
+        Optional.
+
+        * **outparm_list_dict_dict_str** (str):
+          Optional outparm\_list\_dict\_dict parm of type str
+
+
+
+          Optional.
+
+
+      * **^outparm_list_dict_pat_[0-9]$** (str):
+        Optional pattern outparm\_list\_dict\_dict parameter of type str
+
+
+
+        Optional.
+
+
+
+  * **^outparm_pat_[0-9]$** (str):
+    Optional pattern output parameter of type str
+
 
 
     Optional.
-
-
-
-* **outparm_list_str** (list of str):
-
-  Optional output parameter of type list of str
-
-
-  Optional.
-
-
-
-* **outparm_list_dict** (list of dict):
-
-  Optional output parameter of type list of dict
-
-
-  Optional.
-
-  Dict items:
-
-  * **outparm_list_dict_str** (str):
-
-    Optional outparm\_list\_dict parm of type str
-
-
-    Optional.
-
-  * **outparm_list_dict_dict** (dict):
-
-    Optional outparm\_list\_dict parm of type dict
-
-
-    Optional.
-
-    Dict items:
-
-    * **outparm_list_dict_dict_str** (str):
-
-      Optional outparm\_list\_dict\_dict parm of type str
-
-
-      Optional.
-
-
-
-  * **^outparm_list_dict_pat_[0-9]$** (str):
-
-    Optional pattern outparm\_list\_dict\_dict parameter of type str
-
-
-    Optional.
-
-
-
-* **^outparm_pat_[0-9]$** (str):
-
-  Optional pattern output parameter of type str
-
-
-  Optional.
 
 
 

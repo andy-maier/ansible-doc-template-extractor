@@ -35,11 +35,13 @@ properties:
     description: Optional output parameter of type list of str
     type: array
     items:
+      description: Optional output parameter of type str
       type: string
   outparm_list_dict:
     description: Optional output parameter of type list of dict
     type: array
     items:
+      description: Optional output parameter of type dict
       type: object
       additionalProperties: false
       properties:

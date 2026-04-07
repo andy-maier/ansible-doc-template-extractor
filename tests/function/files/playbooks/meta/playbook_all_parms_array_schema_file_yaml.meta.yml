@@ -1,0 +1,11 @@
+argument_specs:
+  playbook_all_parms_array_schema_file_yaml:
+    short_description: Test playbook with top level array item and schema file
+    description: Test playbook with top level array item and schema file
+    requirements: []
+    version_added: "0.0"
+    author:
+      - Someone
+    options_schema_file: ../../schemas/playbook_all_parms_array_input.schema.yml
+    output_schema_file: ../../schemas/playbook_all_parms_array_output.schema.yml
+    examples: []

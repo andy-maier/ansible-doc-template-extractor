@@ -25,7 +25,7 @@
 {%   endfor %}
 {% endmacro %}
 {% macro option_generation(opts, level) %}
-{# Macro that generates a list of options, recursively #}
+{# Macro that generates documentation from the parameters/options in an Ansible spec file for roles #}
 {%   set sorted = false %}{# Flag to sort options by name #}
 {%   for name, spec in (opts | dictsort if sorted else opts.items()) %}
 {%     if spec.required | default(False) == True %}

@@ -413,6 +413,30 @@ TESTCASES_ALL = [
         "MYDIR/files/playbooks/exp_docs/playbook_all_parms_schema_file_yaml.md"
     ),
     (
+        "playbook_all_parms_array_schema_file_yaml with default format rst",
+        True,
+        ["--out-dir", "TEMPDIR",
+         "MYDIR/files/playbooks/meta/"
+         "playbook_all_parms_array_schema_file_yaml.meta.yml"],
+        0,
+        [],
+        [],
+        "MYDIR/files/playbooks/exp_docs/"
+        "playbook_all_parms_array_schema_file_yaml.rst"
+    ),
+    (
+        "playbook_all_parms_array_schema_file_yaml with --format md",
+        True,
+        ["--out-dir", "TEMPDIR", "--format", "md",
+         "MYDIR/files/playbooks/meta/"
+         "playbook_all_parms_array_schema_file_yaml.meta.yml"],
+        0,
+        [],
+        [],
+        "MYDIR/files/playbooks/exp_docs/"
+        "playbook_all_parms_array_schema_file_yaml.md"
+    ),
+    (
         "playbook_all_parms_schema_file_json with default format rst",
         True,
         ["--out-dir", "TEMPDIR",
