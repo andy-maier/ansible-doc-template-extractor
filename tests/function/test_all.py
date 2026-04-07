@@ -447,6 +447,18 @@ TESTCASES_ALL = [
         None
     ),
     (
+        "Playbook specifying top-level array in JSON schema file",
+        True,
+        ["--out-dir", "TEMPDIR",
+         "MYDIR/files/playbooks/meta/"
+         "invalid_playbook_top_level_array.meta.yml"],
+        1,
+        ["Loading schema file for input parameters",
+         "Top-level schema element must be object, but is array"],
+        [],
+        None
+    ),
+    (
         "Playbook specifying non-existing JSON schema files in JSON",
         True,
         ["--out-dir", "TEMPDIR",
