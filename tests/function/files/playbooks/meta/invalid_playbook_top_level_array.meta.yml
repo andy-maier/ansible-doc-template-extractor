@@ -1,0 +1,10 @@
+argument_specs:
+  invalid_playbook_top_level_array:
+    short_description: Test playbook with top-level array as input parameter
+    description: Test playbook with top-level array as input parameter
+    requirements: []
+    version_added: "0.0"
+    author:
+      - Someone
+    options_schema_file: ../../schemas/invalid_playbook_top_level_array_input.yml
+    examples: []
