@@ -257,8 +257,8 @@ Authors
 -------
 
 {%   if playbook_dict.author is iterable and playbook_dict.author is not string %}
-{%     for item in playbook_dict.author %}
-* {{ item }}
+{%     for author in playbook_dict.author %}
+* {{ author }}
 {%     endfor %}
 {%   else %}
 * {{ playbook_dict.author }}

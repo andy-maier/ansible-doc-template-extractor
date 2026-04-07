@@ -123,7 +123,6 @@
 {{ "  " * level }}* **{{ name }}** ({{ type_txt }}):
 
 {%     set _ = spec.description | mandatory("Property '{name}' defined in 'options_schema' or 'output_schema' or in the JSON schema file referenced by 'options_schema_file' or 'output_schema_file' has no 'description' element".format(name=name)) %}
-{%     set _ = spec.description | mandatory("Property '{name}' has no description".format(name=name)) %}
 {{ para_generation(spec.description, level + 1) }}
 {{ "  " * level }}  {{ required_txt | to_md }}
 {%     if spec.choices is defined %}
@@ -243,8 +242,8 @@
 ## Authors
 
 {%   if playbook_dict.author is iterable and playbook_dict.author is not string %}
-{%     for item in playbook_dict.author %}
-* {{ item }}
+{%     for author in playbook_dict.author %}
+* {{ author }}
 {%     endfor %}
 {%   else %}
 * {{ playbook_dict.author }}

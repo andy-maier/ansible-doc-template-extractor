@@ -133,8 +133,8 @@
 ## Authors
 
 {%     if role_dict.author is iterable and role_dict.author is not string %}
-{%       for item in role_dict.author %}
-* {{ item }}
+{%       for author in role_dict.author %}
+* {{ author }}
 {%       endfor %}
 {%     else %}
 * {{ role_dict.author }}
