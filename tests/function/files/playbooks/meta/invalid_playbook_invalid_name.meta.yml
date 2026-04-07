@@ -1,5 +1,5 @@
 argument_specs:
-  playbook_invalid_name_foo:
+  invalid_playbook_invalid_name_foo:
     short_description: Test playbook with invalid name in argument_specs
     description: Test playbook with invalid name in argument_specs
     requirements: []

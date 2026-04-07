@@ -179,6 +179,15 @@ else
   pytest_opts := $(pytest_base_opts)
 endif
 
+# Generate expected output files for function tests
+gen_exp_files_dir := tests/function/files
+gen_exp_role_dirs := $(wildcard $(gen_exp_files_dir)/roles/*)
+gen_exp_role_md_files := $(patsubst $(gen_exp_files_dir)/roles/%, $(gen_exp_files_dir)/exp_docs/%.md, $(gen_exp_role_dirs))
+gen_exp_role_rst_files := $(patsubst $(gen_exp_files_dir)/roles/%, $(gen_exp_files_dir)/exp_docs/%.rst, $(gen_exp_role_dirs))
+gen_exp_playbook_meta_files := $(wildcard $(gen_exp_files_dir)/playbooks/meta/playbook_*.meta.yml)
+gen_exp_playbook_md_files := $(patsubst $(gen_exp_files_dir)/playbooks/meta/%.meta.yml, $(gen_exp_files_dir)/exp_docs/%.md, $(gen_exp_playbook_meta_files))
+gen_exp_playbook_rst_files := $(patsubst $(gen_exp_files_dir)/playbooks/meta/%.meta.yml, $(gen_exp_files_dir)/exp_docs/%.rst, $(gen_exp_playbook_meta_files))
+
 .PHONY: help
 help:
 	@echo "Makefile for project $(pypi_package_name)"
@@ -193,6 +202,7 @@ help:
 	@echo "  bandit     - Run bandit checker"
 	@echo "  build      - Build the distribution files in $(dist_dir)"
 	@echo "  test       - Run unit and function tests"
+	@echo "  gen_exp    - Generate expected output files for function tests"
 	@echo "  authors    - Generate AUTHORS.md file from git log"
 	@echo "  examples   - Generate the examples"
 	@echo "  all        - Do all of the above"
@@ -295,6 +305,22 @@ examples/output/%.md: examples/playbooks/%.meta.yml examples/playbooks/schemas/%
 
 examples/output/%.rst: examples/playbooks/%.meta.yml examples/playbooks/schemas/%_*.yml $(package_dir)/templates/playbook.rst.j2 $(done_dir)/install_$(pymn).done
 	ansible-doc-template-extractor -v --format rst --out-dir examples/output $<
+
+.PHONY: gen_exp
+gen_exp: $(gen_exp_role_md_files) $(gen_exp_role_rst_files) $(gen_exp_playbook_md_files) $(gen_exp_playbook_rst_files)
+	@echo "Makefile: $@ done."
+
+$(gen_exp_files_dir)/exp_docs/%.md: $(gen_exp_files_dir)/roles/%/meta/argument_specs.yml $(package_dir)/templates/role.md.j2 $(done_dir)/install_$(pymn).done
+	ansible-doc-template-extractor -v --format md --out-dir $(gen_exp_files_dir)/exp_docs $<
+
+$(gen_exp_files_dir)/exp_docs/%.rst: $(gen_exp_files_dir)/roles/%/meta/argument_specs.yml $(package_dir)/templates/role.rst.j2 $(done_dir)/install_$(pymn).done
+	ansible-doc-template-extractor -v --format rst --out-dir $(gen_exp_files_dir)/exp_docs $<
+
+$(gen_exp_files_dir)/exp_docs/%.md: $(gen_exp_files_dir)/playbooks/meta/%.meta.yml $(package_dir)/templates/playbook.md.j2 $(done_dir)/install_$(pymn).done
+	ansible-doc-template-extractor -v --format md --out-dir $(gen_exp_files_dir)/exp_docs $<
+
+$(gen_exp_files_dir)/exp_docs/%.rst: $(gen_exp_files_dir)/playbooks/meta/%.meta.yml $(package_dir)/templates/playbook.rst.j2 $(done_dir)/install_$(pymn).done
+	ansible-doc-template-extractor -v --format rst --out-dir $(gen_exp_files_dir)/exp_docs $<
 
 .PHONY: release_branch
 release_branch:
