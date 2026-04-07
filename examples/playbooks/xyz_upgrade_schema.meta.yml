@@ -48,10 +48,11 @@ argument_specs:
                 cat:
                   description: A string property in the nested bar_object
                   type: string
-        foo_array:
+        foo_array_obj:
           description: Demonstrate an array of objects
           type: array
           items:
+            description: An array item of object type
             type: object
             additionalProperties: false
             required:
@@ -71,6 +72,12 @@ argument_specs:
                   cat:
                     description: A string property in the nested bar_object
                     type: string
+        foo_array_str:
+          description: Demonstrate an array of strings
+          type: array
+          items:
+            description: An array item of string type
+            type: string
     output_schema:
       # JSON schema format
       description: Playbook output variable 'output', in case of success.
