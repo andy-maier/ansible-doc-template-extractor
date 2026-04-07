@@ -1,10 +1,18 @@
 $schema: "http://json-schema.org/draft/2020-12/schema"
-description: Playbook output variable 'output', in case of success.
+title: JSON schema for output parameters of xyz_upgrade_schema_file playbook
+description: Output parameters of xyz_upgrade_schema_file playbook
 type: object
-additionalProperties: false
+additionalProperties: true  # Ansible passes several input variables
 required:
-  - previous_version
+  - output
 properties:
-  previous_version:
-    description: Version of the XYZ container before the upgrade.
-    type: string
+  output:
+    description: Object with output parameters
+    type: object
+    additionalProperties: false
+    required:
+      - previous_version
+    properties:
+      previous_version:
+        description: Version of the XYZ container before the upgrade.
+        type: string

@@ -57,7 +57,7 @@
 {%     endif %}
 {%     if spec.options is defined %}
 
-{{ "  " * level }}  Dict items:
+{{ "  " * level }}  Properties:
 
 {{ option_generation(spec.options, level + 1) }}
 {%     endif %}
@@ -132,13 +132,13 @@
 {%     if spec_type == 'array' and 'items' in spec %}
 
 {%       if spec['items'].type | default('string') == 'object' %}
-{{ "  " * level }}  Dict items:
+{{ "  " * level }}  Properties:
 
 {%       endif %}
 {{ schema_generation(spec['items'], root_obj, level + 1) }}
 {%     elif spec_type == 'object' and (spec.properties is defined or spec.patternProperties is defined) %}
 
-{{ "  " * level }}  Dict items:
+{{ "  " * level }}  Properties:
 
 {{ schema_generation(spec, root_obj, level + 1) }}
 {%     endif %}

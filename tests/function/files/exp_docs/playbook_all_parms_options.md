@@ -47,7 +47,7 @@ Test playbook with all input/output parameters with Ansible options
 
   Optional\.
 
-  Dict items:
+  Properties:
 
   * **inparm_dict_str** (str):
 
@@ -63,7 +63,7 @@ Test playbook with all input/output parameters with Ansible options
 
     Optional\.
 
-    Dict items:
+    Properties:
 
     * **inparm_dict_dict_str** (str):
 
@@ -90,7 +90,7 @@ Test playbook with all input/output parameters with Ansible options
 
   Optional\.
 
-  Dict items:
+  Properties:
 
   * **inparm_list_dict_str** (str):
 
@@ -106,7 +106,7 @@ Test playbook with all input/output parameters with Ansible options
 
     Optional\.
 
-    Dict items:
+    Properties:
 
     * **inparm_list_dict_dict_str** (str):
 
@@ -151,7 +151,7 @@ Test playbook with all input/output parameters with Ansible options
 
   Optional\.
 
-  Dict items:
+  Properties:
 
   * **outparm_dict_str** (str):
 
@@ -167,7 +167,7 @@ Test playbook with all input/output parameters with Ansible options
 
     Optional\.
 
-    Dict items:
+    Properties:
 
     * **outparm_dict_dict_str** (str):
 
@@ -194,7 +194,7 @@ Test playbook with all input/output parameters with Ansible options
 
   Optional\.
 
-  Dict items:
+  Properties:
 
   * **outparm_list_dict_str** (str):
 
@@ -210,7 +210,7 @@ Test playbook with all input/output parameters with Ansible options
 
     Optional\.
 
-    Dict items:
+    Properties:
 
     * **outparm_list_dict_dict_str** (str):
 

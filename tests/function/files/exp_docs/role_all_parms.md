@@ -40,7 +40,7 @@ Role with all kinds of input and output parameters\.
 
   Optional\.
 
-  Dict items:
+  Properties:
 
   * **inparm_dict_str** (str):
 
@@ -56,7 +56,7 @@ Role with all kinds of input and output parameters\.
 
     Optional\.
 
-    Dict items:
+    Properties:
 
     * **inparm_dict_dict_str** (str):
 
@@ -83,7 +83,7 @@ Role with all kinds of input and output parameters\.
 
   Optional\.
 
-  Dict items:
+  Properties:
 
   * **inparm_list_dict_str** (str):
 
@@ -99,7 +99,7 @@ Role with all kinds of input and output parameters\.
 
     Optional\.
 
-    Dict items:
+    Properties:
 
     * **inparm_list_dict_dict_str** (str):
 
@@ -144,7 +144,7 @@ Role with all kinds of input and output parameters\.
 
   Optional\.
 
-  Dict items:
+  Properties:
 
   * **outparm_dict_str** (str):
 
@@ -160,7 +160,7 @@ Role with all kinds of input and output parameters\.
 
     Optional\.
 
-    Dict items:
+    Properties:
 
     * **outparm_dict_dict_str** (str):
 
@@ -187,7 +187,7 @@ Role with all kinds of input and output parameters\.
 
   Optional\.
 
-  Dict items:
+  Properties:
 
   * **outparm_list_dict_str** (str):
 
@@ -203,7 +203,7 @@ Role with all kinds of input and output parameters\.
 
     Optional\.
 
-    Dict items:
+    Properties:
 
     * **outparm_list_dict_dict_str** (str):
 

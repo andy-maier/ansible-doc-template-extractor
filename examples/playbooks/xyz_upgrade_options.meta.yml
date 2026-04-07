@@ -18,58 +18,66 @@ argument_specs:
       - Andreas Maier
     options:
       # Ansible options format
-      server:
-        type: str
-        required: true
-        description: IP address or hostname of the server that runs the XYZ container.
-      version:
-        type: str
-        required: true
-        description: Desired new version of the XYZ container.
-      foo_object:
+      params:
         type: dict
-        description: Demonstrate an object
+        description: Object with input parameters
         options:
-          bar:
+          server:
             type: str
             required: true
-            description: A string property in foo_object
-          bar_object:
-            type: dict
-            required: true
-            description: A nested object in foo_object
-            options:
-              cat:
-                type: str
-                required: true
-                description: A string property in the nested bar_object
-      foo_array_obj:
-        type: list
-        description: Demonstrate an array of objects
-        elements: dict
-        options:
-          bar:
+            description: IP address or hostname of the server that runs the XYZ container.
+          version:
             type: str
             required: true
-            description: A string property in the array item
-          bar_object:
+            description: Desired new version of the XYZ container.
+          foo_object:
             type: dict
-            required: true
-            description: A nested object in the array item
+            description: Demonstrate an object
             options:
-              cat:
+              bar:
                 type: str
                 required: true
-                description: A string property in the nested bar_object
-      foo_array_str:
-        type: list
-        description: Demonstrate an array of strings
-        elements: str
+                description: A string property in foo_object
+              bar_object:
+                type: dict
+                required: true
+                description: A nested object in foo_object
+                options:
+                  cat:
+                    type: str
+                    required: true
+                    description: A string property in the nested bar_object
+          foo_array_obj:
+            type: list
+            description: Demonstrate an array of objects
+            elements: dict
+            options:
+              bar:
+                type: str
+                required: true
+                description: A string property in the array item
+              bar_object:
+                type: dict
+                required: true
+                description: A nested object in the array item
+                options:
+                  cat:
+                    type: str
+                    required: true
+                    description: A string property in the nested bar_object
+          foo_array_str:
+            type: list
+            description: Demonstrate an array of strings
+            elements: str
     output:
       # Ansible options format
-      previous_version:
-        description: Version of the XYZ container before the upgrade.
-        type: str
+      output:
+        type: dict
+        description: Object with output parameters
+        options:
+          previous_version:
+            description: Version of the XYZ container before the upgrade.
+            type: str
     examples:
       - short_description: Upgrade the XYZ container to a specified version
         command: |

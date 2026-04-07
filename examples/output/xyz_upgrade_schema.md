@@ -28,98 +28,109 @@ Permissions\.
 
 ## Input Parameters
 
-* **server** (str):
+* **params** (dict):
 
-  IP address or hostname of the server that runs the XYZ container\.
-
-
-  Required\.
-
-* **version** (str):
-
-  Desired new version of the XYZ container\.
+  Object with input parameters
 
 
   Required\.
 
-* **foo_object** (dict):
+  Properties:
 
-  Demonstrate an object
+  * **server** (str):
 
-
-  Optional\.
-
-  Dict items:
-
-  * **bar** (str):
-
-    A string property in foo\_object
+    IP address or hostname of the server that runs the XYZ container\.
 
 
     Required\.
 
-  * **bar_object** (dict):
+  * **version** (str):
 
-    A nested object in foo\_object
+    Desired new version of the XYZ container\.
 
 
     Required\.
 
-    Dict items:
+  * **foo_object** (dict):
 
-    * **cat** (str):
+    Demonstrate an object
 
-      A string property in the nested bar\_object
+
+    Optional\.
+
+    Properties:
+
+    * **bar** (str):
+
+      A string property in foo\_object
 
 
       Required\.
 
+    * **bar_object** (dict):
 
-
-
-
-* **foo_array_obj** (list of dict):
-
-  Demonstrate an array of objects
-
-
-  Optional\.
-
-  Dict items:
-
-  * **bar** (str):
-
-    A string property in the array item
-
-
-    Required\.
-
-  * **bar_object** (dict):
-
-    A nested object in the array item
-
-
-    Required\.
-
-    Dict items:
-
-    * **cat** (str):
-
-      A string property in the nested bar\_object
+      A nested object in foo\_object
 
 
       Required\.
 
+      Properties:
+
+      * **cat** (str):
+
+        A string property in the nested bar\_object
+
+
+        Required\.
 
 
 
 
-* **foo_array_str** (list of str):
 
-  Demonstrate an array of strings
+  * **foo_array_obj** (list of dict):
+
+    Demonstrate an array of objects
 
 
-  Optional\.
+    Optional\.
+
+    Properties:
+
+    * **bar** (str):
+
+      A string property in the array item
+
+
+      Required\.
+
+    * **bar_object** (dict):
+
+      A nested object in the array item
+
+
+      Required\.
+
+      Properties:
+
+      * **cat** (str):
+
+        A string property in the nested bar\_object
+
+
+        Required\.
+
+
+
+
+
+  * **foo_array_str** (list of str):
+
+    Demonstrate an array of strings
+
+
+    Optional\.
+
+
 
 
 
@@ -127,12 +138,23 @@ Permissions\.
 
 ## Output Parameters
 
-* **previous_version** (str):
+* **output** (dict):
 
-  Version of the XYZ container before the upgrade\.
+  Object with input parameters
 
 
   Required\.
+
+  Properties:
+
+  * **previous_version** (str):
+
+    Version of the XYZ container before the upgrade\.
+
+
+    Required\.
+
+
 
 
 

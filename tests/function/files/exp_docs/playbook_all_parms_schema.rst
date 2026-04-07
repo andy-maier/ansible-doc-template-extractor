@@ -55,7 +55,7 @@ Input Parameters
 
   Optional.
 
-  Dict items:
+  Properties:
 
   * **inparm_dict_str** (str):
 
@@ -71,7 +71,7 @@ Input Parameters
 
     Optional.
 
-    Dict items:
+    Properties:
 
     * **inparm_dict_dict_str** (str):
 
@@ -114,7 +114,7 @@ Input Parameters
 
   Optional.
 
-  Dict items:
+  Properties:
 
   * **inparm_list_dict_str** (str):
 
@@ -130,7 +130,7 @@ Input Parameters
 
     Optional.
 
-    Dict items:
+    Properties:
 
     * **inparm_list_dict_dict_str** (str):
 
@@ -190,7 +190,7 @@ Output Parameters
 
   Optional.
 
-  Dict items:
+  Properties:
 
   * **outparm_dict_str** (str/null):
 
@@ -206,7 +206,7 @@ Output Parameters
 
     Optional.
 
-    Dict items:
+    Properties:
 
     * **outparm_dict_dict_str** (str):
 
@@ -249,7 +249,7 @@ Output Parameters
 
   Optional.
 
-  Dict items:
+  Properties:
 
   * **outparm_list_dict_str** (str):
 
@@ -265,7 +265,7 @@ Output Parameters
 
     Optional.
 
-    Dict items:
+    Properties:
 
     * **outparm_list_dict_dict_str** (str):
 

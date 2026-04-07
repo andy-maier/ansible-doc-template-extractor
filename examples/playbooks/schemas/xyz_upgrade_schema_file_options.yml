@@ -1,65 +1,71 @@
 $schema: "http://json-schema.org/draft/2020-12/schema"
-description: Playbook input variable 'params'.
+title: JSON schema for input parameters of xyz_upgrade_schema_file playbook
+description: Input parameters of xyz_upgrade_schema_file playbook
 type: object
-additionalProperties: false
+additionalProperties: true  # Ansible passes several input variables
 required:
-  - server
-  - version
+  - params
 properties:
-  server:
-    description: IP address or hostname of the server that runs the XYZ container.
-    type: string
-  version:
-    description: Desired new version of the XYZ container.
-    type: string
-  foo_object:
-    description: Demonstrate an object
+  params:
+    description: Object with input parameters
     type: object
     additionalProperties: false
     required:
-      - bar
-      - bar_object
+      - server
+      - version
     properties:
-      bar:
-        description: A string property in foo_object
+      server:
+        description: IP address or hostname of the server that runs the XYZ container.
         type: string
-      bar_object:
-        description: A nested object in foo_object
+      version:
+        description: Desired new version of the XYZ container.
+        type: string
+      foo_object:
+        description: Demonstrate an object input parameter
         type: object
         additionalProperties: false
         required:
-          - cat
+          - bar
+          - bar_object
         properties:
-          cat:
-            description: A string property in the nested bar_object
+          bar:
+            description: A string property in foo_object
             type: string
-  foo_array_obj:
-    description: Demonstrate an array of objects
-    type: array
-    items:
-      description: An array item of object type
-      type: object
-      additionalProperties: false
-      required:
-        - bar
-        - bar_object
-      properties:
-        bar:
-          description: A string property in the array item
-          type: string
-        bar_object:
-          description: A nested object in the array item
+          bar_object:
+            description: A nested object in foo_object
+            type: object
+            additionalProperties: false
+            required:
+              - cat
+            properties:
+              cat:
+                description: A string property in the nested bar_object
+                type: string
+      foo_array_obj:
+        description: Demonstrate an array input parameter containing objects
+        type: array
+        items:
           type: object
           additionalProperties: false
           required:
-            - cat
+            - bar
+            - bar_object
           properties:
-            cat:
-              description: A string property in the nested bar_object
+            bar:
+              description: A string property in the array item
               type: string
-  foo_array_str:
-    description: Demonstrate an array of strings
-    type: array
-    items:
-      description: An array item of string type
-      type: string
+            bar_object:
+              description: A nested object in the array item
+              type: object
+              additionalProperties: false
+              required:
+                - cat
+              properties:
+                cat:
+                  description: A string property in the nested bar_object
+                  type: string
+      foo_array_str:
+        description: Demonstrate an array input parameter containing strings
+        type: array
+        items:
+          type: string
