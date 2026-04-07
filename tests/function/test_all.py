@@ -298,7 +298,7 @@ TESTCASES_ALL = [
         0,
         [],
         [],
-        "MYDIR/files/roles/role_no_parms/exp_docs/role_no_parms.rst"
+        "MYDIR/files/exp_docs/role_no_parms.rst"
     ),
     (
         "role_no_parms with --format md",
@@ -308,7 +308,7 @@ TESTCASES_ALL = [
         0,
         [],
         [],
-        "MYDIR/files/roles/role_no_parms/exp_docs/role_no_parms.md"
+        "MYDIR/files/exp_docs/role_no_parms.md"
     ),
     (
         "role_no_parms with ext .rst specified",
@@ -318,7 +318,7 @@ TESTCASES_ALL = [
         0,
         [],
         [],
-        "MYDIR/files/roles/role_no_parms/exp_docs/role_no_parms.rst"
+        "MYDIR/files/exp_docs/role_no_parms.rst"
     ),
     (
         "role_all_parms with default format rst",
@@ -328,7 +328,7 @@ TESTCASES_ALL = [
         0,
         [],
         [],
-        "MYDIR/files/roles/role_all_parms/exp_docs/role_all_parms.rst"
+        "MYDIR/files/exp_docs/role_all_parms.rst"
     ),
     (
         "role_all_parms with --format md",
@@ -338,7 +338,7 @@ TESTCASES_ALL = [
         0,
         [],
         [],
-        "MYDIR/files/roles/role_all_parms/exp_docs/role_all_parms.md"
+        "MYDIR/files/exp_docs/role_all_parms.md"
     ),
     (
         "playbook_no_parms with default format rst",
@@ -348,7 +348,7 @@ TESTCASES_ALL = [
         0,
         [],
         [],
-        "MYDIR/files/playbooks/exp_docs/playbook_no_parms.rst"
+        "MYDIR/files/exp_docs/playbook_no_parms.rst"
     ),
     (
         "playbook_no_parms with --format md",
@@ -358,7 +358,7 @@ TESTCASES_ALL = [
         0,
         [],
         [],
-        "MYDIR/files/playbooks/exp_docs/playbook_no_parms.md"
+        "MYDIR/files/exp_docs/playbook_no_parms.md"
     ),
     (
         "playbook_no_parms with ext .rst specified",
@@ -368,7 +368,7 @@ TESTCASES_ALL = [
         0,
         [],
         [],
-        "MYDIR/files/playbooks/exp_docs/playbook_no_parms.rst"
+        "MYDIR/files/exp_docs/playbook_no_parms.rst"
     ),
     (
         "playbook_all_parms_options with default format rst",
@@ -378,7 +378,7 @@ TESTCASES_ALL = [
         0,
         [],
         [],
-        "MYDIR/files/playbooks/exp_docs/playbook_all_parms_options.rst"
+        "MYDIR/files/exp_docs/playbook_all_parms_options.rst"
     ),
     (
         "playbook_all_parms_options with --format md",
@@ -388,7 +388,7 @@ TESTCASES_ALL = [
         0,
         [],
         [],
-        "MYDIR/files/playbooks/exp_docs/playbook_all_parms_options.md"
+        "MYDIR/files/exp_docs/playbook_all_parms_options.md"
     ),
     (
         "playbook_all_parms_schema_file_yaml with default format rst",
@@ -399,7 +399,7 @@ TESTCASES_ALL = [
         0,
         [],
         [],
-        "MYDIR/files/playbooks/exp_docs/playbook_all_parms_schema_file_yaml.rst"
+        "MYDIR/files/exp_docs/playbook_all_parms_schema_file_yaml.rst"
     ),
     (
         "playbook_all_parms_schema_file_yaml with --format md",
@@ -410,7 +410,7 @@ TESTCASES_ALL = [
         0,
         [],
         [],
-        "MYDIR/files/playbooks/exp_docs/playbook_all_parms_schema_file_yaml.md"
+        "MYDIR/files/exp_docs/playbook_all_parms_schema_file_yaml.md"
     ),
     (
         "playbook_all_parms_schema_file_json with default format rst",
@@ -421,7 +421,7 @@ TESTCASES_ALL = [
         0,
         [],
         [],
-        "MYDIR/files/playbooks/exp_docs/playbook_all_parms_schema_file_json.rst"
+        "MYDIR/files/exp_docs/playbook_all_parms_schema_file_json.rst"
     ),
     (
         "playbook_all_parms_schema_file_json with --format md",
@@ -432,14 +432,14 @@ TESTCASES_ALL = [
         0,
         [],
         [],
-        "MYDIR/files/playbooks/exp_docs/playbook_all_parms_schema_file_json.md"
+        "MYDIR/files/exp_docs/playbook_all_parms_schema_file_json.md"
     ),
     (
         "Playbook specifying non-existing JSON schema files in YAML",
         True,
         ["--out-dir", "TEMPDIR",
          "MYDIR/files/playbooks/meta/"
-         "playbook_all_parms_schema_file_missing_yaml.meta.yml"],
+         "invalid_playbook_missing_schema_file_yaml.meta.yml"],
         1,
         ["Loading schema file for input parameters",
          "No such file or directory"],
@@ -451,7 +451,7 @@ TESTCASES_ALL = [
         True,
         ["--out-dir", "TEMPDIR",
          "MYDIR/files/playbooks/meta/"
-         "playbook_all_parms_schema_file_missing_json.meta.yml"],
+         "invalid_playbook_missing_schema_file_json.meta.yml"],
         1,
         ["Loading schema file for input parameters",
          "No such file or directory"],
@@ -463,7 +463,7 @@ TESTCASES_ALL = [
         True,
         ["--out-dir", "TEMPDIR",
          "MYDIR/files/playbooks/meta/"
-         "playbook_all_parms_schema_file_invalid_schema.meta.yml"],
+         "invalid_playbook_invalid_schema_file.meta.yml"],
         1,
         ["Loading schema file for input parameters",
          "The JSON schema in .* is invalid; schema element 'type' violates "
@@ -476,7 +476,7 @@ TESTCASES_ALL = [
         True,
         ["--out-dir", "TEMPDIR",
          "MYDIR/files/playbooks/meta/"
-         "playbook_all_parms_schema_file_invalid_ext.meta.yml"],
+         "invalid_playbook_invalid_schema_file_ext.meta.yml"],
         1,
         ["Schema file for input parameters has an unsupported suffix"],
         [],
@@ -492,7 +492,7 @@ TESTCASES_ALL = [
         0,
         [],
         [],
-        "MYDIR/files/playbooks/exp_docs/playbook_all_parms_schema.rst"
+        "MYDIR/files/exp_docs/playbook_all_parms_schema.rst"
     ),
     (
         # TODO: This takes several seconds and produces DeprecationWarnings
@@ -504,16 +504,17 @@ TESTCASES_ALL = [
         0,
         [],
         [],
-        "MYDIR/files/playbooks/exp_docs/playbook_all_parms_schema.md"
+        "MYDIR/files/exp_docs/playbook_all_parms_schema.md"
     ),
     (
         "Check error reporting for invalid playbook name in spec file",
         True,
         ["--out-dir", "TEMPDIR", "--format", "md",
-         "MYDIR/files/playbooks/meta/playbook_invalid_name.meta.yml"],
+         "MYDIR/files/playbooks/meta/invalid_playbook_invalid_name.meta.yml"],
         1,
         ["The child element of 'argument_specs' does not specify the playbook "
-         "name 'playbook_invalid_name', but 'playbook_invalid_name_foo'"],
+         "name 'invalid_playbook_invalid_name', but "
+         "'invalid_playbook_invalid_name_foo'"],
         [],
         None
     ),
@@ -521,7 +522,7 @@ TESTCASES_ALL = [
         "Role with schema file with invalid meta-schema",
         True,
         ["--out-dir", "TEMPDIR",
-         "--schema", "MYDIR/files/schemas/invalid_metaschema.schema.yml",
+         "--schema", "MYDIR/files/schemas/invalid_metaschema.yml",
          "MYDIR/files/roles/role_no_parms/meta/argument_specs.yml"],
         1,
         ["The JSON schema in .* is invalid; schema element 'type' violates "
@@ -533,7 +534,7 @@ TESTCASES_ALL = [
         "Role with non-existing schema file in YAML",
         True,
         ["--out-dir", "TEMPDIR",
-         "--schema", "missing.schema.yml",
+         "--schema", "missing.yml",
          "MYDIR/files/roles/role_no_parms/meta/argument_specs.yml"],
         1,
         ["Schema file for spec file cannot be opened for reading"],
@@ -555,7 +556,7 @@ TESTCASES_ALL = [
         "Invalid YAML in schema file",
         True,
         ["--out-dir", "TEMPDIR",
-         "--schema", "MYDIR/files/schemas/invalid_yaml.schema.yml",
+         "--schema", "MYDIR/files/schemas/invalid_yaml.yml",
          "MYDIR/files/roles/role_no_parms/meta/argument_specs.yml"],
         1,
         ["Schema file for spec file has invalid YAML syntax"],
@@ -592,7 +593,7 @@ TESTCASES_ALL = [
         0,
         [],
         [],
-        "MYDIR/files/roles/role_all_parms/exp_docs/role_all_parms.rst"
+        "MYDIR/files/exp_docs/role_all_parms.rst"
     ),
 ]
 

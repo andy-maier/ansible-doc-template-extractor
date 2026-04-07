@@ -6,6 +6,6 @@ argument_specs:
     version_added: "0.0"
     author:
       - Someone
-    options_schema_file: ../../schemas/playbook_all_parms_input.schema.json
-    output_schema_file: ../../schemas/playbook_all_parms_output.schema.json
+    options_schema_file: ../../schemas/playbook_all_parms_schema_file_json_input.json
+    output_schema_file: ../../schemas/playbook_all_parms_schema_file_json_output.json
     examples: []
