@@ -669,7 +669,16 @@ def test_all(
             act_output_file = os.path.join(
                 temp_dir, os.path.basename(exp_output_file))
             act_content = read_file(act_output_file)
-            exp_content = read_file(exp_output_file)
+            try:
+                exp_content = read_file(exp_output_file)
+            except FileNotFoundError:
+                raise AssertionError(
+                    f"Expected output file not found: {exp_output_file}\n"
+                    "Generated output:\n"
+                    "------------\n"
+                    f"{act_content}"
+                    "------------\n"
+                )
             assert act_content == exp_content
 
     finally:
