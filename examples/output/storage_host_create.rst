@@ -5,8 +5,8 @@
 
 .. _storage_host_create_role:
 
-Role storage_host_create -- Ensure that a host on a storage system exists and has host WWPNs.
-=============================================================================================
+storage_host_create -- Ensure that a host on a storage system exists and has host WWPNs.
+========================================================================================
 
 Synopsis
 --------

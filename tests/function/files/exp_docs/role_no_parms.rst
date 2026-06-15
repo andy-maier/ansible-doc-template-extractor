@@ -5,8 +5,8 @@
 
 .. _role_no_parms_role:
 
-Role role_no_parms -- Role with no parameters or examples.
-==========================================================
+role_no_parms -- Role with no parameters or examples.
+=====================================================
 
 Synopsis
 --------

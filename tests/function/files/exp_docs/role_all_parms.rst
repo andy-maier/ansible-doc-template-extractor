@@ -5,8 +5,8 @@
 
 .. _role_all_parms_role:
 
-Role role_all_parms -- Role with all kinds of input and output parameters.
-==========================================================================
+role_all_parms -- Role with all kinds of input and output parameters.
+=====================================================================
 
 Synopsis
 --------
@@ -46,7 +46,7 @@ Input Parameters
 
   Optional.
 
-  Properties:
+  Dict items:
 
   * **inparm_dict_str** (str):
 
@@ -62,7 +62,7 @@ Input Parameters
 
     Optional.
 
-    Properties:
+    Dict items:
 
     * **inparm_dict_dict_str** (str):
 
@@ -89,7 +89,7 @@ Input Parameters
 
   Optional.
 
-  Properties:
+  Dict items:
 
   * **inparm_list_dict_str** (str):
 
@@ -105,7 +105,7 @@ Input Parameters
 
     Optional.
 
-    Properties:
+    Dict items:
 
     * **inparm_list_dict_dict_str** (str):
 
@@ -151,7 +151,7 @@ Output Parameters
 
   Optional.
 
-  Properties:
+  Dict items:
 
   * **outparm_dict_str** (str):
 
@@ -167,7 +167,7 @@ Output Parameters
 
     Optional.
 
-    Properties:
+    Dict items:
 
     * **outparm_dict_dict_str** (str):
 
@@ -194,7 +194,7 @@ Output Parameters
 
   Optional.
 
-  Properties:
+  Dict items:
 
   * **outparm_list_dict_str** (str):
 
@@ -210,7 +210,7 @@ Output Parameters
 
     Optional.
 
-    Properties:
+    Dict items:
 
     * **outparm_list_dict_dict_str** (str):
 

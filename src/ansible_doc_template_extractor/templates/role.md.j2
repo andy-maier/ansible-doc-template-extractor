@@ -55,7 +55,7 @@
 {%     endif %}
 {%     if spec.options is defined %}
 
-{{ "  " * level }}  Properties:
+{{ "  " * level }}  Dict items:
 
 {{ option_generation(spec.options, level + 1) }}
 {%     endif %}
@@ -68,9 +68,9 @@
 
 {% for role_name, role_dict in spec_file_dict.argument_specs.items() %}
 {%   if role_name == 'main' %}
-{%     set title = "Role {} -- {}".format(name, role_dict.short_description) %}
+{%     set title = "{} -- {}".format(name, role_dict.short_description) %}
 {%   else %}
-{%     set title = "Subrole {}.{} -- {}".format(name, role_name, role_dict.short_description) %}
+{%     set title = "{}.{} -- {}".format(name, role_name, role_dict.short_description) %}
 {%   endif %}
 # {{ title }}
 
