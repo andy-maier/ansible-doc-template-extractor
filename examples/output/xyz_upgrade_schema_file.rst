@@ -5,8 +5,8 @@
 
 .. _xyz_upgrade_schema_file_playbook:
 
-Playbook xyz_upgrade_schema_file -- Upgrade XYZ container to a new version (JSON schema file format)
-====================================================================================================
+xyz_upgrade_schema_file -- Upgrade XYZ container to a new version (JSON schema file format)
+===========================================================================================
 
 Synopsis
 --------
@@ -43,7 +43,7 @@ Input Parameters
 
   Required.
 
-  Properties:
+  Dict items:
 
   * **server** (str):
 
@@ -66,7 +66,7 @@ Input Parameters
 
     Optional.
 
-    Properties:
+    Dict items:
 
     * **bar** (str):
 
@@ -82,7 +82,7 @@ Input Parameters
 
       Required.
 
-      Properties:
+      Dict items:
 
       * **cat** (str):
 
@@ -102,7 +102,7 @@ Input Parameters
 
     Optional.
 
-    Properties:
+    Dict items:
 
     * **bar** (str):
 
@@ -118,7 +118,7 @@ Input Parameters
 
       Required.
 
-      Properties:
+      Dict items:
 
       * **cat** (str):
 
@@ -154,7 +154,7 @@ Output Parameters
 
   Required.
 
-  Properties:
+  Dict items:
 
   * **previous_version** (str):
 

@@ -5,8 +5,8 @@
 
 .. _playbook_no_parms_playbook:
 
-Playbook playbook_no_parms -- Test playbook with no input or output parameters
-==============================================================================
+playbook_no_parms -- Test playbook with no input or output parameters
+=====================================================================
 
 Synopsis
 --------

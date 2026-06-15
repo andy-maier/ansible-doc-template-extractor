@@ -5,8 +5,8 @@
 
 .. _playbook_all_parms_schema_file_yaml_playbook:
 
-Playbook playbook_all_parms_schema_file_yaml -- Test playbook with all input/output parameters with JSON schema files in YAML
-=============================================================================================================================
+playbook_all_parms_schema_file_yaml -- Test playbook with all input/output parameters with JSON schema files in YAML
+====================================================================================================================
 
 Synopsis
 --------
@@ -55,7 +55,7 @@ Input Parameters
 
   Optional.
 
-  Properties:
+  Dict items:
 
   * **inparm_dict_str** (str):
 
@@ -71,7 +71,7 @@ Input Parameters
 
     Optional.
 
-    Properties:
+    Dict items:
 
     * **inparm_dict_dict_str** (str):
 
@@ -100,7 +100,7 @@ Input Parameters
 
   Optional.
 
-  Properties:
+  Dict items:
 
   * **inparm_list_dict_str** (str):
 
@@ -116,7 +116,7 @@ Input Parameters
 
     Optional.
 
-    Properties:
+    Dict items:
 
     * **inparm_list_dict_dict_str** (str):
 
@@ -162,7 +162,7 @@ Output Parameters
 
   Optional.
 
-  Properties:
+  Dict items:
 
   * **outparm_dict_str** (str):
 
@@ -178,7 +178,7 @@ Output Parameters
 
     Optional.
 
-    Properties:
+    Dict items:
 
     * **outparm_dict_dict_str** (str):
 
@@ -207,7 +207,7 @@ Output Parameters
 
   Optional.
 
-  Properties:
+  Dict items:
 
   * **outparm_list_dict_str** (str):
 
@@ -223,7 +223,7 @@ Output Parameters
 
     Optional.
 
-    Properties:
+    Dict items:
 
     * **outparm_list_dict_dict_str** (str):
 
