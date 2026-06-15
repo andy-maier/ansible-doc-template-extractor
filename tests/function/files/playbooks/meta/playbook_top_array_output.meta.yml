@@ -1,0 +1,10 @@
+argument_specs:
+  playbook_top_array_output:
+    short_description: Test playbook with a top-level array as output
+    description: Test playbook with with a top-level array as output
+    requirements: []
+    version_added: "0.0"
+    author:
+      - Someone
+    output_schema_file: ../../schemas/playbook_top_array_output.yml
+    examples: []

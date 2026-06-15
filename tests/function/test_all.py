@@ -607,6 +607,26 @@ TESTCASES_ALL = [
         [],
         "MYDIR/files/exp_docs/role_all_parms.rst"
     ),
+    (
+        "Playbook with top-level array with RST",
+        True,
+        ["--out-dir", "TEMPDIR", "--format", "rst",
+         "MYDIR/files/playbooks/meta/playbook_top_array_output.meta.yml"],
+        1,
+        ["Top-level schema element must be object, but is array"],
+        [],
+        None
+    ),
+    (
+        "Playbook with top-level array with MD",
+        True,
+        ["--out-dir", "TEMPDIR", "--format", "md",
+         "MYDIR/files/playbooks/meta/playbook_top_array_output.meta.yml"],
+        1,
+        ["Top-level schema element must be object, but is array"],
+        [],
+        None
+    ),
 ]
 
 
