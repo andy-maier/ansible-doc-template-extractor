@@ -1,0 +1,29 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+title: "JSON schema for playbook_top_array_output output parameters"
+description: "JSON schema for playbook_top_array_output output parameters"
+type: array
+items:
+  type: object
+  additionalProperties: false
+  properties:
+    outparm_str:
+      description: Required output parameter of type str
+      type: string
+    outparm_dict:
+      description: Optional output parameter of type dict
+      type: object
+      additionalProperties: false
+      properties:
+        outparm_dict_str:
+          description: Optional outparm_dict parm of type str
+          type: string
+    outparm_list_dict:
+      description: Optional output parameter of type list of dict
+      type: array
+      items:
+        type: object
+        additionalProperties: false
+        properties:
+          outparm_list_dict_str:
+            description: Optional outparm_list_dict parm of type str
+            type: string
