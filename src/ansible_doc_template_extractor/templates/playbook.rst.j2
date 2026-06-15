@@ -83,9 +83,27 @@
 {%  endfor %}
 {{- '/'.join(a_types) -}}
 {% endmacro %}
-{% macro schema_generation(obj, root_obj, level) %}
-{# Macro that generates a list of properties and patternProperties defined in an object within a JSON schema, recursively #}
-{%   for name, spec in (obj.properties | default([]) | combine(obj.patternProperties | default([]))).items() %}
+{% macro schema_generation(spec, name, parent_obj, root_obj, level) %}
+{# Macro that generates documentation from a JSON schema #}
+{%   set spec_type = spec.type | default('string') %}
+{%   if spec_type == "object" %}
+{%     for _name, _spec in (spec.properties | default([]) | combine(spec.patternProperties | default([]))).items() %}
+{{ schema_generation(_spec, _name, spec, root_obj, level + 1) }}
+{%     endfor %}
+{%   elif spec_type == "array" %}
+{%     if 'items' in spec %}
+{%       set _json_types = spec['items'].type | default('string') %}
+{%       set type_txt = "list of {}".format(ansible_type_txt(_json_types)) %}
+{%     else %}
+{%       set type_txt = "list" %}
+{%     endif %}
+{{ "  " * level }}  {{ type_txt }}:
+
+{%     if 'items' in spec %}
+{{ schema_generation(spec['items'], name, None, root_obj, level + 1) }}
+{%     endif %}
+{%   else %}
+{%     set type_txt = ansible_type_txt(spec_type) %}
 {%     if '$ref' in spec %}
 {%       set spec_description = spec.description | default(None) %}
 {%       set ref = spec['$ref'] %}
@@ -96,24 +114,17 @@
 {%         do spec.update({'description': spec_description}) %}
 {%       endif %}
 {%     endif %}
-{%     set spec_type = spec.type | default('string') %}
-{%     set required = name in obj.required | default([]) %}
-{%     if required %}
-{%       set required_txt = "Required." %}
-{%     elif spec.default is defined %}
-{%       set required_txt = "Optional, default: {}.".format(spec.default) %}
-{%     else %}
-{%       set required_txt = "Optional." %}
-{%     endif %}
-{%     if spec_type == 'array' %}
-{%       if 'items' in spec %}
-{%         set json_types = spec['items'].type | default('string') %}
-{%         set type_txt = "list of {}".format(ansible_type_txt(json_types)) %}
+{%     if parent_obj %}
+{%       set required = name in parent_obj.required | default([]) %}
+{%       if required %}
+{%         set required_txt = "Required." %}
+{%       elif spec.default is defined %}
+{%         set required_txt = "Optional, default: {}.".format(spec.default) %}
 {%       else %}
-{%         set type_txt = "list" %}
+{%         set required_txt = "Optional." %}
 {%       endif %}
 {%     else %}
-{%       set type_txt = ansible_type_txt(spec_type) %}
+{%         set required_txt = "" %}
 {%     endif %}
 {%     if spec.enum is defined %}
 {%       set choices_txt = "Choices: {}.".format(spec.enum | join(', ')) %}
@@ -121,29 +132,17 @@
 {%       set choices_txt = "" %}
 {%     endif %}
 {{ "  " * level }}* **{{ name }}** ({{ type_txt }}):
-
 {%     set _ = spec.description | mandatory("Property '{name}' defined in 'options_schema' or 'output_schema' or in the JSON schema file referenced by 'options_schema_file' or 'output_schema_file' has no 'description' element".format(name=name)) %}
 {{ para_generation(spec.description, level + 1) }}
+{%     if required_txt %}
+
 {{ "  " * level }}  {{ required_txt | to_rst }}
-{%     if spec.choices is defined %}
+{%     endif %}
+{%     if choices_txt %}
 
 {{ "  " * level }}  {{ choices_txt | to_rst }}
 {%     endif %}
-{%     if spec_type == 'array' and 'items' in spec %}
-
-{%       if spec['items'].type | default('string') == 'object' %}
-{{ "  " * level }}  Dict items:
-
-{%       endif %}
-{{ schema_generation(spec['items'], root_obj, level + 1) }}
-{%     elif spec_type == 'object' and (spec.properties is defined or spec.patternProperties is defined) %}
-
-{{ "  " * level }}  Dict items:
-
-{{ schema_generation(spec, root_obj, level + 1) }}
-{%     endif %}
-
-{%   endfor %}
+{%   endif %}
 {% endmacro %}
 
 ..
@@ -200,17 +199,14 @@ Input Parameters
 Input Parameters
 ----------------
 
-{%   set options_schema = playbook_dict.options_schema %}
-{%   set _ = ('' if options_schema.type == 'object') | mandatory("Top-level schema element must be object, but is {type}".format(type=options_schema.type)) %}
-{{ schema_generation(options_schema, options_schema, 0) }}
+{{ schema_generation(playbook_dict.options_schema, "root", None, playbook_dict.options_schema, 0) }}
 {% elif playbook_dict.options_schema_file is defined %}
 
 Input Parameters
 ----------------
 
 {%   set options_schema = load_schema_file(playbook_dict.options_schema_file, spec_file_name, "input parameters") %}
-{%   set _ = ('' if options_schema.type == 'object') | mandatory("Top-level schema element must be object, but is {type}".format(type=options_schema.type)) %}
-{{ schema_generation(options_schema, options_schema, 0) }}
+{{ schema_generation(options_schema, "root", None, options_schema, 0) }}
 {% endif %}
 {% if playbook_dict.output is defined %}
 
@@ -223,17 +219,14 @@ Output Parameters
 Output Parameters
 -----------------
 
-{%   set output_schema = playbook_dict.output_schema %}
-{%   set _ = ('' if output_schema.type == 'object') | mandatory("Top-level schema element must be object, but is {type}".format(type=output_schema.type)) %}
-{{ schema_generation(output_schema, output_schema, 0) }}
+{{ schema_generation(playbook_dict.output_schema, "root", None, playbook_dict.output_schema, 0) }}
 {% elif playbook_dict.output_schema_file is defined %}
 
 Output Parameters
 -----------------
 
 {%   set output_schema = load_schema_file(playbook_dict.output_schema_file, spec_file_name, "output parameters") %}
-{%   set _ = ('' if output_schema.type == 'object') | mandatory("Top-level schema element must be object, but is {type}".format(type=output_schema.type)) %}
-{{ schema_generation(output_schema, output_schema, 0) }}
+{{ schema_generation(output_schema, "root", None, output_schema, 0) }}
 {% endif %}
 {% if playbook_dict.examples is defined %}
 
@@ -263,8 +256,8 @@ Authors
 -------
 
 {%   if playbook_dict.author is iterable and playbook_dict.author is not string %}
-{%     for author in playbook_dict.author %}
-* {{ author }}
+{%     for item in playbook_dict.author %}
+* {{ item }}
 {%     endfor %}
 {%   else %}
 * {{ playbook_dict.author }}
