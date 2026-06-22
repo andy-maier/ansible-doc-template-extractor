@@ -15,7 +15,7 @@
 
 {%   endfor %}
 {% else %}
-{{ "  " * level }}{{ para | to_rst }}
+{{ "  " * level }}{{ paras | to_rst }}
 {% endif %}
 {% endmacro %}
 {% macro indent(multiline, level) %}
