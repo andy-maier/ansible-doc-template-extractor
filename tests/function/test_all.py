@@ -612,10 +612,10 @@ TESTCASES_ALL = [
         True,
         ["--out-dir", "TEMPDIR", "--format", "rst",
          "MYDIR/files/playbooks/meta/playbook_top_array_output.meta.yml"],
-        1,
-        ["Top-level schema element must be object, but is array"],
+        0,
         [],
-        None
+        [],
+        "MYDIR/files/exp_docs/playbook_top_array_output.rst"
     ),
     (
         "Playbook with top-level array with MD",
