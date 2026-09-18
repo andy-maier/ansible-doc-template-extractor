@@ -1,5 +1,5 @@
 argument_specs:
-  invalid_playbook_top_level_array:
+  invalid_playbook_top_level_array_input:
     short_description: Test playbook with top-level array as input parameter
     description: Test playbook with top-level array as input parameter
     requirements: []

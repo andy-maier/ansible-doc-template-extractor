@@ -145,6 +145,7 @@ example_role_dirs := $(wildcard examples/roles/*)
 example_role_md_files := $(patsubst examples/roles/%,examples/output/%.md,$(example_role_dirs))
 example_role_rst_files := $(patsubst examples/roles/%,examples/output/%.rst,$(example_role_dirs))
 example_playbook_files := $(wildcard examples/playbooks/*)
+example_schema_files := $(wildcard examples/playbooks/schemas/*)
 example_playbook_md_files := $(patsubst examples/playbooks/%.meta.yml,examples/output/%.md,$(example_playbook_files))
 example_playbook_rst_files := $(patsubst examples/playbooks/%.meta.yml,examples/output/%.rst,$(example_playbook_files))
 
@@ -300,10 +301,10 @@ examples/output/%.md: examples/roles/%/meta/argument_specs.yml $(package_dir)/te
 examples/output/%.rst: examples/roles/%/meta/argument_specs.yml $(package_dir)/templates/role.rst.j2 $(done_dir)/install_$(pymn).done
 	ansible-doc-template-extractor -v --format rst --out-dir examples/output $<
 
-examples/output/%.md: examples/playbooks/%.meta.yml examples/playbooks/schemas/%_*.yml $(package_dir)/templates/playbook.md.j2 $(done_dir)/install_$(pymn).done
+examples/output/%.md: examples/playbooks/%.meta.yml $(example_schema_files) $(package_dir)/templates/playbook.md.j2 $(done_dir)/install_$(pymn).done
 	ansible-doc-template-extractor -v --format md --out-dir examples/output $<
 
-examples/output/%.rst: examples/playbooks/%.meta.yml examples/playbooks/schemas/%_*.yml $(package_dir)/templates/playbook.rst.j2 $(done_dir)/install_$(pymn).done
+examples/output/%.rst: examples/playbooks/%.meta.yml $(example_schema_files) $(package_dir)/templates/playbook.rst.j2 $(done_dir)/install_$(pymn).done
 	ansible-doc-template-extractor -v --format rst --out-dir examples/output $<
 
 .PHONY: gen_exp

@@ -5,8 +5,8 @@
 
 .. _xyz_upgrade_options_playbook:
 
-Playbook xyz_upgrade_options -- Upgrade XYZ container to a new version (Ansible options format)
-===============================================================================================
+xyz_upgrade_options -- Upgrade XYZ container to a new version (Ansible options format)
+======================================================================================
 
 Synopsis
 --------
@@ -43,110 +43,132 @@ Version added
 Input Parameters
 ----------------
 
-* **server** (str):
+* **params** (dict):
 
-  IP address or hostname of the server that runs the XYZ container.
-
-
-  Required.
-
-* **version** (str):
-
-  Desired new version of the XYZ container.
-
-
-  Required.
-
-* **foo_object** (dict):
-
-  Demonstrate an object
+  Object with input parameters
 
 
   Optional.
 
   Dict items:
 
-  * **bar** (str):
+  * **server** (str):
 
-    A string property in foo\_object
+    IP address or hostname of the server that runs the XYZ container.
+
+
+    Required.
+
+  * **version** (str):
+
+    Desired new version of the XYZ container.
 
 
     Required.
 
-  * **bar_object** (dict):
+  * **foo_object** (dict):
 
-    A nested object in foo\_object
+    Demonstrate an object
 
 
-    Required.
+    Optional.
 
     Dict items:
 
-    * **cat** (str):
+    * **bar** (str):
 
-      A string property in the nested bar\_object
+      A string property in foo\_object
 
 
       Required.
 
+    * **bar_object** (dict):
 
-
-
-
-* **foo_array_obj** (list of dict):
-
-  Demonstrate an array of objects
-
-
-  Optional.
-
-  Dict items:
-
-  * **bar** (str):
-
-    A string property in the array item
-
-
-    Required.
-
-  * **bar_object** (dict):
-
-    A nested object in the array item
-
-
-    Required.
-
-    Dict items:
-
-    * **cat** (str):
-
-      A string property in the nested bar\_object
+      A nested object in foo\_object
 
 
       Required.
 
+      Dict items:
+
+      * **cat** (str):
+
+        A string property in the nested bar\_object
+
+
+        Required.
 
 
 
 
-* **foo_array_str** (list of str):
 
-  Demonstrate an array of strings
+  * **foo_array_obj** (list of dict):
+
+    Demonstrate an array of objects
 
 
-  Optional.
+    Optional.
+
+    Dict items:
+
+    * **bar** (str):
+
+      A string property in the array item
+
+
+      Required.
+
+    * **bar_object** (dict):
+
+      A nested object in the array item
+
+
+      Required.
+
+      Dict items:
+
+      * **cat** (str):
+
+        A string property in the nested bar\_object
+
+
+        Required.
+
+
+
+
+
+  * **foo_array_str** (list of str):
+
+    Demonstrate an array of strings
+
+
+    Optional.
+
+
 
 
 
 Output Parameters
 -----------------
 
-* **previous_version** (str):
+* **output** (dict):
 
-  Version of the XYZ container before the upgrade.
+  Object with output parameters
 
 
   Optional.
+
+  Dict items:
+
+  * **previous_version** (str):
+
+    Version of the XYZ container before the upgrade.
+
+
+    Optional.
+
+
 
 
 
