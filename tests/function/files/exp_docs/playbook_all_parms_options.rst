@@ -240,13 +240,31 @@ Metadata
 * Playbook is idempotent: True
 * Playbook supports check mode: True
 * Playbook targets:
-  +-------------+-------------+----------------+---------+------------------+---------+---------+
-  | Target type | Access mode | Parameter name | Default | Provides context | Is list | Is type |
-  +=============+=============+================+=========+==================+=========+=========+
-  | foo | single_write | foo |  | True | False | False |
-  +-------------+-------------+----------------+---------+------------------+---------+---------+
-  | bar | exclusive |  |  |  |  |  |
-  +-------------+-------------+----------------+---------+------------------+---------+---------+
+
+  .. list-table::
+     :header-rows: 1
+
+     * - Target type
+       - Access mode
+       - Parameter name
+       - Default
+       - Provides context
+       - Is list
+       - Is type
+     * - foo
+       - single_write
+       - foo
+       - 
+       - True
+       - False
+       - False
+     * - bar
+       - exclusive
+       - 
+       - 
+       - 
+       - 
+       - 
 
 Examples
 --------

@@ -159,7 +159,8 @@ properties:
                     default:
                       description: "Default parameter value, if the parameter is optional
                         in the playbook input. When omitted, the playbook input parameter
-                        is required."
+                        is required. Special values are: 'ALL' (all target resources
+                        within the provided context) and 'NONE' (no target resources)."
                       type: string
                     provides_context:
                       description: "Indicates whether the playbook input parameter provides context.
