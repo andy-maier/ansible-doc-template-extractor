@@ -248,12 +248,25 @@ Metadata
 {%   endif %}
 {%   if playbook_dict.metadata.targets is defined %}
 * Playbook targets:
-  +-------------+-------------+----------------+---------+------------------+---------+---------+
-  | Target type | Access mode | Parameter name | Default | Provides context | Is list | Is type |
-  +=============+=============+================+=========+==================+=========+=========+
+
+  .. list-table::
+     :header-rows: 1
+
+     * - Target type
+       - Access mode
+       - Parameter name
+       - Default
+       - Provides context
+       - Is list
+       - Is type
 {%     for target in playbook_dict.metadata.targets %}
-  | {{ target.target_type }} | {{ target.access_mode }} | {{ target.parameter_name | default('') }} | {{ target.default | default('') if target.parameter_name is defined else '' }} | {{ target.provides_context | default('False') if target.parameter_name is defined else '' }} | {{ target.is_list | default('False') if target.parameter_name is defined else '' }} | {{ target.is_type | default('False') if target.parameter_name is defined else '' }} |
-  +-------------+-------------+----------------+---------+------------------+---------+---------+
+     * - {{ target.target_type }}
+       - {{ target.access_mode }}
+       - {{ target.parameter_name | default('') }}
+       - {{ target.default | default('') if target.parameter_name is defined else '' }}
+       - {{ target.provides_context | default('False') if target.parameter_name is defined else '' }}
+       - {{ target.is_list | default('False') if target.parameter_name is defined else '' }}
+       - {{ target.is_type | default('False') if target.parameter_name is defined else '' }}
 {%     endfor %}
 {%   endif %}
 {% endif %}
