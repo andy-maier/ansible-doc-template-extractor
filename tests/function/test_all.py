@@ -451,7 +451,7 @@ TESTCASES_ALL = [
         True,
         ["--out-dir", "TEMPDIR",
          "MYDIR/files/playbooks/meta/"
-         "invalid_playbook_top_level_array.meta.yml"],
+         "invalid_playbook_top_level_array_input.meta.yml"],
         1,
         ["Loading schema file for input parameters",
          "Top-level schema element must be object, but is array"],
@@ -611,7 +611,8 @@ TESTCASES_ALL = [
         "Playbook with top-level array with RST",
         True,
         ["--out-dir", "TEMPDIR", "--format", "rst",
-         "MYDIR/files/playbooks/meta/playbook_top_array_output.meta.yml"],
+         "MYDIR/files/playbooks/meta/"
+         "invalid_playbook_top_level_array_output.meta.yml"],
         1,
         ["Top-level schema element must be object, but is array"],
         [],
@@ -621,7 +622,8 @@ TESTCASES_ALL = [
         "Playbook with top-level array with MD",
         True,
         ["--out-dir", "TEMPDIR", "--format", "md",
-         "MYDIR/files/playbooks/meta/playbook_top_array_output.meta.yml"],
+         "MYDIR/files/playbooks/meta/"
+         "invalid_playbook_top_level_array_output.meta.yml"],
         1,
         ["Top-level schema element must be object, but is array"],
         [],
