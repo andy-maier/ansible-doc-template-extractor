@@ -172,6 +172,9 @@ on top of the draft playbook spec format defined by Ansible
   - `requirements` - List of requirements for using the playbook.
   - `version_added` - Collection or Ansible version that added the playbook.
   - `author` - List of authors of the playbook.
+  - `metadata` - Metadata information such as idempotency, check mode support,
+    playbook targets that can be used to determine access mode conflicts when
+    running multiple playbooks concurrently.
   - `options_schema` - The input parameters of the playbook, described as a
     JSON schema.
   - `options_schema_file` - Same as `options_schema`, except that the JSON
