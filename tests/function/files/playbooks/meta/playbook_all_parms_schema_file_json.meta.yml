@@ -6,6 +6,18 @@ argument_specs:
     version_added: "0.0"
     author:
       - Someone
+    metadata:
+      idempotent: true
+      check_mode: true
+      targets:
+        - target_type: foo
+          access_mode: single_write
+          parameter_name: foo
+          provides_context: true
+          is_list: false
+          is_type: false
+        - target_type: bar
+          access_mode: exclusive
     options_schema_file: ../../schemas/playbook_all_parms_schema_file_json_input.json
     output_schema_file: ../../schemas/playbook_all_parms_schema_file_json_output.json
     examples: []

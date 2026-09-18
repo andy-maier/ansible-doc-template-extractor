@@ -12,6 +12,16 @@ argument_specs:
     version_added: "1.17"
     author:
       - Andreas Maier
+    metadata:
+      idempotent: true
+      check_mode: true
+      targets:
+        - target_type: server
+          access_mode: single_write
+          parameter_name: server
+          provides_context: true
+        - target_type: container
+          access_mode: exclusive
     options_schema:
       # JSON schema format
       description: Playbook input variable 'params'.

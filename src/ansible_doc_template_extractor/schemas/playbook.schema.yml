@@ -114,6 +114,70 @@ properties:
                 items:
                   description: "Full name of the author."
                   type: string
+          metadata:  # Extension on top of draft Ansible playbook spec format
+            description: "Metadata for the playbook. Additional metadata properties may be defined"
+            type: object
+            additionalProperties: true
+            properties:
+              idempotent:
+                description: "Indicates whether the playbook is idempotent"
+                type: boolean
+              check_mode:
+                description: "Indicates whether the playbook reasonably supports check mode"
+                type: boolean
+              targets:
+                description: "The target resources accessed by the playbook and their supported concurrency model"
+                type: array
+                items:
+                  description: "A target resource accessed by the playbook and its supported concurrency model"
+                  type: object
+                  required:
+                    - target_type
+                    - access_mode
+                  additionalProperties: false
+                  properties:
+                    target_type:
+                      description: "Type of the target resource.
+                        These type strings are defined by the playbooks and are not further prescribed."
+                      type: string
+                    access_mode:
+                      description: "The access mode the playbook needs for this target."
+                      type: string
+                      enum:
+                        - none          # No access to the target needed
+                        - multi_read    # Multiple reads are allowed concurrently
+                        - multi_write   # Multiple writes and reads are allowed concurrently
+                        - single_write  # One write and multiple reads are allowed concurrently
+                        - exclusive     # One exclusive access is allowed concurrently (no reads or writes)
+                    parameter_name:
+                      description: "Name of the playbook input parameter that specifies the
+                        name of the target resource. When omitted, there is no input parameter
+                        specifying the name of the target resource and the target resources
+                        are all resources of the specified target type within the context
+                        of the context-providing other playbook targets."
+                      type: string
+                    default:
+                      description: "Default parameter value, if the parameter is optional
+                        in the playbook input. When omitted, the playbook input parameter
+                        is required."
+                      type: string
+                    provides_context:
+                      description: "Indicates whether the playbook input parameter provides context.
+                        If playbook input parameters that provide context have different values
+                        in two playbook runs, these runs will not have any conflicts.
+                        When omitted, the default is False."
+                      type: boolean
+                      default: false
+                    is_list:
+                      description: "Indicates whether the playbook input parameter is a list of strings
+                        instead of a single string. When omitted, the default is False."
+                      type: boolean
+                      default: false
+                    is_type:
+                      description: "Indicates whether the playbook input parameter indicates resource
+                        type(s) instead of resource name(s). When omitted, the default is False."
+                      type: boolean
+                      default: false
           options:
             description: "The input parameters of the playbook, in Ansible option format. This is mutually exclusive
               with 'options_schema' and 'options_schema_file'."

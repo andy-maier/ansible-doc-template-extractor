@@ -158,6 +158,16 @@ Permissions\.
 
 
 
+## Metadata
+
+* Playbook is idempotent: True
+* Playbook supports check mode: True
+* Playbook targets:
+  | Target type | Access mode | Parameter name | Default | Provides context | Is list | Is type |
+  |:----------- |:----------- |:-------------- |:------- |:---------------- |:------- |:------- |
+  | server | single_write | server |  | True | False | False |
+  | container | exclusive |  |  |  |  |  |
+
 ## Examples
 
 * Upgrade the XYZ container to a specified version

@@ -235,21 +235,43 @@ Output Parameters
 {%   set _ = ('' if output_schema.type == 'object') | mandatory("Top-level schema element must be object, but is {type}".format(type=output_schema.type)) %}
 {{ schema_generation(output_schema, output_schema, 0) }}
 {% endif %}
+{% if playbook_dict.metadata is defined %}
+
+Metadata
+--------
+
+{%   if playbook_dict.metadata.idempotent is defined %}
+* Playbook is idempotent: {{ playbook_dict.metadata.idempotent }}
+{%   endif %}
+{%   if playbook_dict.metadata.check_mode is defined %}
+* Playbook supports check mode: {{ playbook_dict.metadata.check_mode }}
+{%   endif %}
+{%   if playbook_dict.metadata.targets is defined %}
+* Playbook targets:
+  +-------------+-------------+----------------+---------+------------------+---------+---------+
+  | Target type | Access mode | Parameter name | Default | Provides context | Is list | Is type |
+  +=============+=============+================+=========+==================+=========+=========+
+{%     for target in playbook_dict.metadata.targets %}
+  | {{ target.target_type }} | {{ target.access_mode }} | {{ target.parameter_name | default('') }} | {{ target.default | default('') if target.parameter_name is defined else '' }} | {{ target.provides_context | default('False') if target.parameter_name is defined else '' }} | {{ target.is_list | default('False') if target.parameter_name is defined else '' }} | {{ target.is_type | default('False') if target.parameter_name is defined else '' }} |
+  +-------------+-------------+----------------+---------+------------------+---------+---------+
+{%     endfor %}
+{%   endif %}
+{% endif %}
 {% if playbook_dict.examples is defined %}
 
 Examples
 --------
 
-{%     for example in playbook_dict.examples %}
-{%       if example.short_description is defined %}
+{%   for example in playbook_dict.examples %}
+{%     if example.short_description is defined %}
 * {{ para_generation(example.short_description, 0) }}
-{%       else %}
+{%     else %}
 * Example
-{%       endif %}
-{%       if example.description is defined %}
+{%     endif %}
+{%     if example.description is defined %}
 
 {{ para_generation(example.description, 1) }}
-{%       endif %}
+{%     endif %}
 
   .. code-block:: bash
 
