@@ -375,13 +375,13 @@ def load_schema_file_function(schema_file, base_file, kind):
         try:
             with schema_file.open(encoding="utf-8") as f:
                 schema = json.load(f)
-        except (IOError, ValueError) as exc:
+        except (OSError, ValueError) as exc:
             raise Error(str(exc)) from exc
     elif schema_file.suffix in {".yml", ".yaml"}:
         try:
             with schema_file.open(encoding="utf-8") as f:
                 schema = yaml.safe_load(f)
-        except (IOError, yaml.YAMLError) as exc:
+        except (OSError, yaml.YAMLError) as exc:
             raise Error(str(exc)) from exc
     else:
         raise Error(
@@ -493,7 +493,7 @@ def load_yaml_file(kind, yaml_file, schema_file=None, verbose=False):
     try:
         with open(yaml_file, 'r', encoding='utf-8') as fp:
             yaml_obj = yaml.safe_load(fp)
-    except (IOError, OSError) as exc:
+    except OSError as exc:
         raise Error(
             f"{kind} cannot be opened for reading: {exc}")
     except (yaml.scanner.ScannerError, yaml.parser.ParserError) as exc:
@@ -508,7 +508,7 @@ def load_yaml_file(kind, yaml_file, schema_file=None, verbose=False):
         try:
             with open(schema_file, 'r', encoding='utf-8') as fp:
                 schema_obj = yaml.safe_load(fp)
-        except (IOError, OSError) as exc:
+        except OSError as exc:
             raise Error(
                 f"Schema file for {kind} cannot be opened for reading: {exc}")
         except (yaml.scanner.ScannerError, yaml.parser.ParserError) as exc:
@@ -648,7 +648,7 @@ def create_output_file(parser, args, spec_file):
     try:
         with open(out_file, 'w', encoding='utf-8') as fp:
             fp.write(data)
-    except IOError as exc:
+    except OSError as exc:
         raise Error(
             f"Cannot write output file {out_file}: {exc}")
 
