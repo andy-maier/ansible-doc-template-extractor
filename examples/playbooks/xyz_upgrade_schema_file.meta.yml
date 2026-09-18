@@ -12,6 +12,16 @@ argument_specs:
     version_added: "1.17"
     author:
       - Andreas Maier
+    metadata:
+      idempotent: true
+      check_mode: true
+      targets:
+        - target_type: server
+          access_mode: single_write
+          parameter_name: server
+          provides_context: true
+        - target_type: container
+          access_mode: exclusive
     options_schema_file: schemas/xyz_upgrade_schema_file_options.yml
     output_schema_file: schemas/xyz_upgrade_schema_file_output.yml
     examples:
